@@ -12,7 +12,8 @@
         <activity android:name=".ui.activities.MainActivity" />
 
         <activity android:name=".ui.activities.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.TimeTrackerApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,5 +22,4 @@
         </activity>
 
     </application>
-
 </manifest>

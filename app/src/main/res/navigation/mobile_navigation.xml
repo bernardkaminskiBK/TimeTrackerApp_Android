@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_timer">
+
+    <fragment
+        android:id="@+id/nav_timer"
+        android:name="com.berni.timetrackerapp.ui.fragments.timer.TimerFragment"
+        android:label="Timer"
+        tools:layout="@layout/fragment_timer"/>
+
+    <fragment
+        android:id="@+id/nav_add"
+        android:name="com.berni.timetrackerapp.ui.fragments.add.AddFragment"
+        android:label="ADD"
+        tools:layout="@layout/fragment_add"/>
+
+    <fragment
+        android:id="@+id/nav_statistic"
+        android:name="com.berni.timetrackerapp.ui.fragments.statistics.StatisticsFragment"
+        android:label="Statistics"
+        tools:layout="@layout/fragment_statistics"/>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.berni.timetrackerapp.ui.fragments.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings"/>
+
+</navigation>

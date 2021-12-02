@@ -2,31 +2,37 @@ package com.berni.timetrackerapp.ui.fragments.timer
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.berni.timetrackerapp.R
+import com.berni.timetrackerapp.application.TimeTrackerApplication
 import com.berni.timetrackerapp.databinding.BottomSheetDialogBinding
 import com.berni.timetrackerapp.databinding.FragmentTimerBinding
+import com.berni.timetrackerapp.model.entities.Progress
+import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerDBViewModel
+import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class TimerFragment : Fragment() {
 
     private lateinit var timerViewModel: TimerViewModel
+    private lateinit var bottomSheetDialogBinding: BottomSheetDialogBinding
+    private lateinit var dialog : BottomSheetDialog
 
     private var _mBinding: FragmentTimerBinding? = null
     private val mBinding get() = _mBinding!!
+
+    private val mTimeTrackerDBViewModel: TimeTrackerDBViewModel by viewModels {
+        TimeTrackerViewModelFactory((requireActivity().application as TimeTrackerApplication).repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         timerViewModel =
             ViewModelProvider(this).get(TimerViewModel::class.java)
 
@@ -63,23 +69,28 @@ class TimerFragment : Fragment() {
     }
 
     private fun saveProgressToDB() {
-        val dialog = BottomSheetDialog(requireContext())
-        val binding = BottomSheetDialogBinding.inflate(layoutInflater)
-        binding.tvTimerResult.text = mBinding.tvStopwatch.text
-        binding.btnSave.setOnClickListener {
-          validateInput(binding.tiNameOfProgress.text.toString())
+        dialog = BottomSheetDialog(requireContext())
+        bottomSheetDialogBinding = BottomSheetDialogBinding.inflate(layoutInflater)
+        bottomSheetDialogBinding.tvTimerResult.text = mBinding.tvStopwatch.text
+        bottomSheetDialogBinding.btnSave.setOnClickListener {
+            validateInput(bottomSheetDialogBinding.tiNameOfProgress.text.toString())
         }
-        binding.btnCancel.setOnClickListener {
+        bottomSheetDialogBinding.btnCancel.setOnClickListener {
             dialog.dismiss()
         }
         dialog.setCancelable(false)
-        dialog.setContentView(binding.root)
+        dialog.setContentView(bottomSheetDialogBinding.root)
         dialog.show()
     }
 
-    private fun validateInput(input : String) {
+    private fun validateInput(input: String) {
         if (input.isNotEmpty()) {
-
+            val name = bottomSheetDialogBinding.tiNameOfProgress.text.toString()
+            val time = bottomSheetDialogBinding.tvTimerResult.text.toString()
+            mTimeTrackerDBViewModel.insert(Progress(0, System.currentTimeMillis(), name, time))
+            dialog.dismiss()
+            Toast.makeText(requireContext(), getString(R.string.success_save), Toast.LENGTH_SHORT)
+                .show()
         } else {
             Toast.makeText(requireContext(), getString(R.string.add_name), Toast.LENGTH_SHORT)
                 .show()

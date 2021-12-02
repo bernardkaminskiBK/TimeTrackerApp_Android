@@ -5,11 +5,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
+import com.berni.timetrackerapp.model.database.TimeTrackerRepository
+import com.berni.timetrackerapp.model.entities.Progress
 import com.berni.timetrackerapp.utils.Formatter
 import com.berni.timetrackerapp.utils.TimerService
+import kotlinx.coroutines.launch
 
 class TimerViewModel(application: Application): AndroidViewModel(application) {
 

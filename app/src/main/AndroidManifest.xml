@@ -14,7 +14,7 @@
 
         <activity android:name=".ui.activities.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.TimeTrackerApp">
+            android:theme="@style/Theme.TimeTrackerApp.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

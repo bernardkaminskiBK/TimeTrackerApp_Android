@@ -133,7 +133,7 @@ class TimerFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _mBinding = null
-        timerViewModel.stopTimer()
+//        timerViewModel.stopTimer()
     }
 
 }

@@ -13,4 +13,9 @@
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="success_save">Your progress was successfully saved.</string>
+    <string name="date">Date</string>
+    <string name="name">Name</string>
+    <string name="time">Time</string>
+    <string name="add_manualy_new_progres">add manualy new progres</string>
+    <string name="no_data_available">No data available.</string>
 </resources>

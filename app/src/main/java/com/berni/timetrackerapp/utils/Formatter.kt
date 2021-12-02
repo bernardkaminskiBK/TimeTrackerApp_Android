@@ -1,8 +1,13 @@
 package com.berni.timetrackerapp.utils
 
+import java.util.*
 import kotlin.math.roundToInt
 
 object Formatter {
+
+    fun dateFormat(dateInLong : Long) =
+        android.text.format.DateFormat
+            .format("MM.dd.yyyy HH:mm:ss", Date(dateInLong)).toString()
 
     fun getTimeStringFromDouble(time: Double): String {
         val resultInt = time.roundToInt()

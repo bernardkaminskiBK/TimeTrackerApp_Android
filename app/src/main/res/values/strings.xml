@@ -7,4 +7,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="please_click_back_again_to_exit">Please click back again to exit</string>
+    <string name="add_name">Please add name of progress</string>
+    <string name="initialStatTimer">00:00:00</string>
+    <string name="save_your_progress">Save your progress:</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 </resources>

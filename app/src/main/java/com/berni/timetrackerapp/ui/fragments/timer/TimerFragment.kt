@@ -2,13 +2,18 @@ package com.berni.timetrackerapp.ui.fragments.timer
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.berni.timetrackerapp.R
+import com.berni.timetrackerapp.databinding.BottomSheetDialogBinding
 import com.berni.timetrackerapp.databinding.FragmentTimerBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class TimerFragment : Fragment() {
 
@@ -50,11 +55,35 @@ class TimerFragment : Fragment() {
         when (item.itemId) {
             R.id.action_save_activity_time -> {
                 stopTimer()
-                Toast.makeText(requireContext(), "Saving...", Toast.LENGTH_SHORT).show()
+                saveProgressToDB()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun saveProgressToDB() {
+        val dialog = BottomSheetDialog(requireContext())
+        val binding = BottomSheetDialogBinding.inflate(layoutInflater)
+        binding.tvTimerResult.text = mBinding.tvStopwatch.text
+        binding.btnSave.setOnClickListener {
+          validateInput(binding.tiNameOfProgress.text.toString())
+        }
+        binding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(false)
+        dialog.setContentView(binding.root)
+        dialog.show()
+    }
+
+    private fun validateInput(input : String) {
+        if (input.isNotEmpty()) {
+
+        } else {
+            Toast.makeText(requireContext(), getString(R.string.add_name), Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
     private fun startStopTimer() {
@@ -87,7 +116,7 @@ class TimerFragment : Fragment() {
         timerViewModel.resetTimer()
         mBinding.ivStartStop
             .setImageResource(R.drawable.ic_baseline_play_arrow_white_88)
-        mBinding.tvStopwatch.text = "00:00:00"
+        mBinding.tvStopwatch.text = getString(R.string.initialStatTimer)
     }
 
     override fun onDestroy() {

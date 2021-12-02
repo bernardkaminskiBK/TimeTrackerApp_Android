@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="00:00:00"
+                android:text="@string/initialStatTimer"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="85sp" />
@@ -60,8 +60,8 @@
 
     <LinearLayout
         android:id="@+id/llReset"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="116dp"
         android:background="@drawable/item_circular_color_accent_background"
         android:elevation="25dp"

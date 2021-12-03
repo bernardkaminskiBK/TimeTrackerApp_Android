@@ -11,53 +11,52 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="3dp"
-        android:layout_marginStart="3dp"
+        android:layout_margin="3dp"
         app:cardBackgroundColor="@color/primaryColor"
         app:cardCornerRadius="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:background="@drawable/full_rounded_background"
             android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:background="@drawable/full_rounded_background"
+            android:orientation="horizontal"
+            android:padding="6dp">
 
             <TextView
                 android:id="@+id/tvDate"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/white"
-                android:textAlignment="center"
-                tools:text="20:57 02.12.2021"/>
+                tools:text="20:57 02.12.2021" />
 
             <TextView
                 android:id="@+id/tvName"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:layout_gravity="center"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:layout_height="wrap_content"
-                tools:text="duolingo"/>
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="duolingo" />
 
             <TextView
                 android:id="@+id/tvTime"
-                android:textSize="20sp"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:layout_height="wrap_content"
-                tools:text="2:03:00"/>
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="2:03:00" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

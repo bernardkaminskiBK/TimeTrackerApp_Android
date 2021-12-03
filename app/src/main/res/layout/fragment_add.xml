@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -55,22 +55,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_data_available"
-            android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="32sp"
+            android:textSize="26sp"
             android:visibility="gone"
             android:layout_gravity="center" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabAdd"
-            android:theme="@style/Theme.MaterialComponents.Light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:backgroundTint="@color/gray"
-            android:layout_margin="26dp"
-            app:srcCompat="@drawable/ic_add_white_24"
-            android:contentDescription="@string/add_manualy_new_progres" />
     </androidx.cardview.widget.CardView>
 
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:backgroundTint="@color/gray"
+        android:layout_margin="26dp"
+        app:srcCompat="@drawable/ic_add_white_24"
+        android:contentDescription="@string/add_manualy_new_progres" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

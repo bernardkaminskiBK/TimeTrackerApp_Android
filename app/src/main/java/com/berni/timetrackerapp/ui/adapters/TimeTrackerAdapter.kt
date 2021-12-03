@@ -3,13 +3,15 @@ package com.berni.timetrackerapp.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.databinding.ItemProgressBinding
 import com.berni.timetrackerapp.model.entities.Progress
 import com.berni.timetrackerapp.utils.Formatter
 
 class TimeTrackerAdapter(private val fragment: Fragment) :
-RecyclerView.Adapter<TimeTrackerAdapter.ViewHolder>(){
+    ListAdapter<Progress, TimeTrackerAdapter.ViewHolder>(DiffCallback()) {
 
     private var progresses: List<Progress> = listOf()
 
@@ -40,6 +42,14 @@ RecyclerView.Adapter<TimeTrackerAdapter.ViewHolder>(){
     fun show(list: List<Progress>) {
         progresses = list
         notifyDataSetChanged()
+    }
+
+    class DiffCallback : DiffUtil.ItemCallback<Progress>() {
+        override fun areItemsTheSame(oldItem: Progress, newItem: Progress) =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: Progress, newItem: Progress) =
+            oldItem == newItem
     }
 
 }

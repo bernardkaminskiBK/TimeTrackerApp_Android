@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.application.TimeTrackerApplication
-import com.berni.timetrackerapp.databinding.BottomSheetDialogBinding
+import com.berni.timetrackerapp.databinding.BottomSheetSaveDialogBinding
 import com.berni.timetrackerapp.databinding.FragmentTimerBinding
 import com.berni.timetrackerapp.model.entities.Progress
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerDBViewModel
@@ -19,7 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 class TimerFragment : Fragment() {
 
     private lateinit var timerViewModel: TimerViewModel
-    private lateinit var bottomSheetDialogBinding: BottomSheetDialogBinding
+    private lateinit var saveDialogBinding: BottomSheetSaveDialogBinding
     private lateinit var dialog : BottomSheetDialog
 
     private var _mBinding: FragmentTimerBinding? = null
@@ -70,22 +70,22 @@ class TimerFragment : Fragment() {
 
     private fun saveProgressToDB() {
         dialog = BottomSheetDialog(requireContext())
-        bottomSheetDialogBinding = BottomSheetDialogBinding.inflate(layoutInflater)
-        bottomSheetDialogBinding.tvTimerResult.text = mBinding.tvStopwatch.text
-        bottomSheetDialogBinding.btnSave.setOnClickListener {
-            validateInput(bottomSheetDialogBinding.tiNameOfProgress.text.toString())
+        saveDialogBinding = BottomSheetSaveDialogBinding.inflate(layoutInflater)
+        saveDialogBinding.tvTimerResult.text = mBinding.tvStopwatch.text
+        saveDialogBinding.btnSave.setOnClickListener {
+            validateInput(saveDialogBinding.tiNameOfProgress.text.toString())
         }
-        bottomSheetDialogBinding.btnCancel.setOnClickListener {
+        saveDialogBinding.btnCancel.setOnClickListener {
             dialog.dismiss()
         }
-        dialog.setContentView(bottomSheetDialogBinding.root)
+        dialog.setContentView(saveDialogBinding.root)
         dialog.show()
     }
 
     private fun validateInput(input: String) {
         if (input.isNotEmpty()) {
-            val name = bottomSheetDialogBinding.tiNameOfProgress.text.toString()
-            val time = bottomSheetDialogBinding.tvTimerResult.text.toString()
+            val name = saveDialogBinding.tiNameOfProgress.text.toString()
+            val time = saveDialogBinding.tvTimerResult.text.toString()
             mTimeTrackerDBViewModel.insert(Progress(0, System.currentTimeMillis(), name, time))
             dialog.dismiss()
             Toast.makeText(requireContext(), getString(R.string.success_save), Toast.LENGTH_SHORT)

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/gradient_background_top"
     android:orientation="vertical"
     android:padding="25dp">
 
@@ -12,36 +13,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:padding="15dp"
         android:text="@string/save_your_progress"
-        android:textColor="@color/primaryColor"
-        android:textSize="31sp" />
+        android:background="@drawable/gradient_background_top_rounded"
+        android:textColor="@color/white"
+        android:textSize="31sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvTimerResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        tools:text="00:52:32"
-        android:textColor="@color/primaryAccentColor"
-        android:textSize="62sp" />
+        android:textColor="@color/white"
+        android:textSize="62sp"
+        tools:text="00:52:32" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textField"
         android:layout_width="245dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/white">
+        android:textColorHint="@color/white"
+        app:hintTextColor="@color/white"
+        android:background="@drawable/gradient_background_bottom">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiNameOfProgress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="@color/primaryColor"
-            android:textStyle="bold"
-            android:textSize="20sp"
+            android:background="@drawable/gradient_background_bottom"
             android:maxLines="1"
-            android:background="@color/white" />
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:hint="Name of progress..." />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,23 +55,28 @@
         android:id="@+id/llButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="65dp"
+            android:background="@drawable/gradient_background_bottom"
             android:text="@string/cancel"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/gradient_background_bottom"
             android:text="@string/save"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+
+            android:textStyle="bold" />
     </LinearLayout>
 
 </LinearLayout>

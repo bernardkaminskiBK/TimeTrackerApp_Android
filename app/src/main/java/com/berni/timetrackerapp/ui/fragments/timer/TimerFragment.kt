@@ -78,7 +78,6 @@ class TimerFragment : Fragment() {
         bottomSheetDialogBinding.btnCancel.setOnClickListener {
             dialog.dismiss()
         }
-        dialog.setCancelable(false)
         dialog.setContentView(bottomSheetDialogBinding.root)
         dialog.show()
     }

@@ -10,13 +10,12 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvStopwatch"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
         android:backgroundTint="@color/primaryDarkColor"
         android:elevation="25dp"
         app:cardCornerRadius="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -30,9 +29,10 @@
                 android:id="@+id/tvStopwatch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:text="@string/initialStatTimer"
+
                 android:textAlignment="center"
+                android:layout_centerInParent="true"
                 android:textColor="@color/white"
                 android:textSize="85sp" />
         </RelativeLayout>
@@ -47,10 +47,9 @@
         android:background="@drawable/item_circular_color_accent_background"
         android:elevation="25dp"
         android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cvStopwatch">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cvStopwatch"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/ivStartStop"
@@ -64,16 +63,13 @@
         android:id="@+id/llReset"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="116dp"
         android:background="@drawable/item_circular_color_accent_background"
         android:elevation="25dp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/llStartStop"
-        app:layout_constraintVertical_bias="0.586">
+        app:layout_constraintStart_toEndOf="@+id/llStartStop"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/ivReset"

@@ -37,67 +37,67 @@
                 android:elevation="25dp"
                 app:cardCornerRadius="15dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/gradient_background_bottom">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_background_bottom">
 
-                    <TextView
-                        android:id="@+id/tvStopwatch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="@string/initialStatTimer"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="85sp" />
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <LinearLayout
-                android:id="@+id/llStartStop"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
-                android:background="@drawable/item_circular_color_accent_background"
-                android:elevation="25dp"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/ivStartStop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/start_the_timer"
-                    android:src="@drawable/ic_baseline_play_arrow_white_88" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llReset"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center|end"
-                android:layout_marginEnd="50dp"
-                android:layout_marginBottom="116dp"
-                android:background="@drawable/item_circular_color_accent_background"
-                android:elevation="25dp"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/ivReset"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/reset_the_timer"
-                    android:src="@drawable/ic_baseline_restore_24" />
-
-            </LinearLayout>
-
-        </LinearLayout>
+            <TextView
+                android:id="@+id/tvStopwatch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/initialStatTimer"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="85sp" />
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
+    <LinearLayout
+        android:id="@+id/llStartStop"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_margin="80dp"
+        android:background="@drawable/item_circular_color_accent_background"
+        android:elevation="25dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvStopwatch">
 
+        <ImageView
+            android:id="@+id/ivStartStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_play_arrow_white_88" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llReset"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="116dp"
+        android:background="@drawable/item_circular_color_accent_background"
+        android:elevation="25dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/llStartStop"
+        app:layout_constraintVertical_bias="0.586">
+
+        <ImageView
+            android:id="@+id/ivReset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_restore_24" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,8 +13,6 @@ import com.berni.timetrackerapp.utils.Formatter
 class TimeTrackerAdapter(private val fragment: Fragment) :
     ListAdapter<Progress, TimeTrackerAdapter.ViewHolder>(DiffCallback()) {
 
-    private var progresses: List<Progress> = listOf()
-
     class ViewHolder(view: ItemProgressBinding) : RecyclerView.ViewHolder(view.root) {
         var date = view.tvDate
         var name = view.tvName
@@ -28,20 +26,11 @@ class TimeTrackerAdapter(private val fragment: Fragment) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val progress = progresses[position]
+        val progress = getItem(position)
 
         holder.date.text = Formatter.dateFormat(progress.date)
         holder.name.text = progress.name
         holder.time.text = progress.time
-    }
-
-    override fun getItemCount(): Int {
-        return progresses.size
-    }
-
-    fun show(list: List<Progress>) {
-        progresses = list
-        notifyDataSetChanged()
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Progress>() {

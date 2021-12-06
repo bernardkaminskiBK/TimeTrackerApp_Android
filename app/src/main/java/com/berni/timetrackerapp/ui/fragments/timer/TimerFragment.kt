@@ -16,11 +16,11 @@ import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerDBViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class TimerFragment : Fragment() {
+class TimerFragment : Fragment(R.layout.fragment_timer) {
 
     private lateinit var timerViewModel: TimerViewModel
     private lateinit var saveDialogBinding: BottomSheetSaveDialogBinding
-    private lateinit var dialog : BottomSheetDialog
+    private lateinit var dialog: BottomSheetDialog
 
     private var _mBinding: FragmentTimerBinding? = null
     private val mBinding get() = _mBinding!!
@@ -29,19 +29,11 @@ class TimerFragment : Fragment() {
         TimeTrackerViewModelFactory((requireActivity().application as TimeTrackerApplication).repository)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        timerViewModel =
-            ViewModelProvider(this).get(TimerViewModel::class.java)
-
-        _mBinding = FragmentTimerBinding.inflate(inflater, container, false)
-        return mBinding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        _mBinding = FragmentTimerBinding.bind(view)
+        timerViewModel = ViewModelProvider(this)[TimerViewModel::class.java]
 
         timerViewModel.actualTime.observe(viewLifecycleOwner, Observer {
             mBinding.tvStopwatch.text = it
@@ -71,15 +63,17 @@ class TimerFragment : Fragment() {
     private fun saveProgressToDB() {
         dialog = BottomSheetDialog(requireContext())
         saveDialogBinding = BottomSheetSaveDialogBinding.inflate(layoutInflater)
-        saveDialogBinding.tvTimerResult.text = mBinding.tvStopwatch.text
-        saveDialogBinding.btnSave.setOnClickListener {
-            validateInput(saveDialogBinding.tiNameOfProgress.text.toString())
+        saveDialogBinding.apply {
+            tvTimerResult.text = mBinding.tvStopwatch.text
+            btnSave.setOnClickListener {
+                validateInput(tiNameOfProgress.text.toString())
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.setContentView(root)
+            dialog.show()
         }
-        saveDialogBinding.btnCancel.setOnClickListener {
-            dialog.dismiss()
-        }
-        dialog.setContentView(saveDialogBinding.root)
-        dialog.show()
     }
 
     private fun validateInput(input: String) {
@@ -132,7 +126,11 @@ class TimerFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _mBinding = null
-//        timerViewModel.stopTimer()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        timerViewModel.stopTimer()
     }
 
 }

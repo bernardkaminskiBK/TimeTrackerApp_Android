@@ -3,13 +3,10 @@ package com.berni.timetrackerapp.ui.fragments.add
 import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
@@ -44,30 +41,20 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
         _mBinding = FragmentAddBinding.bind(view)
 
+        mBinding.apply {
+            fabAdd.setOnClickListener { addProgressDialog() }
+            mTimeTrackerAdapter = TimeTrackerAdapter(this@AddFragment)
+            rvTimeTrackerProgressList.apply {
+                adapter = mTimeTrackerAdapter
+                setHasFixedSize(true)
+            }
+            onSwipedDelete()
+        }
+
         mTimeTrackerDBViewModel.allProgressList.observe(viewLifecycleOwner) {
             it.let {
-                mBinding.apply {
-
-                    fabAdd.setOnClickListener { addProgressDialog() }
-
-                    mTimeTrackerAdapter = TimeTrackerAdapter(this@AddFragment)
-
-                    rvTimeTrackerProgressList.apply {
-                        adapter = mTimeTrackerAdapter
-                        setHasFixedSize(true)
-                        if (it.isNotEmpty()) {
-                            visibility = View.VISIBLE
-                            tvNoDataAvailable.visibility = View.GONE
-                            mTimeTrackerAdapter.show(it)
-                        } else {
-                            visibility = View.GONE
-                            tvNoDataAvailable.visibility = View.VISIBLE
-                        }
-                    }
-                    onSwipedDelete()
-                }
+                mTimeTrackerAdapter.submitList(it)
             }
-            mTimeTrackerAdapter.submitList(it)
         }
     }
 
@@ -135,7 +122,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
                 addDialogBinding.tvStopwatch.text =
-                    " ${SimpleDateFormat("HH:mm").format(cal.time)}:00"
+                    "${SimpleDateFormat("HH:mm").format(cal.time)}:00"
             }
         TimePickerDialog(
             requireContext(), timeSetListener,

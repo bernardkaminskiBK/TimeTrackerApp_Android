@@ -2,6 +2,7 @@ package com.berni.timetrackerapp.ui.fragments.add
 
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -17,6 +18,7 @@ import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerDBViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Progress
 import com.berni.timetrackerapp.ui.adapters.TimeTrackerAdapter
+import com.berni.timetrackerapp.utils.TestData
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
@@ -40,6 +42,11 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         super.onViewCreated(view, savedInstanceState)
 
         _mBinding = FragmentAddBinding.bind(view)
+
+//        for(i in TestData.randomTestDataToDB()) {
+//            mTimeTrackerDBViewModel.insert(i)
+//        }
+
 
         mBinding.apply {
             fabAdd.setOnClickListener { addProgressDialog() }

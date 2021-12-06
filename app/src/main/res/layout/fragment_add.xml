@@ -69,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:backgroundTint="@color/gray"
+        app:tint="@color/primaryDarkColor"
         android:layout_margin="26dp"
         app:srcCompat="@drawable/ic_add_white_24"
         android:contentDescription="@string/add_manualy_new_progres" />

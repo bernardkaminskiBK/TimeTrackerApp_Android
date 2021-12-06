@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -26,9 +25,8 @@ import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddFragment : Fragment() {
+class AddFragment : Fragment(R.layout.fragment_add) {
 
-    private lateinit var addViewModel: AddViewModel
     private lateinit var mTimeTrackerAdapter: TimeTrackerAdapter
 
     private lateinit var addDialogBinding: BottomSheetAddDialogBinding
@@ -41,38 +39,31 @@ class AddFragment : Fragment() {
         TimeTrackerViewModelFactory((requireActivity().application as TimeTrackerApplication).repository)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        addViewModel =
-            ViewModelProvider(this).get(AddViewModel::class.java)
-
-        _mBinding = FragmentAddBinding.inflate(inflater, container, false)
-        return mBinding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        _mBinding = FragmentAddBinding.bind(view)
 
         mTimeTrackerDBViewModel.allProgressList.observe(viewLifecycleOwner) {
             it.let {
                 mBinding.apply {
 
-                    fabAdd.setOnClickListener { addProgressToDB() }
+                    fabAdd.setOnClickListener { addProgressDialog() }
 
                     mTimeTrackerAdapter = TimeTrackerAdapter(this@AddFragment)
-                    rvTimeTrackerProgressList.adapter = mTimeTrackerAdapter
 
-                    if (it.isNotEmpty()) {
-                        rvTimeTrackerProgressList.visibility = View.VISIBLE
-                        tvNoDataAvailable.visibility = View.GONE
-                        mTimeTrackerAdapter.show(it)
-                    } else {
-                        rvTimeTrackerProgressList.visibility = View.GONE
-                        tvNoDataAvailable.visibility = View.VISIBLE
+                    rvTimeTrackerProgressList.apply {
+                        adapter = mTimeTrackerAdapter
+                        setHasFixedSize(true)
+                        if (it.isNotEmpty()) {
+                            visibility = View.VISIBLE
+                            tvNoDataAvailable.visibility = View.GONE
+                            mTimeTrackerAdapter.show(it)
+                        } else {
+                            visibility = View.GONE
+                            tvNoDataAvailable.visibility = View.VISIBLE
+                        }
                     }
-
                     onSwipedDelete()
                 }
             }
@@ -98,25 +89,28 @@ class AddFragment : Fragment() {
                     mTimeTrackerAdapter.currentList[viewHolder.adapterPosition]
 
                 mTimeTrackerDBViewModel.delete(progress)
-
-                Snackbar.make(requireView(), "Time tracker progress deleted", Snackbar.LENGTH_LONG)
-                    .setAction("UNDO") {
-                        mTimeTrackerDBViewModel.insert(progress)
-                    }
-                    .setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                    .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.gray))
-                    .setActionTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.darkSeaBlue
-                        )
-                    )
-                    .show()
+                undo(progress)
             }
         }).attachToRecyclerView(mBinding.rvTimeTrackerProgressList)
     }
 
-    private fun addProgressToDB() {
+    private fun undo(progress: Progress) {
+        Snackbar.make(requireView(), "Time tracker progress deleted", Snackbar.LENGTH_LONG)
+            .setAction("UNDO") {
+                mTimeTrackerDBViewModel.insert(progress)
+            }
+            .setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.gray))
+            .setActionTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.darkSeaBlue
+                )
+            )
+            .show()
+    }
+
+    private fun addProgressDialog() {
         dialog = BottomSheetDialog(requireContext())
         addDialogBinding = BottomSheetAddDialogBinding.inflate(layoutInflater)
         addDialogBinding.apply {

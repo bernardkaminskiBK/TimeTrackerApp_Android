@@ -20,4 +20,7 @@
     <string name="add_manualy_new_progres">add manualy new progres</string>
     <string name="no_data_available">No data available.</string>
     <string name="name_of_progress">Name of progress...</string>
+    <string name="reset_button_desc">Reset button to reset the timer</string>
+    <string name="start_the_timer">start the timer</string>
+    <string name="reset_the_timer">reset the timer</string>
 </resources>

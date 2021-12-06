@@ -59,7 +59,7 @@ class AddFragment : Fragment() {
             it.let {
                 mBinding.apply {
 
-                    fabAdd.setOnClickListener { saveProgressToDB() }
+                    fabAdd.setOnClickListener { addProgressToDB() }
 
                     mTimeTrackerAdapter = TimeTrackerAdapter(this@AddFragment)
                     rvTimeTrackerProgressList.adapter = mTimeTrackerAdapter
@@ -116,7 +116,7 @@ class AddFragment : Fragment() {
         }).attachToRecyclerView(mBinding.rvTimeTrackerProgressList)
     }
 
-    private fun saveProgressToDB() {
+    private fun addProgressToDB() {
         dialog = BottomSheetDialog(requireContext())
         addDialogBinding = BottomSheetAddDialogBinding.inflate(layoutInflater)
         addDialogBinding.apply {
@@ -137,10 +137,11 @@ class AddFragment : Fragment() {
     private fun timePickerDialog() {
         val cal = Calendar.getInstance()
         val timeSetListener =
-            TimePickerDialog.OnTimeSetListener { view: TimePicker?, hour: Int, minute: Int ->
+            TimePickerDialog.OnTimeSetListener { _, hour: Int, minute: Int ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-                addDialogBinding.tvStopwatch.text = " ${SimpleDateFormat("HH:mm").format(cal.time)}:00"
+                addDialogBinding.tvStopwatch.text =
+                    " ${SimpleDateFormat("HH:mm").format(cal.time)}:00"
             }
         TimePickerDialog(
             requireContext(), timeSetListener,

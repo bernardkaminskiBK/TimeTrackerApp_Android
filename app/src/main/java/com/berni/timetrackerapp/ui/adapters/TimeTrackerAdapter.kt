@@ -2,10 +2,12 @@ package com.berni.timetrackerapp.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.databinding.ItemProgressBinding
 import com.berni.timetrackerapp.model.entities.Progress
 import com.berni.timetrackerapp.utils.Formatter
@@ -31,6 +33,9 @@ class TimeTrackerAdapter(private val fragment: Fragment) :
         holder.date.text = Formatter.dateFormat(progress.date)
         holder.name.text = progress.name
         holder.time.text = progress.time
+
+        holder.itemView.animation =
+            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation_three)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Progress>() {

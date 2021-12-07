@@ -3,7 +3,6 @@ package com.berni.timetrackerapp.ui.fragments.add
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -26,7 +25,6 @@ import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFac
 import com.berni.timetrackerapp.model.entities.Progress
 import com.berni.timetrackerapp.ui.adapters.CustomListItemAdapter
 import com.berni.timetrackerapp.ui.adapters.TimeTrackerAdapter
-import com.berni.timetrackerapp.utils.TestData
 import com.berni.timetrackerapp.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
@@ -34,9 +32,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashSet
 
+private const val ALL_ITEMS = "All Items"
+
 class AddFragment : Fragment(R.layout.fragment_add) {
 
     private lateinit var mTimeTrackerAdapter: TimeTrackerAdapter
+    private lateinit var mCustomListAdapter: CustomListItemAdapter
 
     private lateinit var addDialogBinding: BottomSheetAddDialogBinding
     private lateinit var dialog: BottomSheetDialog
@@ -182,6 +183,29 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         }
     }
 
+    fun filterSelection(filterSelection: String) {
+        mCustomListDialog.dismiss()
+
+        if (filterSelection == ALL_ITEMS) {
+            mTimeTrackerDBViewModel.allProgressList.observe(viewLifecycleOwner) {
+                it.let {
+                    mTimeTrackerAdapter.submitList(it)
+                }
+            }
+        } else {
+            mTimeTrackerDBViewModel.getFilteredProgressList(filterSelection)
+                .observe(viewLifecycleOwner) {
+                    it.let {
+                        mTimeTrackerAdapter.submitList(it)
+                    }
+                }
+        }
+    }
+
+    fun updateProgressItem(progress: Progress) {
+
+    }
+
     private fun filterListDialog() {
         mCustomListDialog = Dialog(this.requireContext())
         val binding: DialogCustomListBinding =
@@ -196,10 +220,12 @@ class AddFragment : Fragment(R.layout.fragment_add) {
                 listItemHashSet.addAll(it)
 
                 val listItem: ArrayList<String> = ArrayList()
+                listItem.add(0, ALL_ITEMS)
                 listItem.addAll(listItemHashSet)
 
-                val adapter = CustomListItemAdapter(this@AddFragment, listItem)
-                rvList.adapter = adapter
+                mCustomListAdapter = CustomListItemAdapter(this@AddFragment)
+                rvList.adapter = mCustomListAdapter
+                mCustomListAdapter.show(listItem)
             }
             mCustomListDialog.show()
         }
@@ -207,7 +233,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
     private fun customDeleteDialog() {
         val customDialog = Dialog(requireContext())
-        val mDialogBinding : DeleteCustomDialogBinding =
+        val mDialogBinding: DeleteCustomDialogBinding =
             DeleteCustomDialogBinding.inflate(layoutInflater)
         customDialog.setContentView(mDialogBinding.root)
         mDialogBinding.tvYes.setOnClickListener {

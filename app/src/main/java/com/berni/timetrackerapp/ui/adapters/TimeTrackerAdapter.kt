@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.databinding.ItemProgressBinding
 import com.berni.timetrackerapp.model.entities.Progress
+import com.berni.timetrackerapp.ui.fragments.add.AddFragment
 import com.berni.timetrackerapp.utils.Formatter
 
 class TimeTrackerAdapter(private val fragment: Fragment) :
@@ -36,6 +37,12 @@ class TimeTrackerAdapter(private val fragment: Fragment) :
 
         holder.itemView.animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation_three)
+
+        holder.itemView.setOnClickListener {
+            if(fragment is AddFragment) {
+                fragment.updateProgressItem(progress)
+            }
+        }
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Progress>() {

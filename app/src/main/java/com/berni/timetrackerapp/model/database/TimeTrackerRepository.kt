@@ -21,9 +21,16 @@ class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {
         timeTrackerDao.deleteTimeTrackerProgress(progress)
     }
 
+    @WorkerThread
+    suspend fun deleteAllProgressRecords() {
+        timeTrackerDao.deleteAllRecords()
+    }
+
     fun getFilteredTimeTrackerProgresses(value: String) : Flow<List<Progress>> =
         timeTrackerDao.getFilteredProgressList(value)
 
     val allTimeTrackerProgressList: Flow<List<Progress>> = timeTrackerDao.getProgressList()
+
+    val allTimeTrackerProgressNames: Flow<List<String>> = timeTrackerDao.getAllTimeTrackerProgressNames()
 
 }

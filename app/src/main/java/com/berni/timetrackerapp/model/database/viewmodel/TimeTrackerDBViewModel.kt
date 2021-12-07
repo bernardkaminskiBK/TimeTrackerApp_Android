@@ -10,6 +10,9 @@ class TimeTrackerDBViewModel(private val repository: TimeTrackerRepository): Vie
     val allProgressList: LiveData<List<Progress>> =
         repository.allTimeTrackerProgressList.asLiveData()
 
+    val allProgressNames: LiveData<List<String>> =
+        repository.allTimeTrackerProgressNames.asLiveData()
+
     fun insert(progress: Progress) = viewModelScope.launch {
         repository.insertTimerTrackerProgressData(progress)
     }
@@ -20,6 +23,10 @@ class TimeTrackerDBViewModel(private val repository: TimeTrackerRepository): Vie
 
     fun delete(progress: Progress) = viewModelScope.launch {
        repository.deleteTimeTrackerProgressData(progress)
+    }
+
+    fun deleteAllProgressRecords() = viewModelScope.launch {
+        repository.deleteAllProgressRecords()
     }
 
     fun getFilteredProgressList(value : String) : LiveData<List<Progress>> =

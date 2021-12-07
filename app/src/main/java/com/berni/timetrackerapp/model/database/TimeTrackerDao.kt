@@ -16,10 +16,16 @@ interface TimeTrackerDao {
     @Delete
     suspend fun deleteTimeTrackerProgress(progress: Progress)
 
+    @Query("SELECT name FROM TIME_TRACKER_TABLE")
+    fun getAllTimeTrackerProgressNames(): Flow<List<String>>
+
     @Query("SELECT * FROM TIME_TRACKER_TABLE ORDER BY ID")
     fun getProgressList(): Flow<List<Progress>>
 
     @Query("SELECT * FROM TIME_TRACKER_TABLE WHERE name = :filterName")
     fun getFilteredProgressList(filterName: String): Flow<List<Progress>>
+
+    @Query("DELETE FROM TIME_TRACKER_TABLE")
+    suspend fun deleteAllRecords()
 
 }

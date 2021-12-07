@@ -1,28 +1,38 @@
 package com.berni.timetrackerapp.ui.fragments.add
 
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.application.TimeTrackerApplication
 import com.berni.timetrackerapp.databinding.BottomSheetAddDialogBinding
+import com.berni.timetrackerapp.databinding.DeleteCustomDialogBinding
+import com.berni.timetrackerapp.databinding.DialogCustomListBinding
 import com.berni.timetrackerapp.databinding.FragmentAddBinding
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerDBViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Progress
+import com.berni.timetrackerapp.ui.adapters.CustomListItemAdapter
 import com.berni.timetrackerapp.ui.adapters.TimeTrackerAdapter
 import com.berni.timetrackerapp.utils.TestData
+import com.berni.timetrackerapp.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashSet
 
 class AddFragment : Fragment(R.layout.fragment_add) {
 
@@ -30,6 +40,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
     private lateinit var addDialogBinding: BottomSheetAddDialogBinding
     private lateinit var dialog: BottomSheetDialog
+    private lateinit var mCustomListDialog: Dialog
 
     private var _mBinding: FragmentAddBinding? = null
     private val mBinding get() = _mBinding!!
@@ -47,7 +58,6 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 //            mTimeTrackerDBViewModel.insert(i)
 //        }
 
-
         mBinding.apply {
             fabAdd.setOnClickListener { addProgressDialog() }
             mTimeTrackerAdapter = TimeTrackerAdapter(this@AddFragment)
@@ -56,6 +66,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
                 setHasFixedSize(true)
             }
             onSwipedDelete()
+            Utils.hideFabWhenScroll(fabAdd, rvTimeTrackerProgressList)
         }
 
         mTimeTrackerDBViewModel.allProgressList.observe(viewLifecycleOwner) {
@@ -63,6 +74,26 @@ class AddFragment : Fragment(R.layout.fragment_add) {
                 mTimeTrackerAdapter.submitList(it)
             }
         }
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.add_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_filter_progress_time -> {
+                filterListDialog()
+                return true
+            }
+            R.id.action_delete_all_progress_time -> {
+                customDeleteDialog()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun onSwipedDelete() {
@@ -149,6 +180,44 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             Toast.makeText(requireContext(), getString(R.string.add_name), Toast.LENGTH_SHORT)
                 .show()
         }
+    }
+
+    private fun filterListDialog() {
+        mCustomListDialog = Dialog(this.requireContext())
+        val binding: DialogCustomListBinding =
+            DialogCustomListBinding.inflate(layoutInflater)
+        mCustomListDialog.setContentView(binding.root)
+
+        binding.apply {
+            rvList.layoutManager = LinearLayoutManager(requireContext())
+
+            mTimeTrackerDBViewModel.allProgressNames.observe(viewLifecycleOwner) {
+                val listItemHashSet: HashSet<String> = HashSet()
+                listItemHashSet.addAll(it)
+
+                val listItem: ArrayList<String> = ArrayList()
+                listItem.addAll(listItemHashSet)
+
+                val adapter = CustomListItemAdapter(this@AddFragment, listItem)
+                rvList.adapter = adapter
+            }
+            mCustomListDialog.show()
+        }
+    }
+
+    private fun customDeleteDialog() {
+        val customDialog = Dialog(requireContext())
+        val mDialogBinding : DeleteCustomDialogBinding =
+            DeleteCustomDialogBinding.inflate(layoutInflater)
+        customDialog.setContentView(mDialogBinding.root)
+        mDialogBinding.tvYes.setOnClickListener {
+            mTimeTrackerDBViewModel.deleteAllProgressRecords()
+            customDialog.dismiss()
+        }
+        mDialogBinding.tvNo.setOnClickListener {
+            customDialog.dismiss()
+        }
+        customDialog.show()
     }
 
     override fun onDestroy() {

@@ -3,7 +3,6 @@ package com.berni.timetrackerapp.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Filter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,12 +12,9 @@ import com.berni.timetrackerapp.databinding.ItemProgressBinding
 import com.berni.timetrackerapp.model.entities.Progress
 import com.berni.timetrackerapp.ui.fragments.add.AddFragment
 import com.berni.timetrackerapp.utils.Formatter
-import java.util.*
 
 class TimeTrackerAdapter(private val fragment: Fragment) :
     ListAdapter<Progress, TimeTrackerAdapter.ViewHolder>(DiffCallback()) {
-
-    private var list = mutableListOf<Progress>()
 
     class ViewHolder(view: ItemProgressBinding) : RecyclerView.ViewHolder(view.root) {
         var date = view.tvDate
@@ -49,45 +45,12 @@ class TimeTrackerAdapter(private val fragment: Fragment) :
         }
     }
 
-    fun setData(list: MutableList<Progress>) {
-        this.list = list
-        submitList(list)
-    }
-
     class DiffCallback : DiffUtil.ItemCallback<Progress>() {
         override fun areItemsTheSame(oldItem: Progress, newItem: Progress) =
             oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Progress, newItem: Progress) =
             oldItem == newItem
-    }
-
-   fun getFilter(): Filter {
-        return customFilter
-    }
-
-    private val customFilter = object : Filter() {
-        override fun performFiltering(constraint: CharSequence?): FilterResults {
-          val filteredList = mutableListOf<Progress>()
-            if(constraint == null || constraint.isEmpty()) {
-                filteredList.addAll(list)
-            } else {
-                for(item in list) {
-                    if(item.name.lowercase(Locale.getDefault()).startsWith(constraint.toString()
-                            .lowercase(Locale.getDefault()))) {
-                        filteredList.add(item)
-                    }
-                }
-            }
-            val results = FilterResults()
-            results.values = filteredList
-            return results
-        }
-
-        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-           submitList(results?.values as MutableList<Progress>)
-        }
-
     }
 
 }

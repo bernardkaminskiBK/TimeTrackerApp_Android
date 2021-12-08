@@ -6,10 +6,10 @@ import kotlin.collections.ArrayList
 
 object TestData {
 
-    fun randomTestDataToDB() : ArrayList<Progress> {
+    fun randomTestDataToDB(numberOfItems: Int): ArrayList<Progress> {
        val testDataset = ArrayList<Progress>()
 
-        for(i in 1..10) {
+        for(i in 1..numberOfItems) {
             when((1..4).shuffled().last()) {
                 1 -> {
                     testDataset.add(Progress(0, System.currentTimeMillis(), "Duolingo", getRandomProgressTime()))

@@ -6,7 +6,7 @@
         android:id="@+id/action_filter_progress_time"
         android:icon="@drawable/ic_baseline_filter_list_24"
         android:title="@string/filter"
-        android:orderInCategory="102"
+        android:orderInCategory="101"
         android:iconTint="@color/white"
         app:showAsAction="always"/>
 
@@ -14,7 +14,7 @@
         android:id="@+id/action_delete_all_progress_time"
         android:icon="@drawable/ic_baseline_delete_24"
         android:title="@string/delete"
-        android:orderInCategory="101"
+        android:orderInCategory="102"
         android:iconTint="@color/white"
         app:showAsAction="always"/>
 

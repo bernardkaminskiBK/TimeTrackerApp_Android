@@ -20,6 +20,7 @@ import com.berni.timetrackerapp.databinding.BottomSheetAddDialogBinding
 import com.berni.timetrackerapp.databinding.DeleteCustomDialogBinding
 import com.berni.timetrackerapp.databinding.DialogCustomListBinding
 import com.berni.timetrackerapp.databinding.FragmentAddBinding
+import com.berni.timetrackerapp.model.database.viewmodel.FilterOrder
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerDBViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Progress
@@ -28,11 +29,12 @@ import com.berni.timetrackerapp.ui.adapters.TimeTrackerAdapter
 import com.berni.timetrackerapp.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashSet
+import kotlin.collections.ArrayList
 
-private const val ALL_ITEMS = "All Items"
+const val SHOW_ALL = "Show All"
 
 class AddFragment : Fragment(R.layout.fragment_add) {
 
@@ -50,12 +52,13 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         TimeTrackerViewModelFactory((requireActivity().application as TimeTrackerApplication).repository)
     }
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _mBinding = FragmentAddBinding.bind(view)
 
-//        for(i in TestData.randomTestDataToDB()) {
+//        for(i in TestData.randomTestDataToDB(30)) {
 //            mTimeTrackerDBViewModel.insert(i)
 //        }
 
@@ -70,11 +73,12 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             Utils.hideFabWhenScroll(fabAdd, rvTimeTrackerProgressList)
         }
 
-        mTimeTrackerDBViewModel.allProgressList.observe(viewLifecycleOwner) {
+        mTimeTrackerDBViewModel.progresses.observe(viewLifecycleOwner) {
             it.let {
                 mTimeTrackerAdapter.submitList(it)
             }
         }
+
         setHasOptionsMenu(true)
     }
 
@@ -115,12 +119,12 @@ class AddFragment : Fragment(R.layout.fragment_add) {
                     mTimeTrackerAdapter.currentList[viewHolder.adapterPosition]
 
                 mTimeTrackerDBViewModel.delete(progress)
-                undo(progress)
+                undoSwipedDelete(progress)
             }
         }).attachToRecyclerView(mBinding.rvTimeTrackerProgressList)
     }
 
-    private fun undo(progress: Progress) {
+    private fun undoSwipedDelete(progress: Progress) {
         Snackbar.make(requireView(), "Time tracker progress deleted", Snackbar.LENGTH_LONG)
             .setAction("UNDO") {
                 mTimeTrackerDBViewModel.insert(progress)
@@ -186,19 +190,11 @@ class AddFragment : Fragment(R.layout.fragment_add) {
     fun filterSelection(filterSelection: String) {
         mCustomListDialog.dismiss()
 
-        if (filterSelection == ALL_ITEMS) {
-            mTimeTrackerDBViewModel.allProgressList.observe(viewLifecycleOwner) {
-                it.let {
-                    mTimeTrackerAdapter.submitList(it)
-                }
-            }
+        if (filterSelection == SHOW_ALL) {
+            mTimeTrackerDBViewModel.filterOrder.value = FilterOrder.SHOW_ALL
         } else {
-            mTimeTrackerDBViewModel.getFilteredProgressList(filterSelection)
-                .observe(viewLifecycleOwner) {
-                    it.let {
-                        mTimeTrackerAdapter.submitList(it)
-                    }
-                }
+            mTimeTrackerDBViewModel.filterQuery.value = filterSelection
+            mTimeTrackerDBViewModel.filterOrder.value = FilterOrder.BY_NAME
         }
     }
 
@@ -216,12 +212,9 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             rvList.layoutManager = LinearLayoutManager(requireContext())
 
             mTimeTrackerDBViewModel.allProgressNames.observe(viewLifecycleOwner) {
-                val listItemHashSet: HashSet<String> = HashSet()
-                listItemHashSet.addAll(it)
-
                 val listItem: ArrayList<String> = ArrayList()
-                listItem.add(0, ALL_ITEMS)
-                listItem.addAll(listItemHashSet)
+                listItem.add(0, SHOW_ALL)
+                listItem.addAll(it)
 
                 mCustomListAdapter = CustomListItemAdapter(this@AddFragment)
                 rvList.adapter = mCustomListAdapter

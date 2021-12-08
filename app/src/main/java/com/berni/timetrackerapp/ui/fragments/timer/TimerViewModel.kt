@@ -48,7 +48,6 @@ class TimerViewModel(application: Application): AndroidViewModel(application) {
     private val updateTime: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
             time = intent.getDoubleExtra(TimerService.TIME_EXTRA, 0.0)
-            println(time)
             _actualTime.value = Formatter.getTimeStringFromDouble(time)
         }
     }

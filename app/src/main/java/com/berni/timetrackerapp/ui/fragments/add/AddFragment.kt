@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -16,16 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.application.TimeTrackerApplication
-import com.berni.timetrackerapp.databinding.BottomSheetAddDialogBinding
-import com.berni.timetrackerapp.databinding.DeleteCustomDialogBinding
-import com.berni.timetrackerapp.databinding.DialogCustomListBinding
-import com.berni.timetrackerapp.databinding.FragmentAddBinding
+import com.berni.timetrackerapp.databinding.*
 import com.berni.timetrackerapp.model.database.viewmodel.FilterOrder
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerDBViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Progress
 import com.berni.timetrackerapp.ui.adapters.CustomListItemAdapter
 import com.berni.timetrackerapp.ui.adapters.TimeTrackerAdapter
+import com.berni.timetrackerapp.utils.Formatter
 import com.berni.timetrackerapp.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
@@ -131,12 +130,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             }
             .setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.gray))
-            .setActionTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.darkSeaBlue
-                )
-            )
+            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.darkSeaBlue))
             .show()
     }
 
@@ -145,7 +139,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         addDialogBinding = BottomSheetAddDialogBinding.inflate(layoutInflater)
         addDialogBinding.apply {
             tvStopwatch.setOnClickListener {
-                timePickerDialog()
+                timePickerDialog(addDialogBinding.tvStopwatch)
             }
             btnSave.setOnClickListener {
                 validateInput(tiNameOfProgress.text.toString())
@@ -158,13 +152,13 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         dialog.show()
     }
 
-    private fun timePickerDialog() {
+    private fun timePickerDialog(textView: TextView) {
         val cal = Calendar.getInstance()
         val timeSetListener =
             TimePickerDialog.OnTimeSetListener { _, hour: Int, minute: Int ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-                addDialogBinding.tvStopwatch.text =
+                textView.text =
                     "${SimpleDateFormat("HH:mm").format(cal.time)}:00"
             }
         TimePickerDialog(
@@ -198,8 +192,39 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         }
     }
 
-    fun updateProgressItem(progress: Progress) {
+    fun editProgressItem(progress: Progress) {
+        val customDialog = Dialog(requireContext())
+        val mDialogBinding: EditCustomDialogBinding =
+            EditCustomDialogBinding.inflate(layoutInflater)
+        customDialog.setContentView(mDialogBinding.root)
 
+        mDialogBinding.apply {
+            tvDate.text = Formatter.dateFormat(progress.date)
+            etEditName.setText(progress.name)
+            tvTime.text = progress.time
+
+
+            mDialogBinding.tvTime.setOnClickListener {
+                timePickerDialog(mDialogBinding.tvTime)
+            }
+
+            mDialogBinding.btnUpdate.setOnClickListener {
+                mTimeTrackerDBViewModel.update(
+                    Progress(
+                        progress.id,
+                        progress.date,
+                        etEditName.text.toString(),
+                        tvTime.text.toString()
+                    ))
+                customDialog.dismiss()
+            }
+
+            mDialogBinding.btnCancel.setOnClickListener {
+                customDialog.dismiss()
+            }
+
+        }
+        customDialog.show()
     }
 
     private fun filterListDialog() {
@@ -218,7 +243,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
                 mCustomListAdapter = CustomListItemAdapter(this@AddFragment)
                 rvList.adapter = mCustomListAdapter
-                mCustomListAdapter.show(listItem)
+                mCustomListAdapter.show(it)
             }
             mCustomListDialog.show()
         }
@@ -229,11 +254,11 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         val mDialogBinding: DeleteCustomDialogBinding =
             DeleteCustomDialogBinding.inflate(layoutInflater)
         customDialog.setContentView(mDialogBinding.root)
-        mDialogBinding.tvYes.setOnClickListener {
+        mDialogBinding.btnYes.setOnClickListener {
             mTimeTrackerDBViewModel.deleteAllProgressRecords()
             customDialog.dismiss()
         }
-        mDialogBinding.tvNo.setOnClickListener {
+        mDialogBinding.btnNo.setOnClickListener {
             customDialog.dismiss()
         }
         customDialog.show()

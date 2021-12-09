@@ -40,7 +40,7 @@ class TimeTrackerAdapter(private val fragment: Fragment) :
 
         holder.itemView.setOnClickListener {
             if(fragment is AddFragment) {
-                fragment.updateProgressItem(progress)
+                fragment.editProgressItem(progress)
             }
         }
     }

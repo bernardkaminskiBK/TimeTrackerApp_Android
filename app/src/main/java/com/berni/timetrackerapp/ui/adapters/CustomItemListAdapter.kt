@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.databinding.ItemCustomListBinding
-import com.berni.timetrackerapp.model.entities.Progress
 import com.berni.timetrackerapp.ui.fragments.add.AddFragment
+import com.berni.timetrackerapp.ui.fragments.add.SHOW_ALL
 
 class CustomListItemAdapter(
     private val fragment: Fragment

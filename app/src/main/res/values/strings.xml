@@ -11,7 +11,6 @@
     <string name="initialStatTimer">00:00:00</string>
     <string name="save_your_progress">Save your progress:</string>
     <string name="add_your_progress">Add your progress:</string>
-    <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="success_save">Your progress was successfully saved.</string>
     <string name="date">Date</string>
@@ -27,4 +26,6 @@
     <string name="delete">Delete</string>
     <string name="reset_stopwatch">Reset stopwatch</string>
     <string name="start_and_stop_the_stopwatch">Start and stop the stopwatch</string>
+    <string name="update">Update</string>
+    <string name="cancel">Cancel</string>
 </resources>

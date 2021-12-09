@@ -40,7 +40,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvTimeTrackerProgressList"
+            android:id="@+id/rvRecordsList"
             android:layout_marginTop="50dp"
             android:layout_marginBottom="25dp"
             android:layout_width="match_parent"
@@ -54,7 +54,7 @@
             android:id="@+id/tvNoDataAvailable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_data_available"
+            android:text="@string/no_records_available"
             android:textColor="@color/white"
             android:textSize="26sp"
             android:visibility="gone"
@@ -72,6 +72,6 @@
         app:tint="@color/primaryDarkColor"
         android:layout_margin="26dp"
         app:srcCompat="@drawable/ic_add_white_24"
-        android:contentDescription="@string/add_manualy_new_progres" />
+        android:contentDescription="@string/add_manually_new_record" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

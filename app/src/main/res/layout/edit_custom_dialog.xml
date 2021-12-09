@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:padding="8dp"
-                android:text="Duolingo"
+                tools:text="Duolingo"
                 android:background="@android:color/transparent"
                 android:textSize="18sp"
                 android:textColor="@color/white"
@@ -96,7 +96,7 @@
             android:textSize="16sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_update"
+            android:id="@+id/btn_edit"
             android:layout_width="0dp"
             android:layout_height="37dp"
             android:layout_marginStart="10dp"
@@ -104,8 +104,8 @@
             android:background="@drawable/gradient_background_bottom"
             android:gravity="center"
             android:padding="8dp"
-            android:text="@string/update"
-            android:textColor="#FFFFFF"
+            android:text="@string/edit"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
     </LinearLayout>

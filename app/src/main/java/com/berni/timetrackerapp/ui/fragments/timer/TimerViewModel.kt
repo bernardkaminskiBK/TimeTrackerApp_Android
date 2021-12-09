@@ -6,11 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.lifecycle.*
-import com.berni.timetrackerapp.model.database.TimeTrackerRepository
-import com.berni.timetrackerapp.model.entities.Progress
 import com.berni.timetrackerapp.utils.Formatter
 import com.berni.timetrackerapp.utils.TimerService
-import kotlinx.coroutines.launch
 
 class TimerViewModel(application: Application): AndroidViewModel(application) {
 
@@ -19,9 +16,7 @@ class TimerViewModel(application: Application): AndroidViewModel(application) {
     private var serviceIntent: Intent = Intent(context, TimerService::class.java)
 
     private val _actualTime = MutableLiveData<String>()
-    private val _timerStarted = MutableLiveData<Boolean>().apply {
-        value = false
-    }
+    private val _timerStarted = MutableLiveData<Boolean>(false)
 
     var actualTime: LiveData<String> = _actualTime
     var timerStarted: LiveData<Boolean> = _timerStarted

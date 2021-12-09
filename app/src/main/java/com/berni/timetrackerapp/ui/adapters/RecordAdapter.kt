@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.databinding.ItemProgressBinding
-import com.berni.timetrackerapp.model.entities.Progress
-import com.berni.timetrackerapp.ui.fragments.add.AddFragment
+import com.berni.timetrackerapp.model.entities.Record
+import com.berni.timetrackerapp.ui.fragments.records.RecordsFragment
 import com.berni.timetrackerapp.utils.Formatter
 
-class TimeTrackerAdapter(private val fragment: Fragment) :
-    ListAdapter<Progress, TimeTrackerAdapter.ViewHolder>(DiffCallback()) {
+class RecordAdapter(private val fragment: Fragment) :
+    ListAdapter<Record, RecordAdapter.ViewHolder>(DiffCallback()) {
 
     class ViewHolder(view: ItemProgressBinding) : RecyclerView.ViewHolder(view.root) {
         var date = view.tvDate
@@ -29,27 +29,27 @@ class TimeTrackerAdapter(private val fragment: Fragment) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val progress = getItem(position)
+        val record = getItem(position)
 
-        holder.date.text = Formatter.dateFormat(progress.date)
-        holder.name.text = progress.name
-        holder.time.text = progress.time
+        holder.date.text = Formatter.dateFormat(record.date)
+        holder.name.text = record.name
+        holder.time.text = record.time
 
         holder.itemView.animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation_three)
 
         holder.itemView.setOnClickListener {
-            if(fragment is AddFragment) {
-                fragment.editProgressItem(progress)
+            if(fragment is RecordsFragment) {
+                fragment.editRecord(record)
             }
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<Progress>() {
-        override fun areItemsTheSame(oldItem: Progress, newItem: Progress) =
+    class DiffCallback : DiffUtil.ItemCallback<Record>() {
+        override fun areItemsTheSame(oldItem: Record, newItem: Record) =
             oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: Progress, newItem: Progress) =
+        override fun areContentsTheSame(oldItem: Record, newItem: Record) =
             oldItem == newItem
     }
 

@@ -5,27 +5,26 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.application.TimeTrackerApplication
 import com.berni.timetrackerapp.databinding.BottomSheetSaveDialogBinding
 import com.berni.timetrackerapp.databinding.FragmentTimerBinding
-import com.berni.timetrackerapp.model.entities.Progress
-import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerDBViewModel
+import com.berni.timetrackerapp.model.entities.Record
+import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class TimerFragment : Fragment(R.layout.fragment_timer) {
 
     private lateinit var timerViewModel: TimerViewModel
-    private lateinit var saveDialogBinding: BottomSheetSaveDialogBinding
-    private lateinit var dialog: BottomSheetDialog
+    private lateinit var binding: BottomSheetSaveDialogBinding
+    private lateinit var saveRecordDialog: BottomSheetDialog
 
     private var _mBinding: FragmentTimerBinding? = null
     private val mBinding get() = _mBinding!!
 
-    private val mTimeTrackerDBViewModel: TimeTrackerDBViewModel by viewModels {
+    private val database: DatabaseViewModel by viewModels {
         TimeTrackerViewModelFactory((requireActivity().application as TimeTrackerApplication).repository)
     }
 
@@ -35,7 +34,7 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
         _mBinding = FragmentTimerBinding.bind(view)
         timerViewModel = ViewModelProvider(this)[TimerViewModel::class.java]
 
-        timerViewModel.actualTime.observe(viewLifecycleOwner, Observer {
+        timerViewModel.actualTime.observe(viewLifecycleOwner, {
             mBinding.tvStopwatch.text = it
         })
 
@@ -51,37 +50,37 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_save_activity_time -> {
+            R.id.action_save_record -> {
                 stopTimer()
-                saveProgressToDB()
+                saveRecordToDB()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun saveProgressToDB() {
-        dialog = BottomSheetDialog(requireContext())
-        saveDialogBinding = BottomSheetSaveDialogBinding.inflate(layoutInflater)
-        saveDialogBinding.apply {
+    private fun saveRecordToDB() {
+        saveRecordDialog = BottomSheetDialog(requireContext())
+        binding = BottomSheetSaveDialogBinding.inflate(layoutInflater)
+        binding.apply {
             tvTimerResult.text = mBinding.tvStopwatch.text
             btnSave.setOnClickListener {
                 validateInput(tiNameOfProgress.text.toString())
             }
             btnCancel.setOnClickListener {
-                dialog.dismiss()
+                saveRecordDialog.dismiss()
             }
-            dialog.setContentView(root)
-            dialog.show()
+            saveRecordDialog.setContentView(root)
+            saveRecordDialog.show()
         }
     }
 
     private fun validateInput(input: String) {
         if (input.isNotEmpty()) {
-            val name = saveDialogBinding.tiNameOfProgress.text.toString()
-            val time = saveDialogBinding.tvTimerResult.text.toString()
-            mTimeTrackerDBViewModel.insert(Progress(0, System.currentTimeMillis(), name, time))
-            dialog.dismiss()
+            val name = binding.tiNameOfProgress.text.toString()
+            val time = binding.tvTimerResult.text.toString()
+            database.insert(Record(0, System.currentTimeMillis(), name, time))
+            saveRecordDialog.dismiss()
             Toast.makeText(requireContext(), getString(R.string.success_save), Toast.LENGTH_SHORT)
                 .show()
         } else {
@@ -120,7 +119,7 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
         timerViewModel.resetTimer()
         mBinding.ivStartStop
             .setImageResource(R.drawable.ic_baseline_play_arrow_white_88)
-        mBinding.tvStopwatch.text = getString(R.string.initialStatTimer)
+        mBinding.tvStopwatch.text = getString(R.string.initialStateOfTimer)
     }
 
     override fun onDestroy() {

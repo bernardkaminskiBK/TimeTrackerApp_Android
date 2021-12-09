@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="25dp"
-                    android:text="@string/initialStatTimer"
+                    android:text="@string/initialStateOfTimer"
                     android:background="@drawable/gradient_background_bottom"
                     android:textAlignment="center"
                     android:textColor="@color/white"

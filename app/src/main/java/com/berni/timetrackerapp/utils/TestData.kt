@@ -1,27 +1,27 @@
 package com.berni.timetrackerapp.utils
 
-import com.berni.timetrackerapp.model.entities.Progress
+import com.berni.timetrackerapp.model.entities.Record
 import java.util.*
 import kotlin.collections.ArrayList
 
 object TestData {
 
-    fun randomTestDataToDB(numberOfItems: Int): ArrayList<Progress> {
-       val testDataset = ArrayList<Progress>()
+    fun randomTestDataToDB(numberOfItems: Int): ArrayList<Record> {
+       val testDataset = ArrayList<Record>()
 
         for(i in 1..numberOfItems) {
             when((1..4).shuffled().last()) {
                 1 -> {
-                    testDataset.add(Progress(0, System.currentTimeMillis(), "Duolingo", getRandomProgressTime()))
+                    testDataset.add(Record(0, System.currentTimeMillis(), "Duolingo", getRandomProgressTime()))
                 }
                 2 -> {
-                    testDataset.add(Progress(0, System.currentTimeMillis(), "Programing", getRandomProgressTime()))
+                    testDataset.add(Record(0, System.currentTimeMillis(), "Programing", getRandomProgressTime()))
                 }
                 3 -> {
-                    testDataset.add(Progress(0, System.currentTimeMillis(), "Work", getRandomProgressTime()))
+                    testDataset.add(Record(0, System.currentTimeMillis(), "Work", getRandomProgressTime()))
                 }
                 4 -> {
-                    testDataset.add(Progress(0, System.currentTimeMillis(), "Cooking", getRandomProgressTime()))
+                    testDataset.add(Record(0, System.currentTimeMillis(), "Cooking", getRandomProgressTime()))
                 }
             }
         }

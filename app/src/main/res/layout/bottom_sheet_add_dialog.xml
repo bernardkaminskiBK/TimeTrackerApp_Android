@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="15dp"
-                android:text="@string/add_your_progress"
+                android:text="@string/add_your_record"
                 android:textColor="@color/white"
                 android:textSize="31sp"
                 android:textStyle="bold" />
@@ -41,7 +41,7 @@
                 android:layout_marginBottom="15dp"
                 android:textColor="@color/white"
                 android:textSize="62sp"
-                android:text="@string/initialStatTimer" />
+                android:text="@string/initialStateOfTimer" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tiNameOfProgress"
@@ -51,7 +51,7 @@
                 android:layout_marginTop="15dp"
                 android:padding="3dp"
                 android:background="@drawable/gradient_background_bottom"
-                android:hint="@string/name_of_progress"
+                android:hint="@string/name_of_record"
                 android:maxLines="1"
                 android:textAlignment="center"
                 android:textColor="@color/white"

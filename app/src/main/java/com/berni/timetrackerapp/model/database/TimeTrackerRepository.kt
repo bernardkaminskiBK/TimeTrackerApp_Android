@@ -2,33 +2,33 @@ package com.berni.timetrackerapp.model.database
 
 import androidx.annotation.WorkerThread
 import com.berni.timetrackerapp.model.database.viewmodel.FilterOrder
-import com.berni.timetrackerapp.model.entities.Progress
+import com.berni.timetrackerapp.model.entities.Record
 
 class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {
 
     @WorkerThread
-    suspend fun insertTimerTrackerProgressData(progress: Progress) {
-        timeTrackerDao.insertTimeTrackerProgressDetails(progress)
+    suspend fun insertRecord(record: Record) {
+        timeTrackerDao.insertRecord(record)
     }
 
     @WorkerThread
-    suspend fun updateTimeTrackerProgressData(progress: Progress) {
-        timeTrackerDao.updateTimeTrackerProgressDetails(progress)
+    suspend fun updateRecord(record: Record) {
+        timeTrackerDao.updateRecord(record)
     }
 
     @WorkerThread
-    suspend fun deleteTimeTrackerProgressData(progress: Progress) {
-        timeTrackerDao.deleteTimeTrackerProgress(progress)
+    suspend fun deleteRecord(record: Record) {
+        timeTrackerDao.deleteRecord(record)
     }
 
     @WorkerThread
-    suspend fun deleteAllProgressRecords() {
+    suspend fun deleteAllRecords() {
         timeTrackerDao.deleteAllRecords()
     }
 
-    fun getProgressesList(filterQuery: String, filterOrder: FilterOrder) =
-        timeTrackerDao.getProgresses(filterQuery, filterOrder)
+    fun getRecordsList(filterQuery: String, filterOrder: FilterOrder) =
+        timeTrackerDao.getRecords(filterQuery, filterOrder)
 
-    val allTimeTrackerProgressNames = timeTrackerDao.getAllTimeTrackerProgressNames()
+    val getAllRecordsName = timeTrackerDao.getAllRecordNames()
 
 }

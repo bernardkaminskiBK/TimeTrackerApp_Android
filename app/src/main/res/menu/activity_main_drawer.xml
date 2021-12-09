@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_baseline_timer_24"
             android:title="@string/timer" />
         <item
-            android:id="@+id/nav_add"
-            android:icon="@drawable/add"
-            android:title="@string/add" />
+            android:id="@+id/nav_records"
+            android:icon="@drawable/records_two"
+            android:title="@string/records" />
         <item
             android:id="@+id/nav_statistic"
             android:icon="@drawable/statistics"

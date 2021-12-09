@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_timer"/>
 
     <fragment
-        android:id="@+id/nav_add"
-        android:name="com.berni.timetrackerapp.ui.fragments.add.AddFragment"
-        android:label="ADD"
-        tools:layout="@layout/fragment_add"/>
+        android:id="@+id/nav_records"
+        android:name="com.berni.timetrackerapp.ui.fragments.records.RecordsFragment"
+        android:label="Records"
+        tools:layout="@layout/fragment_records"/>
 
     <fragment
         android:id="@+id/nav_statistic"

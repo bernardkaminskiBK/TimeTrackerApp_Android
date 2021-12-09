@@ -7,14 +7,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.databinding.ItemCustomListBinding
-import com.berni.timetrackerapp.ui.fragments.add.AddFragment
-import com.berni.timetrackerapp.ui.fragments.add.SHOW_ALL
+import com.berni.timetrackerapp.ui.fragments.records.RecordsFragment
 
-class CustomListItemAdapter(
+class FilterAdapter(
     private val fragment: Fragment
-) : RecyclerView.Adapter<CustomListItemAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
 
-    private lateinit var listProgress: List<String>
+    private lateinit var recordNames: List<String>
 
     class ViewHolder(view: ItemCustomListBinding) : RecyclerView.ViewHolder(view.root) {
         val tvText = view.tvName
@@ -31,26 +30,26 @@ class CustomListItemAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = listProgress[position]
+        val item = recordNames[position]
         holder.tvText.text = item
 
         holder.itemView.animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation_one)
 
         holder.itemView.setOnClickListener {
-            if(fragment is AddFragment) {
+            if(fragment is RecordsFragment) {
                 fragment.filterSelection(item)
             }
         }
     }
 
     fun show(listItems: List<String>) {
-        listProgress = listItems
+        recordNames = listItems
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return listProgress.size
+        return recordNames.size
     }
 
 }

@@ -16,7 +16,7 @@ class TimerViewModel(application: Application): AndroidViewModel(application) {
     private var serviceIntent: Intent = Intent(context, TimerService::class.java)
 
     private val _actualTime = MutableLiveData<String>()
-    private val _timerStarted = MutableLiveData<Boolean>(false)
+    private val _timerStarted = MutableLiveData(false)
 
     var actualTime: LiveData<String> = _actualTime
     var timerStarted: LiveData<Boolean> = _timerStarted

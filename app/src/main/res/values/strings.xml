@@ -30,4 +30,5 @@
     <string name="select_item_to_filter">Select item to filter</string>
     <string name="deleted">Record deleted</string>
     <string name="undo">UNDO</string>
+    <string name="timePickerInput">%1$s:00</string>
 </resources>

@@ -22,6 +22,7 @@ import com.berni.timetrackerapp.model.database.viewmodel.FilterOrder
 import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Record
+import com.berni.timetrackerapp.ui.activities.MainActivity
 import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
 import com.berni.timetrackerapp.utils.Formatter
@@ -177,8 +178,8 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
             TimePickerDialog.OnTimeSetListener { _, hour: Int, minute: Int ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-                textView.text =
-                    "${SimpleDateFormat("HH:mm").format(cal.time)}:00"
+                val formattedDate = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(cal.time)
+                textView.text = getString(R.string.timePickerInput, formattedDate)
             }
         TimePickerDialog(
             requireContext(), timeSetListener,
@@ -204,8 +205,10 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         filterDialog.dismiss()
 
         if (filterSelection == SHOW_ALL_RECORDS) {
+            (activity as MainActivity).supportActionBar?.title = getString(R.string.records)
             database.filterOrder.value = FilterOrder.SHOW_ALL
         } else {
+            (activity as MainActivity).supportActionBar?.title = filterSelection
             database.filterQuery.value = filterSelection
             database.filterOrder.value = FilterOrder.BY_NAME
         }

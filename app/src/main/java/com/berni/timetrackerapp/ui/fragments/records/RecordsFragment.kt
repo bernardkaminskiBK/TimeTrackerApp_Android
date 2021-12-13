@@ -25,8 +25,8 @@ import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
 import com.berni.timetrackerapp.utils.Formatter
-import com.berni.timetrackerapp.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.text.SimpleDateFormat
@@ -37,7 +37,7 @@ const val SHOW_ALL_RECORDS = "All Records"
 
 class RecordsFragment : Fragment(R.layout.fragment_records) {
 
-    private lateinit var mRecordAdapter: RecordAdapter
+    private lateinit var mRecordsAdapter: RecordAdapter
     private lateinit var mFilterAdapter: FilterAdapter
 
     private lateinit var addRecordDialog: BottomSheetDialog
@@ -64,18 +64,18 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
 
         mBinding.apply {
             fabAdd.setOnClickListener { addRecordDialog() }
-            mRecordAdapter = RecordAdapter(this@RecordsFragment)
+            mRecordsAdapter = RecordAdapter(this@RecordsFragment)
             rvRecordsList.apply {
-                adapter = mRecordAdapter
+                adapter = mRecordsAdapter
                 setHasFixedSize(true)
             }
-            onSwipedDelete()
-            Utils.hideFabWhenScroll(fabAdd, rvRecordsList)
+            setSwipedDelete()
+            setHideFabWhenScroll(fabAdd, rvRecordsList)
         }
 
         database.records.observe(viewLifecycleOwner) {
             it.let {
-                mRecordAdapter.submitList(it)
+                mRecordsAdapter.submitList(it)
             }
         }
 
@@ -101,7 +101,7 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun onSwipedDelete() {
+    private fun setSwipedDelete() {
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -116,12 +116,30 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val record =
-                    mRecordAdapter.currentList[viewHolder.adapterPosition]
+                    mRecordsAdapter.currentList[viewHolder.adapterPosition]
 
                 database.delete(record)
                 undoSwipedDelete(record)
             }
         }).attachToRecyclerView(mBinding.rvRecordsList)
+    }
+
+    private fun setHideFabWhenScroll(fab: FloatingActionButton, rv: RecyclerView) {
+        rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0 || dy < 0 && fab.isShown) {
+                    fab.hide()
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    fab.show()
+                }
+
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
     }
 
     private fun undoSwipedDelete(record: Record) {
@@ -199,7 +217,7 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         editRecordDialog.setContentView(binding.root)
 
         binding.apply {
-            tvDate.text = Formatter.dateFormat(record.date)
+            tvDate.text = record.createdDateFormatted
             etEditName.setText(record.name)
             tvTime.text = record.time
 

@@ -31,7 +31,7 @@ class RecordAdapter(private val fragment: Fragment) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val record = getItem(position)
 
-        holder.date.text = Formatter.dateFormat(record.date)
+        holder.date.text = record.createdDateFormatted
         holder.name.text = record.name
         holder.time.text = record.time
 

@@ -6,7 +6,7 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
-import com.berni.timetrackerapp.databinding.ItemCustomListBinding
+import com.berni.timetrackerapp.databinding.ItemRecordFilterBinding
 import com.berni.timetrackerapp.ui.fragments.records.RecordsFragment
 
 class FilterAdapter(
@@ -15,13 +15,13 @@ class FilterAdapter(
 
     private lateinit var recordNames: List<String>
 
-    class ViewHolder(view: ItemCustomListBinding) : RecyclerView.ViewHolder(view.root) {
+    class ViewHolder(view: ItemRecordFilterBinding) : RecyclerView.ViewHolder(view.root) {
         val tvText = view.tvName
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ItemCustomListBinding =
-            ItemCustomListBinding.inflate(
+        val binding: ItemRecordFilterBinding =
+            ItemRecordFilterBinding.inflate(
                 LayoutInflater.from(fragment.requireContext()),
                 parent,
                 false
@@ -37,7 +37,7 @@ class FilterAdapter(
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation_one)
 
         holder.itemView.setOnClickListener {
-            if(fragment is RecordsFragment) {
+            if (fragment is RecordsFragment) {
                 fragment.filterSelection(item)
             }
         }

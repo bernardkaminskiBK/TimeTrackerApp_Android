@@ -1,7 +1,6 @@
 package com.berni.timetrackerapp.model.database
 
 import androidx.room.*
-import com.berni.timetrackerapp.model.database.viewmodel.FilterOrder
 import com.berni.timetrackerapp.model.entities.Record
 import kotlinx.coroutines.flow.Flow
 

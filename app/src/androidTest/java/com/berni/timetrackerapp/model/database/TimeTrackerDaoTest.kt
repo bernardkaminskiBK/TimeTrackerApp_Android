@@ -5,7 +5,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.berni.timetrackerapp.model.database.viewmodel.FilterOrder
 import com.berni.timetrackerapp.model.entities.Record
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,7 +42,7 @@ class TimeTrackerDaoTest {
     }
 
     @Test
-    fun testInsertTimeTrackerRecord() = runBlockingTest {
+    fun testInsertRecord() = runBlockingTest {
         val timeTrackerRecord = Record(id = 1, 5000000L, "Duolingo", "00:45:00")
         dao.insertRecord(timeTrackerRecord)
 
@@ -52,7 +51,7 @@ class TimeTrackerDaoTest {
     }
 
     @Test
-    fun testDeleteTimeTrackerRecord() = runBlockingTest {
+    fun testDeleteRecord() = runBlockingTest {
         RecordTestData.listOfRecords().asSequence().iterator().forEach {
             dao.insertRecord(it)
         }
@@ -65,7 +64,7 @@ class TimeTrackerDaoTest {
     }
 
     @Test
-    fun testDeleteAllTimeTrackerRecords() = runBlockingTest {
+    fun testDeleteAllRecords() = runBlockingTest {
         RecordTestData.listOfRecords().asSequence().iterator().forEach {
             dao.insertRecord(it)
         }
@@ -77,7 +76,7 @@ class TimeTrackerDaoTest {
     }
 
     @Test
-    fun testUpdateTimeTrackerRecord() = runBlockingTest {
+    fun testUpdateRecord() = runBlockingTest {
         RecordTestData.listOfRecords().asSequence().iterator().forEach {
             dao.insertRecord(it)
         }
@@ -90,7 +89,7 @@ class TimeTrackerDaoTest {
     }
 
     @Test
-    fun testGetAllTimeTrackerRecordNamesWithoutDuplicates() = runBlockingTest {
+    fun testGetAllRecordsWithoutDuplicates() = runBlockingTest {
         RecordTestData.listOfRecords().asSequence().iterator().forEach {
             dao.insertRecord(it)
         }

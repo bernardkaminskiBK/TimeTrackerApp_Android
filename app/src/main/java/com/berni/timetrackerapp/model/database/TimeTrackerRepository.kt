@@ -1,7 +1,6 @@
 package com.berni.timetrackerapp.model.database
 
 import androidx.annotation.WorkerThread
-import com.berni.timetrackerapp.model.database.viewmodel.FilterOrder
 import com.berni.timetrackerapp.model.entities.Record
 
 class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {

@@ -31,4 +31,5 @@
     <string name="deleted">Record deleted</string>
     <string name="undo">UNDO</string>
     <string name="timePickerInput">%1$s:00</string>
+    <string name="are_you_sure_to_delete_all_your_records">Are you sure to delete all your records?</string>
 </resources>

@@ -25,7 +25,7 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
     private val mBinding get() = _mBinding!!
 
     private val database: DatabaseViewModel by viewModels {
-        TimeTrackerViewModelFactory((requireActivity().application as TimeTrackerApplication).repository)
+        TimeTrackerViewModelFactory(requireActivity().application, (requireActivity().application as TimeTrackerApplication).repository)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

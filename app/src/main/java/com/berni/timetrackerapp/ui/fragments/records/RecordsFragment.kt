@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,14 +18,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.application.TimeTrackerApplication
 import com.berni.timetrackerapp.databinding.*
-import com.berni.timetrackerapp.model.database.viewmodel.FilterOrder
+import com.berni.timetrackerapp.model.database.FilterOrder
 import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Record
-import com.berni.timetrackerapp.ui.activities.MainActivity
 import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
-import com.berni.timetrackerapp.utils.Formatter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -34,7 +32,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-const val SHOW_ALL_RECORDS = "All Records"
+private const val SHOW_ALL_RECORDS = "All Records"
 
 class RecordsFragment : Fragment(R.layout.fragment_records) {
 
@@ -50,7 +48,10 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
     private val mBinding get() = _mBinding!!
 
     private val database: DatabaseViewModel by viewModels {
-        TimeTrackerViewModelFactory((requireActivity().application as TimeTrackerApplication).repository)
+        TimeTrackerViewModelFactory(
+            requireActivity().application,
+            (requireActivity().application as TimeTrackerApplication).repository
+        )
     }
 
     @ExperimentalCoroutinesApi
@@ -205,12 +206,10 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         filterDialog.dismiss()
 
         if (filterSelection == SHOW_ALL_RECORDS) {
-            (activity as MainActivity).supportActionBar?.title = getString(R.string.records)
-            database.filterOrder.value = FilterOrder.SHOW_ALL
+            database.onFilterOrderSelected(FilterOrder.SHOW_ALL)
         } else {
-            (activity as MainActivity).supportActionBar?.title = filterSelection
-            database.filterQuery.value = filterSelection
-            database.filterOrder.value = FilterOrder.BY_NAME
+            database.onQuerySelected(filterSelection)
+            database.onFilterOrderSelected(FilterOrder.BY_NAME)
         }
     }
 

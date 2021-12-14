@@ -1,29 +1,38 @@
 package com.berni.timetrackerapp.model.database.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.*
+import com.berni.timetrackerapp.model.database.FilterOrder
+import com.berni.timetrackerapp.model.database.PreferencesManager
 import com.berni.timetrackerapp.model.database.TimeTrackerRepository
 import com.berni.timetrackerapp.model.entities.Record
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
-enum class FilterOrder { BY_NAME, SHOW_ALL }
+class DatabaseViewModel(application: Application, private val repository: TimeTrackerRepository) :
+    AndroidViewModel(application) {
 
-class DatabaseViewModel(private val repository: TimeTrackerRepository) : ViewModel() {
+    private val context = getApplication<Application>().applicationContext
 
-    val filterQuery = MutableStateFlow("")
-    val filterOrder = MutableStateFlow(FilterOrder.SHOW_ALL)
+    private val preferencesManager = PreferencesManager(context)
+    private val preferencesFlow = preferencesManager.preferencesFlow
+
+    fun onFilterOrderSelected(filterOrder: FilterOrder) = viewModelScope.launch {
+        preferencesManager.updateFilterOrder(filterOrder)
+    }
+
+    fun onQuerySelected(filterOrder: String) = viewModelScope.launch {
+        preferencesManager.updateFilterQuery(filterOrder)
+    }
 
     @ExperimentalCoroutinesApi
-    private val recordsFlow = combine(
-        filterQuery, filterOrder
-    ) { filterQuery, filterOrder ->
-        Pair(filterQuery, filterOrder)
-    }.flatMapLatest { (filterQuery, filterOrder) ->
-        repository.getRecordsList(filterQuery, filterOrder)
-    }
+    private val recordsFlow = preferencesFlow
+        .flatMapLatest { (filterQuery, filterPreferences) ->
+            repository.getRecordsList(filterQuery, filterPreferences)
+        }
 
     @ExperimentalCoroutinesApi
     val records = recordsFlow.asLiveData()
@@ -48,12 +57,15 @@ class DatabaseViewModel(private val repository: TimeTrackerRepository) : ViewMod
 
 }
 
-class TimeTrackerViewModelFactory(private val repository: TimeTrackerRepository) :
+class TimeTrackerViewModelFactory(
+    private val application: Application,
+    private val repository: TimeTrackerRepository
+) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DatabaseViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return DatabaseViewModel(repository) as T
+            return DatabaseViewModel(application, repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
     }

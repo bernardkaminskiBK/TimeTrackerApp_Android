@@ -23,7 +23,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:gravity="center"
-        android:text="Are you sure to delete all your progress records?"
+        android:text="@string/are_you_sure_to_delete_all_your_records"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 

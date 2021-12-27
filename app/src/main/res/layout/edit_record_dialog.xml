@@ -20,10 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:background="@drawable/full_rounded_background"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:padding="6dp">
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/tvDate"
@@ -33,22 +33,20 @@
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:textSize="16sp"
                 tools:text="20:57 02.12.2021" />
 
             <EditText
                 android:id="@+id/etEditName"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:padding="8dp"
-                tools:text="Duolingo"
+                android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:textSize="18sp"
+                android:padding="8dp"
+                android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textStyle="bold"/>
+                android:textSize="16sp"
+                tools:text="Duolingo" />
 
             <TextView
                 android:id="@+id/tvTime"
@@ -58,8 +56,7 @@
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:textSize="18sp"
                 tools:text="02:03:00" />
 
         </LinearLayout>
@@ -79,6 +76,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
         android:orientation="horizontal">
 
 

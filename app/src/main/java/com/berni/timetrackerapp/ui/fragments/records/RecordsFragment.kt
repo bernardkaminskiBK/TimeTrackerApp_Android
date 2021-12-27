@@ -24,6 +24,7 @@ import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFac
 import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
+import com.berni.timetrackerapp.utils.TestData
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -215,7 +216,7 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
 
     fun editRecord(record: Record) {
         val editRecordDialog = Dialog(requireContext())
-        val binding = EditCustomDialogBinding.inflate(layoutInflater)
+        val binding = EditRecordDialogBinding.inflate(layoutInflater)
         editRecordDialog.setContentView(binding.root)
 
         binding.apply {

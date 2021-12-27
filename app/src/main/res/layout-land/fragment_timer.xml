@@ -55,7 +55,7 @@
             android:id="@+id/ivStartStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_play_arrow_white_88" />
+            android:src="@drawable/ic_baseline_play_arrow_white_80" />
 
     </LinearLayout>
 
@@ -75,7 +75,7 @@
             android:id="@+id/ivReset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_restore_24" />
+            android:src="@drawable/ic_baseline_restore_34" />
 
     </LinearLayout>
 

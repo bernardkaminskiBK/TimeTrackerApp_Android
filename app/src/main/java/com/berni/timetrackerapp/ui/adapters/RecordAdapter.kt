@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
-import com.berni.timetrackerapp.databinding.ItemProgressBinding
+import com.berni.timetrackerapp.databinding.ItemRecordBinding
 import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.ui.fragments.records.RecordsFragment
 import com.berni.timetrackerapp.utils.Formatter
@@ -16,15 +16,15 @@ import com.berni.timetrackerapp.utils.Formatter
 class RecordAdapter(private val fragment: Fragment) :
     ListAdapter<Record, RecordAdapter.ViewHolder>(DiffCallback()) {
 
-    class ViewHolder(view: ItemProgressBinding) : RecyclerView.ViewHolder(view.root) {
+    class ViewHolder(view: ItemRecordBinding) : RecyclerView.ViewHolder(view.root) {
         var date = view.tvDate
         var name = view.tvName
         var time = view.tvTime
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ItemProgressBinding =
-            ItemProgressBinding.inflate(LayoutInflater.from(fragment.context), parent, false)
+        val binding: ItemRecordBinding =
+            ItemRecordBinding.inflate(LayoutInflater.from(fragment.context), parent, false)
         return ViewHolder(binding)
     }
 

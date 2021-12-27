@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:background="@drawable/gradient_background_bottom"
-        android:elevation="25dp"
-        app:cardCornerRadius="25dp"
+        android:elevation="15dp"
+        app:cardCornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,36 +24,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical"
             android:background="@drawable/gradient_background_bottom"
-            android:padding="15dp">
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tvStopwatch"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:layout_gravity="center|top"
-                android:elevation="25dp"
-                app:cardCornerRadius="25dp">
-
-                <TextView
-                    android:id="@+id/tvStopwatch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="25dp"
-                    android:text="@string/initialStateOfTimer"
-                    android:background="@drawable/gradient_background_bottom"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="75sp" />
-            </androidx.cardview.widget.CardView>
+                android:text="@string/initialStateOfTimer"
+                android:textAlignment="center"
+                android:textColor="@color/gray"
+                android:textSize="80sp" />
 
             <LinearLayout
                 android:id="@+id/llStartStop"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
-                android:layout_marginTop="55dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/item_circular_color_accent_background"
                 android:elevation="25dp"
                 android:gravity="center">
@@ -62,28 +52,28 @@
                     android:id="@+id/ivStartStop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_play_arrow_white_88"
-                    android:contentDescription="@string/start_and_stop_the_stopwatch" />
+                    android:contentDescription="@string/start_and_stop_the_stopwatch"
+                    android:src="@drawable/ic_baseline_play_arrow_white_80" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/llReset"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginBottom="40dp"
-                android:layout_marginStart="110dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="85dp"
+                android:layout_marginBottom="50dp"
                 android:background="@drawable/item_circular_color_accent_background"
                 android:elevation="25dp"
-                android:layout_gravity="center"
                 android:gravity="center">
 
                 <ImageView
                     android:id="@+id/ivReset"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_restore_24"
-                    android:contentDescription="@string/reset_stopwatch" />
+                    android:contentDescription="@string/reset_stopwatch"
+                    android:src="@drawable/ic_baseline_restore_34" />
 
             </LinearLayout>
 

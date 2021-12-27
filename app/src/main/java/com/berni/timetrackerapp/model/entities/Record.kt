@@ -17,6 +17,6 @@ data class Record(
     @ColumnInfo val time: String
     ) : Parcelable {
         val createdDateFormatted: String
-            get() = DateFormat.format("MM.dd.yyyy HH:mm:ss", Date(date)).toString()
+            get() = DateFormat.format("dd.MM.yyyy HH:mm:ss", Date(date)).toString()
     }
 

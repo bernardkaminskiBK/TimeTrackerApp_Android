@@ -32,7 +32,6 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                android:textStyle="bold"
                 tools:text="duolingo" />
 
         </LinearLayout>

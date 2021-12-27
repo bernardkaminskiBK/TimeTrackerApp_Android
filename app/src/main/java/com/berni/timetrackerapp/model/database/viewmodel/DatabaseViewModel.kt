@@ -7,9 +7,7 @@ import com.berni.timetrackerapp.model.database.PreferencesManager
 import com.berni.timetrackerapp.model.database.TimeTrackerRepository
 import com.berni.timetrackerapp.model.entities.Record
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class DatabaseViewModel(application: Application, private val repository: TimeTrackerRepository) :
@@ -38,6 +36,8 @@ class DatabaseViewModel(application: Application, private val repository: TimeTr
     val records = recordsFlow.asLiveData()
 
     val allRecordNames = repository.getAllRecordsName.asLiveData()
+
+    val getTotalTimeRecords =  repository.getTotalTimeRecords().asLiveData()
 
     fun insert(record: Record) = viewModelScope.launch {
         repository.insertRecord(record)

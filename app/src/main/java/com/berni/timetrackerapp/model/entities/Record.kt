@@ -14,7 +14,7 @@ data class Record(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo val date: Long,
     @ColumnInfo val name: String,
-    @ColumnInfo val time: String
+    @ColumnInfo val time: Long
     ) : Parcelable {
         val createdDateFormatted: String
             get() = DateFormat.format("dd.MM.yyyy HH:mm:ss", Date(date)).toString()

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.berni.timetrackerapp.model.entities.Record
 
-@Database(entities = [Record::class], version = 1)
+@Database(entities = [Record::class], version = 2)
 abstract class TimeTrackerRoomDatabase : RoomDatabase() {
 
     abstract fun timeTrackerDao() : TimeTrackerDao

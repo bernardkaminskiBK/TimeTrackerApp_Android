@@ -13,6 +13,7 @@ import com.berni.timetrackerapp.databinding.FragmentTimerBinding
 import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
+import com.berni.timetrackerapp.utils.Converter.convertTimeToSeconds
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class TimerFragment : Fragment(R.layout.fragment_timer) {
@@ -25,7 +26,10 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
     private val mBinding get() = _mBinding!!
 
     private val database: DatabaseViewModel by viewModels {
-        TimeTrackerViewModelFactory(requireActivity().application, (requireActivity().application as TimeTrackerApplication).repository)
+        TimeTrackerViewModelFactory(
+            requireActivity().application,
+            (requireActivity().application as TimeTrackerApplication).repository
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,7 +83,14 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
         if (input.isNotEmpty()) {
             val name = binding.tiNameOfProgress.text.toString()
             val time = binding.tvTimerResult.text.toString()
-            database.insert(Record(0, System.currentTimeMillis(), name, time))
+            database.insert(
+                Record(
+                    0,
+                    System.currentTimeMillis(),
+                    name,
+                    time.convertTimeToSeconds()
+                )
+            )
             saveRecordDialog.dismiss()
             Toast.makeText(requireContext(), getString(R.string.success_save), Toast.LENGTH_SHORT)
                 .show()
@@ -100,13 +111,13 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
     private fun startTimer() {
         timerViewModel.startTimer()
         mBinding.ivStartStop
-            .setImageResource(R.drawable.ic_baseline_pause_white_88)
+            .setImageResource(R.drawable.ic_baseline_pause_white_80)
     }
 
     private fun stopTimer() {
         timerViewModel.stopTimer()
         mBinding.ivStartStop
-            .setImageResource(R.drawable.ic_baseline_play_arrow_white_88)
+            .setImageResource(R.drawable.ic_baseline_play_arrow_white_80)
     }
 
     private fun resetTimer() {
@@ -118,7 +129,7 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
 
         timerViewModel.resetTimer()
         mBinding.ivStartStop
-            .setImageResource(R.drawable.ic_baseline_play_arrow_white_88)
+            .setImageResource(R.drawable.ic_baseline_play_arrow_white_80)
         mBinding.tvStopwatch.text = getString(R.string.initialStateOfTimer)
     }
 

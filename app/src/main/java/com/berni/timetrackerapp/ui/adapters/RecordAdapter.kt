@@ -11,7 +11,7 @@ import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.databinding.ItemRecordBinding
 import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.ui.fragments.records.RecordsFragment
-import com.berni.timetrackerapp.utils.Formatter
+import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
 
 class RecordAdapter(private val fragment: Fragment) :
     ListAdapter<Record, RecordAdapter.ViewHolder>(DiffCallback()) {
@@ -33,7 +33,7 @@ class RecordAdapter(private val fragment: Fragment) :
 
         holder.date.text = record.createdDateFormatted
         holder.name.text = record.name
-        holder.time.text = record.time
+        holder.time.text = record.time.convertSecondsToDateTime()
 
         holder.itemView.animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation_three)

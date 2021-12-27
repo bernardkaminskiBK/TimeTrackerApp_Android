@@ -24,11 +24,12 @@ import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFac
 import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
+import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
+import com.berni.timetrackerapp.utils.Converter.convertTimeToSeconds
 import com.berni.timetrackerapp.utils.TestData
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -55,7 +56,6 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         )
     }
 
-    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -193,7 +193,14 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         if (input.isNotEmpty()) {
             val name = binding.tiNameOfProgress.text.toString()
             val time = binding.tvStopwatch.text.toString()
-            database.insert(Record(0, System.currentTimeMillis(), name, time))
+            database.insert(
+                Record(
+                    0,
+                    System.currentTimeMillis(),
+                    name,
+                    time.convertTimeToSeconds()
+                )
+            )
             addRecordDialog.dismiss()
             Toast.makeText(requireContext(), getString(R.string.success_save), Toast.LENGTH_SHORT)
                 .show()
@@ -222,7 +229,7 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         binding.apply {
             tvDate.text = record.createdDateFormatted
             etEditName.setText(record.name)
-            tvTime.text = record.time
+            tvTime.text = record.time.convertSecondsToDateTime()
 
             binding.tvTime.setOnClickListener {
                 timePickerDialog(binding.tvTime)
@@ -234,7 +241,7 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
                         record.id,
                         record.date,
                         etEditName.text.toString(),
-                        tvTime.text.toString()
+                        tvTime.text.toString().convertTimeToSeconds()
                     )
                 )
                 editRecordDialog.dismiss()

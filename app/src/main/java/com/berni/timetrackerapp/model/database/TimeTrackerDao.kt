@@ -2,6 +2,7 @@ package com.berni.timetrackerapp.model.database
 
 import androidx.room.*
 import com.berni.timetrackerapp.model.entities.Record
+import com.berni.timetrackerapp.model.entities.RecordTotalTime
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,14 +23,17 @@ interface TimeTrackerDao {
     @Delete
     suspend fun deleteRecord(record: Record)
 
-    @Query("SELECT DISTINCT name FROM TIME_TRACKER_TABLE")
+    @Query("SELECT DISTINCT name FROM TIME_TRACKER_TABLE ORDER BY name ASC")
     fun getAllRecordNames(): Flow<List<String>>
 
-    @Query("SELECT * FROM TIME_TRACKER_TABLE ORDER BY ID")
+    @Query("SELECT * FROM TIME_TRACKER_TABLE ORDER BY id")
     fun getRecordsList(): Flow<List<Record>>
 
     @Query("SELECT * FROM TIME_TRACKER_TABLE WHERE name = :filterName")
     fun getFilteredRecordsListByName(filterName: String): Flow<List<Record>>
+
+    @Query("SELECT name as name, SUM(time) as totalTime FROM TIME_TRACKER_TABLE GROUP BY name")
+    fun getTotalTimeRecords(): Flow<List<RecordTotalTime>>
 
     @Query("DELETE FROM TIME_TRACKER_TABLE")
     suspend fun deleteAllRecords()

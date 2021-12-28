@@ -33,4 +33,5 @@
     <string name="timePickerInput">%1$s:00</string>
     <string name="are_you_sure_to_delete_all_your_records">Are you sure to delete all your records?</string>
     <string name="bar_chart_legend_title">Activity/total hours</string>
+    <string name="total_hours">Total Hours:</string>
 </resources>

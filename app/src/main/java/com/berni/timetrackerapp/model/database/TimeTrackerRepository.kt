@@ -2,6 +2,7 @@ package com.berni.timetrackerapp.model.database
 
 import androidx.annotation.WorkerThread
 import com.berni.timetrackerapp.model.entities.Record
+import com.berni.timetrackerapp.model.entities.RecordDateTime
 import com.berni.timetrackerapp.model.entities.RecordTotalTime
 import kotlinx.coroutines.flow.Flow
 
@@ -30,8 +31,20 @@ class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {
     fun getRecordsList(filterQuery: String, filterOrder: FilterOrder) =
         timeTrackerDao.getRecords(filterQuery, filterOrder)
 
-    fun getTotalTimeRecords() : Flow<List<RecordTotalTime>> =
+    fun getTotalTimeRecords(): Flow<List<RecordTotalTime>> =
         timeTrackerDao.getTotalTimeRecords()
+
+    fun getAllMonths(): Flow<List<String>> =
+        timeTrackerDao.getAllMonths()
+
+    fun getAllRecordsByMonth(month: String): Flow<List<RecordTotalTime>> =
+        timeTrackerDao.getAllRecordsByMonth(month)
+
+    fun getAllRecordsDateByName(name: String) : Flow<List<String>> =
+        timeTrackerDao.getAllRecordsDateByName(name)
+
+    fun getRecordsByNameAndDate(name: String, date: String) : Flow<List<RecordDateTime>> =
+        timeTrackerDao.getRecordsByNameAndDate(name, date)
 
     val getAllRecordsName = timeTrackerDao.getAllRecordNames()
 

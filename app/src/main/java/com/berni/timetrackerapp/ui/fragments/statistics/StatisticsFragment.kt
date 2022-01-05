@@ -3,6 +3,7 @@ package com.berni.timetrackerapp.ui.fragments.statistics
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,6 +13,7 @@ import com.berni.timetrackerapp.application.TimeTrackerApplication
 import com.berni.timetrackerapp.databinding.FragmentStatisticsBinding
 import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
+import com.berni.timetrackerapp.model.entities.RecordDateTime
 import com.berni.timetrackerapp.model.entities.RecordTotalTime
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToHours
 import com.github.mikephil.charting.animation.Easing
@@ -29,7 +31,11 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     private lateinit var barChart: BarChart
     private lateinit var lineChart: LineChart
 
-    private lateinit var totalHours: ArrayList<RecordTotalTime>
+    private lateinit var barChartData: ArrayList<RecordTotalTime>
+    private lateinit var lineChartData: ArrayList<RecordDateTime>
+
+    private var recordName: String? = ""
+    private var recordDate: String? = ""
 
     private var _mBinding: FragmentStatisticsBinding? = null
     private val mBinding get() = _mBinding!!
@@ -46,22 +52,64 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
         statisticsViewModel = ViewModelProvider(this)[StatisticsViewModel::class.java]
 
-        totalHours = ArrayList()
+        barChartData = ArrayList()
+        lineChartData = ArrayList()
 
         database.getTotalTimeRecords.observe(viewLifecycleOwner) { recordTotalHoursTimeList ->
             for (recordTotalHours in recordTotalHoursTimeList) {
-                totalHours.add(recordTotalHours)
-//                labels.add(recordsTotalSum.name)
-//                entries.add(
-//                    BarEntry(
-//                        recordsTotalSum.totalTime.convertSecondsToHours(),
-//                        xIndex.toFloat()
-//                    )
-//                )
+                barChartData.add(recordTotalHours)
             }
             setBarChart()
-            setLineChart()
         }
+
+        database.getAllMonths.observe(viewLifecycleOwner) {
+            val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
+            mBinding.chartStatistics.actvBarChartTotalHours.setAdapter(arrayAdapter)
+            mBinding.chartStatistics.actvBarChartTotalHours.setOnItemClickListener { parent, view, position, id ->
+                database.getAllRecordsByMonth(arrayAdapter.getItem(position)!!)
+                    .observe(viewLifecycleOwner) { recordsByMonth ->
+                        barChartData.clear()
+                        for (recordByMonth in recordsByMonth) {
+                            barChartData.add(recordByMonth)
+                        }
+                        setBarChart()
+                    }
+            }
+        }
+
+        database.allRecordNames.observe(viewLifecycleOwner) {
+            val arrayNameAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
+            mBinding.chartStatistics.actvLineChartName.setAdapter(arrayNameAdapter)
+            mBinding.chartStatistics.actvLineChartName.setOnItemClickListener { parent, view, position, id ->
+
+                recordName = arrayNameAdapter.getItem(position)!!
+
+                database.getAllRecordsDateByName(recordName!!).observe(viewLifecycleOwner) {
+                    val arrayDateAdapter =
+                        ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
+                    mBinding.chartStatistics.actvLineChartDate.setAdapter(arrayDateAdapter)
+                    mBinding.chartStatistics.actvLineChartDate.setOnItemClickListener { parent, view, position, id ->
+
+                        recordDate = arrayDateAdapter.getItem(position)!!
+
+                        if (recordName!!.isNotEmpty() && recordDate!!.isNotEmpty()) {
+                            database.getRecordsByNameAndDate(recordName!!, recordDate!!)
+                                .observe(viewLifecycleOwner) { recordDateTimeList ->
+                                    lineChartData.clear()
+                                    if (recordDateTimeList.size > 1) {
+                                        for (recordByMonth in recordDateTimeList) {
+                                            lineChartData.add(recordByMonth)
+                                        }
+                                    }
+                                    setLineChart()
+                                }
+                        }
+
+                    }
+                }
+            }
+        }
+
     }
 
     private fun setBarChart() {
@@ -69,10 +117,9 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         initBarChart()
 
         val entries = ArrayList<BarEntry>()
-        val labels = ArrayList<String>()
 
-        for (i in totalHours.indices) {
-            val record = totalHours[i]
+        for (i in barChartData.indices) {
+            val record = barChartData[i]
             entries.add(BarEntry(i.toFloat(), record.totalTime.convertSecondsToHours()))
         }
 
@@ -86,42 +133,9 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
         barChart.postInvalidate()
 
-
-//        // xAxis
-//        barChart.xAxis.textColor = ContextCompat.getColor(requireContext(), R.color.white)
-//        barChart.xAxis.setDrawGridLines(false)
-//        barChart.xAxis.setDrawGridLines(false)
-//        barChart.xAxis.setDrawAxisLine(false)
-//        barChart.xAxis.textSize = 12f
-//
-//        // left axis
-//        barChart.axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.white)
-//        barChart.axisLeft.axisLineColor =
-//            ContextCompat.getColor(requireContext(), R.color.primaryColor)
-////        barChart.axisLeft.gridColor = resources.getColor(R.color.white)
-//        barChart.axisLeft.textSize = 14f
-//        barChart.legend.textColor = resources.getColor(R.color.white)
-//
-//        // right axis
-//        barChart.axisRight.textColor =
-//            ContextCompat.getColor(requireContext(), R.color.primaryDarkColor)
-//        barChart.axisRight.axisLineColor =
-//            ContextCompat.getColor(requireContext(), R.color.primaryColor)
-//        barChart.axisRight.gridColor =
-//            ContextCompat.getColor(requireContext(), R.color.primaryColor)
-//
-//        //barDataSet.setColors(ColorTemplate.COLORFUL_COLORS)
-//        barDataSet.color = ContextCompat.getColor(requireContext(), R.color.primaryColor)
-//        barDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.white)
-//        barDataSet.valueTextSize = 16f
-//
-//        barChart.animateY(2000)
-//
-//        barChart.invalidate()
     }
 
     private fun initBarChart() {
-
         //        hide grid lines
         barChart.axisLeft.setDrawGridLines(true)
         val xAxis: XAxis = barChart.xAxis
@@ -149,7 +163,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
         // to draw label on xAxis
         xAxis.position = XAxis.XAxisPosition.TOP
-        xAxis.valueFormatter = TotalHoursAxisFormatter()
+        xAxis.valueFormatter = BarChartAxisFormatter()
         xAxis.setDrawLabels(true)
         xAxis.granularity = 1f
         xAxis.labelRotationAngle = 0f
@@ -165,16 +179,16 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
         //now draw bar chart with dynamic data
         val entries: ArrayList<Entry> = ArrayList()
-//
-//        scoreList = getScoreList()
 
         //you can replace this data object with  your custom object
-        for (i in totalHours.indices) {
-            val totalHour = totalHours[i]
-            entries.add(Entry(i.toFloat(), totalHour.totalTime.convertSecondsToHours()))
+        for (i in lineChartData.indices) {
+            val totalHour = lineChartData[i]
+            entries.add(Entry(i.toFloat(), totalHour.time.convertSecondsToHours()))
         }
 
         val lineDataSet = LineDataSet(entries, "")
+        lineDataSet.valueTextSize = 14f
+        lineDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.white)
 
         val data = LineData(lineDataSet)
         lineChart.data = data
@@ -193,6 +207,12 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         //remove right y-axis
         lineChart.axisRight.isEnabled = false
 
+        // axis left
+        lineChart.axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.white)
+        lineChart.axisLeft.textSize = 14f
+        lineChart.axisLeft.axisLineColor =
+            ContextCompat.getColor(requireContext(), R.color.primaryColor)
+
         //remove legend
         lineChart.legend.isEnabled = false
 
@@ -203,11 +223,14 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         lineChart.animateX(1000, Easing.EaseInSine)
 
         // to draw label on xAxis
-        xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
-        xAxis.valueFormatter = TotalHoursAxisFormatter()
+
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.valueFormatter = LineChartAxisFormatter()
         xAxis.setDrawLabels(true)
         xAxis.granularity = 1f
-        xAxis.labelRotationAngle = +90f
+        xAxis.labelRotationAngle = 0f
+        xAxis.textColor = ContextCompat.getColor(requireContext(), R.color.white)
+        xAxis.textSize = 11f
     }
 
     override fun onDestroy() {
@@ -215,12 +238,22 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         _mBinding = null
     }
 
-    inner class TotalHoursAxisFormatter : IndexAxisValueFormatter() {
+    inner class BarChartAxisFormatter : IndexAxisValueFormatter() {
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
             val index = value.toInt()
-            Log.e("statistics", "getAxisLabel: index $index")
-            return if (index < totalHours.size) {
-                totalHours[index].name
+            return if (index < barChartData.size) {
+                barChartData[index].name
+            } else {
+                ""
+            }
+        }
+    }
+
+    inner class LineChartAxisFormatter : IndexAxisValueFormatter() {
+        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+            val index = value.toInt()
+            return if (index < lineChartData.size) {
+                lineChartData[index].date
             } else {
                 ""
             }

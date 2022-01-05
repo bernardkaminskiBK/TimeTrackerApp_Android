@@ -34,10 +34,13 @@ class DatabaseViewModel(application: Application, private val repository: TimeTr
 
     @ExperimentalCoroutinesApi
     val records = recordsFlow.asLiveData()
-
     val allRecordNames = repository.getAllRecordsName.asLiveData()
-
     val getTotalTimeRecords =  repository.getTotalTimeRecords().asLiveData()
+    val getAllMonths = repository.getAllMonths().asLiveData()
+
+    fun getAllRecordsByMonth(month: String) = repository.getAllRecordsByMonth(month).asLiveData()
+    fun getAllRecordsDateByName(name: String) = repository.getAllRecordsDateByName(name).asLiveData()
+    fun getRecordsByNameAndDate(name: String, date: String) = repository.getRecordsByNameAndDate(name, date).asLiveData()
 
     fun insert(record: Record) = viewModelScope.launch {
         repository.insertRecord(record)

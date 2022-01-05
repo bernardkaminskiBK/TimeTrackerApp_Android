@@ -2,6 +2,7 @@ package com.berni.timetrackerapp.ui.fragments.records
 
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -56,12 +58,14 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         )
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _mBinding = FragmentRecordsBinding.bind(view)
 
-//        for (i in TestData.randomTestDataToDB(30)) {
+//        @RequiresApi(Build.VERSION_CODES.O)
+//        for (i in TestData.randomTestDataToDB(160)) {
 //            database.insert(i)
 //        }
 

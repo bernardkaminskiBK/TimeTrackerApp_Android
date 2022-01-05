@@ -19,10 +19,13 @@ import com.berni.timetrackerapp.utils.Converter.convertSecondsToHours
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.PercentFormatter
 
 class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
@@ -30,9 +33,11 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
     private lateinit var barChart: BarChart
     private lateinit var lineChart: LineChart
+    private lateinit var pieChart: PieChart
 
     private lateinit var barChartData: ArrayList<RecordTotalTime>
     private lateinit var lineChartData: ArrayList<RecordDateTime>
+    private lateinit var pieChartData: ArrayList<PieEntry>
 
     private var recordName: String? = ""
     private var recordDate: String? = ""
@@ -54,62 +59,126 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
         barChartData = ArrayList()
         lineChartData = ArrayList()
+        pieChartData = ArrayList()
 
         database.getTotalTimeRecords.observe(viewLifecycleOwner) { recordTotalHoursTimeList ->
             for (recordTotalHours in recordTotalHoursTimeList) {
-                barChartData.add(recordTotalHours)
+                pieChartData.add(PieEntry(recordTotalHours.totalTime.convertSecondsToHours(),
+                        recordTotalHours.name))
             }
-            setBarChart()
+            setPieChart()
         }
 
         database.getAllMonths.observe(viewLifecycleOwner) {
+            val barChart = mBinding.chartStatistics.actvBarChartTotalHours
+            setBarChartData(it[0])
             val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
-            mBinding.chartStatistics.actvBarChartTotalHours.setAdapter(arrayAdapter)
-            mBinding.chartStatistics.actvBarChartTotalHours.setOnItemClickListener { parent, view, position, id ->
-                database.getAllRecordsByMonth(arrayAdapter.getItem(position)!!)
-                    .observe(viewLifecycleOwner) { recordsByMonth ->
-                        barChartData.clear()
-                        for (recordByMonth in recordsByMonth) {
-                            barChartData.add(recordByMonth)
-                        }
-                        setBarChart()
-                    }
+            barChart.setAdapter(arrayAdapter)
+
+            recordDate = it[0]
+
+            barChart.setText(it[0], false)
+            barChart.setOnItemClickListener { parent, view, position, id ->
+                setBarChartData(arrayAdapter.getItem(position)!!)
             }
         }
 
         database.allRecordNames.observe(viewLifecycleOwner) {
+            val lineChart = mBinding.chartStatistics.actvLineChartName
+            setLineChartData(it[0])
             val arrayNameAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
-            mBinding.chartStatistics.actvLineChartName.setAdapter(arrayNameAdapter)
-            mBinding.chartStatistics.actvLineChartName.setOnItemClickListener { parent, view, position, id ->
-
+            lineChart.setAdapter(arrayNameAdapter)
+            lineChart.setText(it[0], false)
+            lineChart.setOnItemClickListener { parent, view, position, id ->
                 recordName = arrayNameAdapter.getItem(position)!!
-
-                database.getAllRecordsDateByName(recordName!!).observe(viewLifecycleOwner) {
-                    val arrayDateAdapter =
-                        ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
-                    mBinding.chartStatistics.actvLineChartDate.setAdapter(arrayDateAdapter)
-                    mBinding.chartStatistics.actvLineChartDate.setOnItemClickListener { parent, view, position, id ->
-
-                        recordDate = arrayDateAdapter.getItem(position)!!
-
-                        if (recordName!!.isNotEmpty() && recordDate!!.isNotEmpty()) {
-                            database.getRecordsByNameAndDate(recordName!!, recordDate!!)
-                                .observe(viewLifecycleOwner) { recordDateTimeList ->
-                                    lineChartData.clear()
-                                    if (recordDateTimeList.size > 1) {
-                                        for (recordByMonth in recordDateTimeList) {
-                                            lineChartData.add(recordByMonth)
-                                        }
-                                    }
-                                    setLineChart()
-                                }
-                        }
-
-                    }
-                }
+                setLineChartData(recordName!!)
             }
         }
 
+    }
+
+    private fun setBarChartData(month: String) {
+        database.getAllRecordsByMonth(month)
+            .observe(viewLifecycleOwner) { recordsByMonth ->
+                barChartData.clear()
+                for (recordByMonth in recordsByMonth) {
+                    barChartData.add(recordByMonth)
+                }
+                setBarChart()
+            }
+    }
+
+    private fun setLineChartData(name: String) {
+            database.getRecordsByNameAndDate(name, recordDate!!)
+                .observe(viewLifecycleOwner) { recordDateTimeList ->
+                    lineChartData.clear()
+                    if (recordDateTimeList.size > 1) {
+                        for (recordByMonth in recordDateTimeList) {
+                            lineChartData.add(recordByMonth)
+                        }
+                        setLineChart()
+                    }
+                }
+    }
+
+    private fun setPieChart() {
+        pieChart = mBinding.chartStatistics.pieChart
+        initPieChart()
+
+        pieChart.setUsePercentValues(true)
+
+        val colors: ArrayList<Int> = ArrayList()
+        for (i in pieChartData.indices) {
+            if (i % 2 == 0) {
+                colors.add(ContextCompat.getColor(requireContext(), R.color.primaryColor))
+            } else {
+                colors.add(ContextCompat.getColor(requireContext(), R.color.darkSeaBlue))
+            }
+        }
+
+        val dataSet = PieDataSet(pieChartData, "")
+        val data = PieData(dataSet)
+
+        // In Percentage
+        data.setValueFormatter(PercentFormatter())
+        dataSet.sliceSpace = 3f
+        dataSet.colors = colors
+        pieChart.data = data
+        data.setValueTextSize(16f)
+        data.setValueTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
+        pieChart.animateY(1400, Easing.EaseInOutQuad)
+
+        //create hole in center
+        pieChart.holeRadius = 48f
+        pieChart.transparentCircleRadius = 51f
+        pieChart.isDrawHoleEnabled = true
+        pieChart.setHoleColor(ContextCompat.getColor(requireContext(), R.color.primaryDarkColor))
+
+        //add text in center
+        pieChart.setDrawCenterText(true);
+//        pieChart.centerText = "Mobile OS Market share"
+
+        pieChart.invalidate()
+    }
+
+    private fun initPieChart() {
+        pieChart.setUsePercentValues(true)
+        pieChart.description.text = ""
+
+        //hollow pie chart
+        pieChart.isDrawHoleEnabled = false
+        pieChart.setTouchEnabled(false)
+        pieChart.setDrawEntryLabels(false)
+
+        //adding padding
+        pieChart.setExtraOffsets(20f, 0f, 20f, 20f)
+        pieChart.setUsePercentValues(true)
+        pieChart.isRotationEnabled = false
+        pieChart.setDrawEntryLabels(false)
+        pieChart.legend.orientation = Legend.LegendOrientation.VERTICAL
+        pieChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.white)
+        pieChart.legend.isWordWrapEnabled = true
     }
 
     private fun setBarChart() {

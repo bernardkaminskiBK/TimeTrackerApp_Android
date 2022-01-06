@@ -1,7 +1,6 @@
 package com.berni.timetrackerapp.ui.fragments.statistics
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
@@ -16,6 +15,7 @@ import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFac
 import com.berni.timetrackerapp.model.entities.RecordDateTime
 import com.berni.timetrackerapp.model.entities.RecordTotalTime
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToHours
+import com.berni.timetrackerapp.utils.Formatter.dateToStringFormat
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
@@ -63,38 +63,93 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
         database.getTotalTimeRecords.observe(viewLifecycleOwner) { recordTotalHoursTimeList ->
             for (recordTotalHours in recordTotalHoursTimeList) {
-                pieChartData.add(PieEntry(recordTotalHours.totalTime.convertSecondsToHours(),
-                        recordTotalHours.name))
+                pieChartData.add(
+                    PieEntry(
+                        recordTotalHours.totalTime.convertSecondsToHours(),
+                        recordTotalHours.name
+                    )
+                )
             }
             setPieChart()
         }
 
         database.getAllMonths.observe(viewLifecycleOwner) {
             val barChart = mBinding.chartStatistics.actvBarChartTotalHours
-            setBarChartData(it[0])
+
+            var firstDateRecord = ""
+            var lastDateRecord = ""
+
+            if (it.isNotEmpty()) {
+                firstDateRecord = it[0]
+                lastDateRecord = it[it.size - 1]
+                setBarChartData(firstDateRecord)
+            }
+
             val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
             barChart.setAdapter(arrayAdapter)
 
-            recordDate = it[0]
+            recordDate = firstDateRecord
 
-            barChart.setText(it[0], false)
+            barChart.setText(recordDate, false)
             barChart.setOnItemClickListener { parent, view, position, id ->
-                setBarChartData(arrayAdapter.getItem(position)!!)
+                recordDate = arrayAdapter.getItem(position)!!
+                setBarChartData(recordDate!!)
+                setLineChartData(recordName!!)
+
+                initChartTextViews(firstDateRecord, lastDateRecord)
             }
+
+            initChartTextViews(firstDateRecord, lastDateRecord)
+
         }
 
         database.allRecordNames.observe(viewLifecycleOwner) {
             val lineChart = mBinding.chartStatistics.actvLineChartName
-            setLineChartData(it[0])
+
+            var firstRecordFromDB = ""
+
+            if (it.isNotEmpty()) {
+                firstRecordFromDB = it[0]
+                setLineChartData(firstRecordFromDB)
+            }
+
             val arrayNameAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
             lineChart.setAdapter(arrayNameAdapter)
-            lineChart.setText(it[0], false)
+
+            recordName = firstRecordFromDB
+
+            lineChart.setText(recordName, false)
             lineChart.setOnItemClickListener { parent, view, position, id ->
                 recordName = arrayNameAdapter.getItem(position)!!
                 setLineChartData(recordName!!)
+
+                mBinding.chartStatistics.tvLineChart.text = getString(
+                    R.string.lineChartLabelText,
+                    recordName,
+                    recordDate.dateToStringFormat()
+                )
             }
         }
 
+    }
+
+    private fun initChartTextViews(firstDateRecord: String, lastDateRecord: String) {
+        mBinding.chartStatistics.tvPieChart.text = getString(
+            R.string.pieChartLabelText,
+            firstDateRecord.dateToStringFormat(),
+            lastDateRecord.dateToStringFormat()
+        )
+
+        mBinding.chartStatistics.tvBarChart.text = getString(
+            R.string.barChartLabelText,
+            recordDate.dateToStringFormat()
+        )
+
+        mBinding.chartStatistics.tvLineChart.text = getString(
+            R.string.lineChartLabelText,
+            recordName,
+            recordDate.dateToStringFormat()
+        )
     }
 
     private fun setBarChartData(month: String) {
@@ -109,16 +164,16 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     }
 
     private fun setLineChartData(name: String) {
-            database.getRecordsByNameAndDate(name, recordDate!!)
-                .observe(viewLifecycleOwner) { recordDateTimeList ->
-                    lineChartData.clear()
-                    if (recordDateTimeList.size > 1) {
-                        for (recordByMonth in recordDateTimeList) {
-                            lineChartData.add(recordByMonth)
-                        }
-                        setLineChart()
+        database.getRecordsByNameAndDate(name, recordDate!!)
+            .observe(viewLifecycleOwner) { recordDateTimeList ->
+                lineChartData.clear()
+                if (recordDateTimeList.size > 1) {
+                    for (recordByMonth in recordDateTimeList) {
+                        lineChartData.add(recordByMonth)
                     }
+                    setLineChart()
                 }
+            }
     }
 
     private fun setPieChart() {
@@ -156,7 +211,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         pieChart.setHoleColor(ContextCompat.getColor(requireContext(), R.color.primaryDarkColor))
 
         //add text in center
-        pieChart.setDrawCenterText(true);
+        pieChart.setDrawCenterText(false);
 //        pieChart.centerText = "Mobile OS Market share"
 
         pieChart.invalidate()
@@ -175,7 +230,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         pieChart.setExtraOffsets(20f, 0f, 20f, 20f)
         pieChart.setUsePercentValues(true)
         pieChart.isRotationEnabled = false
-        pieChart.setDrawEntryLabels(false)
+        pieChart.setDrawEntryLabels(true)
         pieChart.legend.orientation = Legend.LegendOrientation.VERTICAL
         pieChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.white)
         pieChart.legend.isWordWrapEnabled = true

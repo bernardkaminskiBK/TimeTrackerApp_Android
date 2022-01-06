@@ -35,4 +35,8 @@
     <string name="bar_chart_legend_title">Activity/total hours</string>
     <string name="total_hours">Total Hours:</string>
     <string name="warning_to_show_rules">To show this chart it is required at least two values.</string>
+
+    <string name="pieChartLabelText">The total sum of hours for each activity between %1$s and %2$s</string>
+    <string name="barChartLabelText">The total sum of hours for each activity in %1$s</string>
+    <string name="lineChartLabelText">Daily spent time with %1$s in %2$s</string>
 </resources>

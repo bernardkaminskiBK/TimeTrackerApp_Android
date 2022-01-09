@@ -2,7 +2,6 @@ package com.berni.timetrackerapp.ui.fragments.records
 
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,10 +9,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,14 +23,15 @@ import com.berni.timetrackerapp.model.database.FilterOrder
 import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Record
+import com.berni.timetrackerapp.ui.activities.MainActivity
 import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
 import com.berni.timetrackerapp.utils.Converter.convertTimeToSeconds
-import com.berni.timetrackerapp.utils.TestData
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -39,6 +39,8 @@ import kotlin.collections.ArrayList
 private const val SHOW_ALL_RECORDS = "All Records"
 
 class RecordsFragment : Fragment(R.layout.fragment_records) {
+
+    private lateinit var recordsViewModel: RecordsViewModel
 
     private lateinit var mRecordsAdapter: RecordAdapter
     private lateinit var mFilterAdapter: FilterAdapter
@@ -58,10 +60,16 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         )
     }
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _mBinding = FragmentRecordsBinding.bind(view)
+        recordsViewModel = ViewModelProvider(this)[RecordsViewModel::class.java]
+
+        recordsViewModel.recordTitle.observe(viewLifecycleOwner) {
+            (activity as MainActivity).supportActionBar!!.title = it
+        }
 
 //        @RequiresApi(Build.VERSION_CODES.O)
 //        for (i in TestData.randomTestDataToDB(160)) {
@@ -218,7 +226,9 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
 
         if (filterSelection == SHOW_ALL_RECORDS) {
             database.onFilterOrderSelected(FilterOrder.SHOW_ALL)
+            recordsViewModel.saveRecordTitle("Records")
         } else {
+            recordsViewModel.saveRecordTitle(filterSelection)
             database.onQuerySelected(filterSelection)
             database.onFilterOrderSelected(FilterOrder.BY_NAME)
         }

@@ -1,15 +1,19 @@
 package com.berni.timetrackerapp.ui.fragments.records
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
-class RecordsViewModel : ViewModel() {
+class RecordsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is Records fragment"
+    private val repository = RecordsRepository(application)
+
+    val recordTitle = repository.recordsTitle.asLiveData()
+
+    fun saveRecordTitle(title: String) = viewModelScope.launch {
+        repository.saveTitleRecord(title)
     }
-
-    val text: LiveData<String> = _text
 
 }

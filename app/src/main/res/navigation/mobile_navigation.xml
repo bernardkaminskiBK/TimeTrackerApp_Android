@@ -18,6 +18,8 @@
         tools:layout="@layout/fragment_records">
         <action
             android:id="@+id/action_nav_records_to_nav_statistic"
+            app:popUpTo="@+id/nav_records"
+            app:popUpToInclusive="true"
             app:destination="@id/nav_statistic"
             app:enterAnim="@anim/anim_slide_up"
             app:exitAnim="@anim/anim_slide_down"
@@ -33,6 +35,8 @@
         <action
             android:id="@+id/action_nav_statistic_to_nav_records"
             app:destination="@id/nav_records"
+            app:popUpTo="@+id/nav_statistic"
+            app:popUpToInclusive="true"
             app:enterAnim="@anim/anim_slide_up"
             app:exitAnim="@anim/anim_slide_down"
             app:popEnterAnim="@anim/anim_slide_up"

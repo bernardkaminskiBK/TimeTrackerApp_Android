@@ -3,10 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"
+        android:orderInCategory="100"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
         android:id="@+id/action_jump_to_statistics"
         android:icon="@drawable/ic_statistics_24"
+        android:orderInCategory="101"
         android:title="@string/filter"
-        android:orderInCategory="100"
         android:iconTint="@color/white"
         app:showAsAction="always"/>
 
@@ -14,16 +22,14 @@
         android:id="@+id/action_filter_records"
         android:icon="@drawable/ic_baseline_filter_list_24"
         android:title="@string/filter"
-        android:orderInCategory="101"
-        android:iconTint="@color/white"
-        app:showAsAction="always"/>
+        android:iconTint="@color/primaryDarkColor"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_delete_all_records"
         android:icon="@drawable/ic_baseline_delete_24"
         android:title="@string/delete"
-        android:orderInCategory="102"
-        android:iconTint="@color/white"
-        app:showAsAction="always"/>
+        android:iconTint="@color/primaryDarkColor"
+        app:showAsAction="never"/>
 
 </menu>

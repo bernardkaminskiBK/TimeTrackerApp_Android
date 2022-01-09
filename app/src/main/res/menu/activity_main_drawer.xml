@@ -10,11 +10,11 @@
             android:title="@string/timer" />
         <item
             android:id="@+id/nav_records"
-            android:icon="@drawable/records_two"
+            android:icon="@drawable/vector_records"
             android:title="@string/records" />
         <item
             android:id="@+id/nav_statistic"
-            android:icon="@drawable/statistics"
+            android:icon="@drawable/ic_statistics_24"
             android:title="@string/statistics" />
         <item
             android:id="@+id/nav_settings"

@@ -1,6 +1,9 @@
 package com.berni.timetrackerapp.ui.fragments.statistics
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -8,6 +11,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.application.TimeTrackerApplication
 import com.berni.timetrackerapp.databinding.FragmentStatisticsBinding
@@ -116,6 +121,22 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             }
         }
 
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.statistics_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_jump_to_records -> {
+                findNavController().navigate(StatisticsFragmentDirections.actionNavStatisticToNavRecords())
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setPieChartData() {

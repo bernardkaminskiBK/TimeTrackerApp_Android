@@ -2,6 +2,7 @@ package com.berni.timetrackerapp.ui.fragments.records
 
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,10 +10,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +31,7 @@ import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
 import com.berni.timetrackerapp.utils.Converter.convertTimeToSeconds
+import com.berni.timetrackerapp.utils.TestData
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -103,6 +107,10 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.action_jump_to_statistics -> {
+                findNavController().navigate(RecordsFragmentDirections.actionNavRecordsToNavStatistic())
+                return true
+            }
             R.id.action_filter_records -> {
                 filterListDialog()
                 return true

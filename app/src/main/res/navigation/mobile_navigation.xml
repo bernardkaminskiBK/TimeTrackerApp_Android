@@ -15,13 +15,29 @@
         android:id="@+id/nav_records"
         android:name="com.berni.timetrackerapp.ui.fragments.records.RecordsFragment"
         android:label="Records"
-        tools:layout="@layout/fragment_records"/>
+        tools:layout="@layout/fragment_records">
+        <action
+            android:id="@+id/action_nav_records_to_nav_statistic"
+            app:destination="@id/nav_statistic"
+            app:enterAnim="@anim/anim_slide_up"
+            app:exitAnim="@anim/anim_slide_down"
+            app:popEnterAnim="@anim/anim_slide_up"
+            app:popExitAnim="@anim/anim_slide_down"/>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_statistic"
         android:name="com.berni.timetrackerapp.ui.fragments.statistics.StatisticsFragment"
         android:label="Statistics"
-        tools:layout="@layout/fragment_statistics"/>
+        tools:layout="@layout/fragment_statistics">
+        <action
+            android:id="@+id/action_nav_statistic_to_nav_records"
+            app:destination="@id/nav_records"
+            app:enterAnim="@anim/anim_slide_up"
+            app:exitAnim="@anim/anim_slide_down"
+            app:popEnterAnim="@anim/anim_slide_up"
+            app:popExitAnim="@anim/anim_slide_down"/>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_settings"

@@ -19,7 +19,7 @@ object TestData {
         val testDataset = ArrayList<Record>()
 
         for (i in 1..numberOfItems) {
-            when ((1..4).shuffled().last()) {
+            when ((1..6).shuffled().last()) {
                 1 -> {
                     testDataset.add(
                         Record(
@@ -56,6 +56,26 @@ object TestData {
                             0,
                             randomDateGenerator(),
                             "Cooking",
+                            getRandomRecordTimeInSeconds()
+                        )
+                    )
+                }
+                5 -> {
+                    testDataset.add(
+                        Record(
+                            0,
+                            randomDateGenerator(),
+                            "Yoga",
+                            getRandomRecordTimeInSeconds()
+                        )
+                    )
+                }
+                6 -> {
+                    testDataset.add(
+                        Record(
+                            0,
+                            randomDateGenerator(),
+                            "Training",
                             getRandomRecordTimeInSeconds()
                         )
                     )

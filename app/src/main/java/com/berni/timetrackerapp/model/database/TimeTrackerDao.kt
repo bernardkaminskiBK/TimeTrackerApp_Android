@@ -37,7 +37,7 @@ interface TimeTrackerDao {
     fun getTotalTimeRecords(): Flow<List<RecordTotalTime>>
 
     @Query("SELECT DISTINCT strftime('%m/%Y',datetime(date/1000, 'unixepoch')) FROM time_tracker_table order by date")
-    fun getAllMonths(): Flow<List<String>>
+    fun getAllDate(): Flow<List<String>>
 
     @Query("SELECT name as name, SUM(time) as totalTime FROM time_tracker_table WHERE strftime('%m/%Y',datetime(date/1000, 'unixepoch')) = :month GROUP BY name")
     fun getAllRecordsByMonth(month: String): Flow<List<RecordTotalTime>>

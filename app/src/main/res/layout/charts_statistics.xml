@@ -88,7 +88,7 @@
             android:layout_gravity="top|center"
             android:layout_marginTop="15dp"
             android:padding="5dp"
-            tools:text="The total sum of hours for each activity between January 2021 and December 2021"
+            tools:text="Activities in %\nJanuary 2022 - January 2022"
             android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="16sp"

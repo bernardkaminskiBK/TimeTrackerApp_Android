@@ -1,14 +1,23 @@
 package com.berni.timetrackerapp.ui.fragments.statistics
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.berni.timetrackerapp.model.database.FilterOrder
+import kotlinx.coroutines.launch
 
-class StatisticsViewModel : ViewModel() {
+class StatisticsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is Statistics fragment"
+    private val repository = StatisticsRepository(application)
+
+    val recordName = repository.recordName.asLiveData()
+    val recordDate = repository.recordDate.asLiveData()
+
+    fun saveNameOfRecord(name: String) = viewModelScope.launch {
+        repository.saveNameOfRecord(name)
     }
 
-    val text: LiveData<String> = _text
+    fun saveDateOfRecord(date: String) = viewModelScope.launch {
+        repository.savaDateOfRecord(date)
+    }
+
 }

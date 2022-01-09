@@ -34,8 +34,8 @@ class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {
     fun getTotalTimeRecords(): Flow<List<RecordTotalTime>> =
         timeTrackerDao.getTotalTimeRecords()
 
-    fun getAllMonths(): Flow<List<String>> =
-        timeTrackerDao.getAllMonths()
+    fun getAllDate(): Flow<List<String>> =
+        timeTrackerDao.getAllDate()
 
     fun getAllRecordsByMonth(month: String): Flow<List<RecordTotalTime>> =
         timeTrackerDao.getAllRecordsByMonth(month)

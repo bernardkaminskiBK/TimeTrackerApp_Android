@@ -58,7 +58,6 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         )
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

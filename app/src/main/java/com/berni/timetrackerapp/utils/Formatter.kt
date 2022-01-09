@@ -1,6 +1,5 @@
 package com.berni.timetrackerapp.utils
 
-import android.util.Log
 import kotlin.math.roundToInt
 
 object Formatter {
@@ -33,7 +32,7 @@ object Formatter {
             "11" -> return "November $year"
             "12" -> return "December $year"
         }
-        return "null"
+        return "year"
     }
 
 //    fun dateTimeToSeconds(time: String): Long {

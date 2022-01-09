@@ -3,6 +3,7 @@ package com.berni.timetrackerapp.ui.fragments.statistics
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -39,8 +40,8 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     private lateinit var lineChartData: ArrayList<RecordDateTime>
     private lateinit var pieChartData: ArrayList<PieEntry>
 
-    private var recordName: String? = ""
-    private var recordDate: String? = ""
+    private lateinit var dropDownNameFilter: AutoCompleteTextView
+    private lateinit var dropDownDateFilter: AutoCompleteTextView
 
     private var _mBinding: FragmentStatisticsBinding? = null
     private val mBinding get() = _mBinding!!
@@ -55,12 +56,69 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _mBinding = FragmentStatisticsBinding.bind(view)
 
+        dropDownNameFilter = mBinding.chartStatistics.actvLineChartName
+        dropDownDateFilter = mBinding.chartStatistics.actvBarChartTotalHours
+
         statisticsViewModel = ViewModelProvider(this)[StatisticsViewModel::class.java]
 
         barChartData = ArrayList()
         lineChartData = ArrayList()
         pieChartData = ArrayList()
 
+        setPieChartData()
+
+        database.getAllDate.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                val firstDateRecord = it[0]
+                val lastDateRecord = it[it.size - 1]
+
+                mBinding.chartStatistics.tvPieChart.text = getString(
+                    R.string.pieChartLabelText,
+                    firstDateRecord.dateToStringFormat(),
+                    lastDateRecord.dateToStringFormat()
+                )
+            }
+
+            val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
+            dropDownDateFilter.setAdapter(arrayAdapter)
+            dropDownDateFilter.setOnItemClickListener { parent, view, position, id ->
+                statisticsViewModel.saveDateOfRecord(arrayAdapter.getItem(position)!!)
+            }
+        }
+
+        database.allRecordNames.observe(viewLifecycleOwner) {
+            val arrayNameAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
+            dropDownNameFilter.setAdapter(arrayNameAdapter)
+            dropDownNameFilter.setOnItemClickListener { parent, view, position, id ->
+                statisticsViewModel.saveNameOfRecord(arrayNameAdapter.getItem(position)!!)
+            }
+        }
+
+        statisticsViewModel.recordDate.observe(viewLifecycleOwner) { date ->
+            dropDownDateFilter.setText(date!!, false)
+            setBarChartData(date)
+
+            statisticsViewModel.recordName.observe(viewLifecycleOwner) { name ->
+                dropDownNameFilter.setText(name!!, false)
+                setLineChartData(name, date)
+
+                mBinding.chartStatistics.tvBarChart.text = getString(
+                    R.string.barChartLabelText,
+                    date.dateToStringFormat()
+                )
+
+                mBinding.chartStatistics.tvLineChart.text = getString(
+                    R.string.lineChartLabelText,
+                    name,
+                    date.dateToStringFormat()
+                )
+
+            }
+        }
+
+    }
+
+    private fun setPieChartData() {
         database.getTotalTimeRecords.observe(viewLifecycleOwner) { recordTotalHoursTimeList ->
             for (recordTotalHours in recordTotalHoursTimeList) {
                 pieChartData.add(
@@ -72,84 +130,6 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             }
             setPieChart()
         }
-
-        database.getAllMonths.observe(viewLifecycleOwner) {
-            val barChart = mBinding.chartStatistics.actvBarChartTotalHours
-
-            var firstDateRecord = ""
-            var lastDateRecord = ""
-
-            if (it.isNotEmpty()) {
-                firstDateRecord = it[0]
-                lastDateRecord = it[it.size - 1]
-                setBarChartData(firstDateRecord)
-            }
-
-            val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
-            barChart.setAdapter(arrayAdapter)
-
-            recordDate = firstDateRecord
-
-            barChart.setText(recordDate, false)
-            barChart.setOnItemClickListener { parent, view, position, id ->
-                recordDate = arrayAdapter.getItem(position)!!
-                setBarChartData(recordDate!!)
-                setLineChartData(recordName!!)
-
-                initChartTextViews(firstDateRecord, lastDateRecord)
-            }
-
-            initChartTextViews(firstDateRecord, lastDateRecord)
-
-        }
-
-        database.allRecordNames.observe(viewLifecycleOwner) {
-            val lineChart = mBinding.chartStatistics.actvLineChartName
-
-            var firstRecordFromDB = ""
-
-            if (it.isNotEmpty()) {
-                firstRecordFromDB = it[0]
-                setLineChartData(firstRecordFromDB)
-            }
-
-            val arrayNameAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
-            lineChart.setAdapter(arrayNameAdapter)
-
-            recordName = firstRecordFromDB
-
-            lineChart.setText(recordName, false)
-            lineChart.setOnItemClickListener { parent, view, position, id ->
-                recordName = arrayNameAdapter.getItem(position)!!
-                setLineChartData(recordName!!)
-
-                mBinding.chartStatistics.tvLineChart.text = getString(
-                    R.string.lineChartLabelText,
-                    recordName,
-                    recordDate.dateToStringFormat()
-                )
-            }
-        }
-
-    }
-
-    private fun initChartTextViews(firstDateRecord: String, lastDateRecord: String) {
-        mBinding.chartStatistics.tvPieChart.text = getString(
-            R.string.pieChartLabelText,
-            firstDateRecord.dateToStringFormat(),
-            lastDateRecord.dateToStringFormat()
-        )
-
-        mBinding.chartStatistics.tvBarChart.text = getString(
-            R.string.barChartLabelText,
-            recordDate.dateToStringFormat()
-        )
-
-        mBinding.chartStatistics.tvLineChart.text = getString(
-            R.string.lineChartLabelText,
-            recordName,
-            recordDate.dateToStringFormat()
-        )
     }
 
     private fun setBarChartData(month: String) {
@@ -163,8 +143,8 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             }
     }
 
-    private fun setLineChartData(name: String) {
-        database.getRecordsByNameAndDate(name, recordDate!!)
+    private fun setLineChartData(name: String, date: String) {
+        database.getRecordsByNameAndDate(name, date)
             .observe(viewLifecycleOwner) { recordDateTimeList ->
                 lineChartData.clear()
                 if (recordDateTimeList.size > 1) {
@@ -231,7 +211,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         pieChart.setUsePercentValues(true)
         pieChart.isRotationEnabled = false
         pieChart.setDrawEntryLabels(true)
-        pieChart.legend.orientation = Legend.LegendOrientation.VERTICAL
+        pieChart.legend.orientation = Legend.LegendOrientation.HORIZONTAL
         pieChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.white)
         pieChart.legend.isWordWrapEnabled = true
     }
@@ -260,11 +240,11 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     }
 
     private fun initBarChart() {
-        //        hide grid lines
+        //hide grid lines
         barChart.axisLeft.setDrawGridLines(true)
         val xAxis: XAxis = barChart.xAxis
 
-        // left axis
+        //left axis
         barChart.axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.white)
         barChart.axisLeft.axisLineColor =
             ContextCompat.getColor(requireContext(), R.color.primaryColor)

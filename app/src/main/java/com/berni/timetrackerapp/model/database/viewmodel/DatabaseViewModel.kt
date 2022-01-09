@@ -36,7 +36,7 @@ class DatabaseViewModel(application: Application, private val repository: TimeTr
     val records = recordsFlow.asLiveData()
     val allRecordNames = repository.getAllRecordsName.asLiveData()
     val getTotalTimeRecords =  repository.getTotalTimeRecords().asLiveData()
-    val getAllMonths = repository.getAllMonths().asLiveData()
+    val getAllDate = repository.getAllDate().asLiveData()
 
     fun getAllRecordsByMonth(month: String) = repository.getAllRecordsByMonth(month).asLiveData()
     fun getAllRecordsDateByName(name: String) = repository.getAllRecordsDateByName(name).asLiveData()

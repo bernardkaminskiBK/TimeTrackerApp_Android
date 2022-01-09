@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:padding="10dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvChartFilters"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_marginTop="56dp"
         android:backgroundTint="@color/primaryDarkColor"
         android:elevation="25dp"
@@ -22,46 +22,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:baselineAligned="false"
             android:orientation="horizontal"
-            android:padding="15dp"
-            android:baselineAligned="false">
+            android:padding="10dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+                style="@style/CustomFilledBoxExposedDropdownMenuStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginEnd="5dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                app:endIconTint="@color/white"
+                app:startIconDrawable="@drawable/ic_baseline_date_range_24"
+                app:startIconTint="@color/white">
 
                 <AutoCompleteTextView
                     android:id="@+id/actvBarChartTotalHours"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@color/gray"
+                    android:backgroundTint="@color/primaryDarkColor"
                     android:inputType="none"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
-                    android:textColor="@color/primaryDarkColor"
+                    android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+                style="@style/CustomFilledBoxExposedDropdownMenuStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
+                app:endIconTint="@color/white"
+                app:startIconDrawable="@drawable/activity_check"
+                app:startIconTint="@color/white">
 
                 <AutoCompleteTextView
                     android:id="@+id/actvLineChartName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@color/gray"
+                    android:backgroundTint="@color/primaryDarkColor"
                     android:inputType="none"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
-                    android:textColor="@color/primaryDarkColor"
-                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,11 +96,11 @@
             android:layout_gravity="top|center"
             android:layout_marginTop="15dp"
             android:padding="5dp"
-            tools:text="Activities in %\nJanuary 2022 - January 2022"
             android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="Activities in %\nJanuary 2022 - January 2022" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieChart"
@@ -124,11 +132,11 @@
             android:layout_gravity="top|center"
             android:layout_marginTop="15dp"
             android:padding="5dp"
-            tools:text="The total sum of hours for each activity in January 2021"
             android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="The total sum of hours for each activity in January 2021" />
 
 
         <com.github.mikephil.charting.charts.BarChart
@@ -161,11 +169,11 @@
             android:layout_gravity="top|center"
             android:layout_marginTop="15dp"
             android:padding="5dp"
-            tools:text="Daily spent time with cooking in January 2021"
             android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="Daily spent time with cooking in January 2021" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart"

@@ -25,4 +25,7 @@
 
     <style name="Theme.TimeTrackerApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="CustomFilledBoxExposedDropdownMenuStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@drawable/text_input_box_stroke_color</item>
+    </style>
 </resources>

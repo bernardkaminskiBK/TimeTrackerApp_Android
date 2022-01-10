@@ -14,7 +14,7 @@
         android:id="@+id/action_jump_to_statistics"
         android:icon="@drawable/ic_statistics_24"
         android:orderInCategory="101"
-        android:title="@string/filter"
+        android:title="@string/statistics"
         android:iconTint="@color/white"
         app:showAsAction="always"/>
 

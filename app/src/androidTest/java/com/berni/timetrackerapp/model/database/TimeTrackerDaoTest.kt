@@ -106,7 +106,7 @@ class TimeTrackerDaoTest {
             dao.insertRecord(it)
         }
 
-        val allFilteredRecordNames = dao.getFilteredRecordsListByName("Cooking").first()
+        val allFilteredRecordNames = dao.getFilteredRecordsListByNameByDate("Cooking").first()
         val listOfExpectedFilteredRecordNames = RecordTestData.listOfRecordsFilteredByName()
 
         assertThat(allFilteredRecordNames).isEqualTo(listOfExpectedFilteredRecordNames)

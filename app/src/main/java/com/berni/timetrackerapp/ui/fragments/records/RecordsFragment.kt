@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -32,6 +33,7 @@ import com.berni.timetrackerapp.ui.adapters.RecordAdapter
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
 import com.berni.timetrackerapp.utils.Converter.convertTimeToSeconds
 import com.berni.timetrackerapp.utils.TestData
+import com.berni.timetrackerapp.utils.onQueryTextChanged
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -76,7 +78,7 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         }
 
 //        @RequiresApi(Build.VERSION_CODES.O)
-//        for (i in TestData.randomTestDataToDB(160)) {
+//        for (i in TestData.randomTestDataToDB(10)) {
 //            database.insert(i)
 //        }
 
@@ -103,6 +105,16 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.records_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.onQueryTextChanged {
+            database.onQuerySelected(it)
+            database.onFilterOrderSelected(FilterOrder.BY_NAME)
+            recordsViewModel.saveRecordTitle("Records")
+        }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -12,7 +12,7 @@ interface TimeTrackerDao {
     fun getRecords(filterQuery: String, filterOrder: FilterOrder) =
         when (filterOrder) {
             FilterOrder.SHOW_ALL -> getRecordsList()
-            FilterOrder.BY_NAME -> getFilteredRecordsListByName(filterQuery)
+            FilterOrder.BY_NAME -> getFilteredRecordsListByNameByDate(filterQuery)
         }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -30,8 +30,8 @@ interface TimeTrackerDao {
     @Query("SELECT * FROM TIME_TRACKER_TABLE ORDER BY date")
     fun getRecordsList(): Flow<List<Record>>
 
-    @Query("SELECT * FROM TIME_TRACKER_TABLE WHERE name = :filterName ORDER BY date")
-    fun getFilteredRecordsListByName(filterName: String): Flow<List<Record>>
+    @Query("SELECT * FROM TIME_TRACKER_TABLE WHERE name LIKE '%' || :filterQuery || '%' OR strftime('%d.%m.%Y',datetime(date/1000, 'unixepoch')) LIKE '%' || :filterQuery || '%' order by date")
+    fun getFilteredRecordsListByNameByDate(filterQuery: String): Flow<List<Record>>
 
     @Query("SELECT name as name, SUM(time) as totalTime FROM TIME_TRACKER_TABLE GROUP BY name")
     fun getTotalTimeRecords(): Flow<List<RecordTotalTime>>

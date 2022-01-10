@@ -9,7 +9,7 @@
     <string name="add_name">Please add the name of the record</string>
     <string name="initialStateOfTimer">00:00:00</string>
     <string name="save_your_record">Save your record:</string>
-    <string name="add_your_record">Add your record:</string>
+    <string name="add_new_record">Add new record:</string>
     <string name="save">Save</string>
     <string name="success_save">Your record was successfully saved.</string>
     <string name="date">Date</string>

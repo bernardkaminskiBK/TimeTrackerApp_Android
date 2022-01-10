@@ -28,9 +28,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="15dp"
-                android:text="@string/add_your_record"
+                android:text="@string/add_new_record"
                 android:textColor="@color/white"
-                android:textSize="31sp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -46,9 +46,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tiNameOfProgress"
                 android:layout_width="250dp"
-                android:layout_height="25dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/gradient_background_bottom"
                 android:hint="@string/name_of_record"
                 android:maxLines="1"
@@ -61,7 +61,7 @@
             <LinearLayout
                 android:id="@+id/llButtons"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:layout_gravity="bottom|center"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp">

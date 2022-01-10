@@ -40,7 +40,7 @@ class DatabaseViewModel(application: Application, private val repository: TimeTr
 
     fun getAllRecordsByMonth(month: String) = repository.getAllRecordsByMonth(month).asLiveData()
     fun getAllRecordsDateByName(name: String) = repository.getAllRecordsDateByName(name).asLiveData()
-    fun getRecordsByNameAndDate(name: String, date: String) = repository.getRecordsByNameAndDate(name, date).asLiveData()
+    fun getRecordsByNameByDateSumTimeWhereIsSameDate(name: String, date: String) = repository.getRecordsByNameByDateSumTimeWhereIsSameDate(name, date).asLiveData()
 
     fun insert(record: Record) = viewModelScope.launch {
         repository.insertRecord(record)

@@ -43,8 +43,8 @@ class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {
     fun getAllRecordsDateByName(name: String) : Flow<List<String>> =
         timeTrackerDao.getAllRecordsDateByName(name)
 
-    fun getRecordsByNameAndDate(name: String, date: String) : Flow<List<RecordDateTime>> =
-        timeTrackerDao.getRecordsByNameAndDate(name, date)
+    fun getRecordsByNameByDateSumTimeWhereIsSameDate(name: String, date: String) : Flow<List<RecordDateTime>> =
+        timeTrackerDao.getRecordsByNameByDateSumTimeWhereIsSameDate(name, date)
 
     val getAllRecordsName = timeTrackerDao.getAllRecordNames()
 

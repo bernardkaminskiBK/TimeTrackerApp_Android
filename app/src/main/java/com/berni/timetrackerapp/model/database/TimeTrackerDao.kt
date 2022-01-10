@@ -45,8 +45,8 @@ interface TimeTrackerDao {
     @Query("SELECT DISTINCT strftime('%m/%Y',datetime(date/1000, 'unixepoch')) FROM time_tracker_table WHERE name = :name  order by date")
     fun getAllRecordsDateByName(name: String) : Flow<List<String>>
 
-    @Query("SELECT strftime('%d/%m',datetime(date/1000, 'unixepoch')) as date, time as time FROM time_tracker_table WHERE name = :name AND  strftime('%m/%Y',datetime(date/1000, 'unixepoch')) = :date order by date")
-    fun getRecordsByNameAndDate(name: String, date: String): Flow<List<RecordDateTime>>
+    @Query("SELECT strftime('%d/%m',datetime(date/1000, 'unixepoch')) as day, name as name,  SUM(time) as time FROM time_tracker_table WHERE name = :name AND  strftime('%m/%Y',datetime(date/1000, 'unixepoch')) = :date  group by day, name order by date")
+    fun getRecordsByNameByDateSumTimeWhereIsSameDate(name: String, date: String): Flow<List<RecordDateTime>>
 
     @Query("DELETE FROM TIME_TRACKER_TABLE")
     suspend fun deleteAllRecords()

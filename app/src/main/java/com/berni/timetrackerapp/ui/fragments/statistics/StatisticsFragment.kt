@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.application.TimeTrackerApplication
@@ -165,7 +164,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     }
 
     private fun setLineChartData(name: String, date: String) {
-        database.getRecordsByNameAndDate(name, date)
+        database.getRecordsByNameByDateSumTimeWhereIsSameDate(name, date)
             .observe(viewLifecycleOwner) { recordDateTimeList ->
                 lineChartData.clear()
                 if (recordDateTimeList.size > 1) {
@@ -311,7 +310,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             entries.add(Entry(i.toFloat(), totalHour.time.convertSecondsToHours()))
         }
 
-        val lineDataSet = LineDataSet(entries, "")
+        val lineDataSet = LineDataSet(entries, "Activity in hours 1 hour is 1.0, 30 minute is 0.5, 15 minute is 0.25...")
         lineDataSet.valueTextSize = 14f
         lineDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.white)
 
@@ -338,8 +337,10 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         lineChart.axisLeft.axisLineColor =
             ContextCompat.getColor(requireContext(), R.color.primaryColor)
 
-        //remove legend
-        lineChart.legend.isEnabled = false
+        //remove legend Legend.LegendOrientation.HORIZONTAL
+        lineChart.legend.isEnabled = true
+        lineChart.legend.direction = Legend.LegendDirection.LEFT_TO_RIGHT
+        lineChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.white)
 
         //remove description label
         lineChart.description.isEnabled = false
@@ -353,7 +354,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         xAxis.valueFormatter = LineChartAxisFormatter()
         xAxis.setDrawLabels(true)
         xAxis.granularity = 1f
-        xAxis.labelRotationAngle = 0f
+        xAxis.labelRotationAngle = -20.0f
         xAxis.textColor = ContextCompat.getColor(requireContext(), R.color.white)
         xAxis.textSize = 11f
     }
@@ -378,7 +379,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
             val index = value.toInt()
             return if (index < lineChartData.size) {
-                lineChartData[index].date
+                lineChartData[index].day
             } else {
                 ""
             }

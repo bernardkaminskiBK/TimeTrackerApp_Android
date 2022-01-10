@@ -30,6 +30,7 @@ import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.ui.activities.MainActivity
 import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
+import com.berni.timetrackerapp.ui.fragments.statistics.StatisticsViewModel
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
 import com.berni.timetrackerapp.utils.Converter.convertTimeToSeconds
 import com.berni.timetrackerapp.utils.TestData
@@ -78,7 +79,7 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         }
 
 //        @RequiresApi(Build.VERSION_CODES.O)
-//        for (i in TestData.randomTestDataToDB(10)) {
+//        for (i in TestData.randomTestDataToDB(400)) {
 //            database.insert(i)
 //        }
 

@@ -111,13 +111,13 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
     private fun startTimer() {
         timerViewModel.startTimer()
         mBinding.ivStartStop
-            .setImageResource(R.drawable.ic_baseline_pause_white_80)
+            .setImageResource(R.drawable.ic_baseline_pause_white_70)
     }
 
     private fun stopTimer() {
         timerViewModel.stopTimer()
         mBinding.ivStartStop
-            .setImageResource(R.drawable.ic_baseline_play_arrow_white_80)
+            .setImageResource(R.drawable.ic_baseline_play_arrow_white_70)
     }
 
     private fun resetTimer() {
@@ -129,7 +129,7 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
 
         timerViewModel.resetTimer()
         mBinding.ivStartStop
-            .setImageResource(R.drawable.ic_baseline_play_arrow_white_80)
+            .setImageResource(R.drawable.ic_baseline_play_arrow_white_70)
         mBinding.tvStopwatch.text = getString(R.string.initialStateOfTimer)
     }
 

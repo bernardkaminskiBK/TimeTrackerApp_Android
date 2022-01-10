@@ -1,6 +1,7 @@
 package com.berni.timetrackerapp.ui.fragments.statistics
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -60,8 +61,8 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _mBinding = FragmentStatisticsBinding.bind(view)
 
-        dropDownNameFilter = mBinding.chartStatistics.actvLineChartName
-        dropDownDateFilter = mBinding.chartStatistics.actvBarChartTotalHours
+        dropDownNameFilter = mBinding.actvLineChartName
+        dropDownDateFilter = mBinding.actvBarChartTotalHours
 
         statisticsViewModel = ViewModelProvider(this)[StatisticsViewModel::class.java]
 
@@ -81,6 +82,9 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
                     firstDateRecord.dateToStringFormat(),
                     lastDateRecord.dateToStringFormat()
                 )
+            } else {
+                statisticsViewModel.saveDateOfRecord("Date")
+                statisticsViewModel.saveNameOfRecord("Name")
             }
 
             val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
@@ -171,6 +175,9 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
                     for (recordByMonth in recordDateTimeList) {
                         lineChartData.add(recordByMonth)
                     }
+                    setLineChart()
+                } else {
+                    lineChartData.clear()
                     setLineChart()
                 }
             }
@@ -310,7 +317,10 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             entries.add(Entry(i.toFloat(), totalHour.time.convertSecondsToHours()))
         }
 
-        val lineDataSet = LineDataSet(entries, "Activity in hours 1 hour is 1.0, 30 minute is 0.5, 15 minute is 0.25...")
+        val lineDataSet = LineDataSet(
+            entries,
+            "Activity in hours 1 hour is 1.0, 30 minute is 0.5, 15 minute is 0.25..."
+        )
         lineDataSet.valueTextSize = 14f
         lineDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.white)
 

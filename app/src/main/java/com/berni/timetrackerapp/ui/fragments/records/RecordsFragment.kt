@@ -79,7 +79,7 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         }
 
 //        @RequiresApi(Build.VERSION_CODES.O)
-//        for (i in TestData.randomTestDataToDB(400)) {
+//        for (i in TestData.randomTestDataToDB(4440)) {
 //            database.insert(i)
 //        }
 

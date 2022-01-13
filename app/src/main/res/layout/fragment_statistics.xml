@@ -70,7 +70,7 @@
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
             app:endIconTint="@color/white"
-            app:startIconDrawable="@drawable/activity_check"
+            app:startIconDrawable="@drawable/ico_activity_check"
             app:startIconTint="@color/white">
 
             <AutoCompleteTextView

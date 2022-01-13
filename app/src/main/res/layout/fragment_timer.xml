@@ -15,7 +15,7 @@
         android:layout_marginTop="56dp"
         android:background="@drawable/gradient_background_bottom"
         android:elevation="15dp"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

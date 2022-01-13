@@ -40,4 +40,5 @@
     <string name="barChartLabelText">The total sum of hours for each activity in %1$s</string>
     <string name="lineChartLabelText">Daily spent time with %1$s in %2$s</string>
     <string name="search">Search</string>
+    <string name="overview">Overview</string>
 </resources>

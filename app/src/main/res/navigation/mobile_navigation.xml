@@ -44,6 +44,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_overview"
+        android:name="com.berni.timetrackerapp.ui.fragments.overview.OverviewFragment"
+        android:label="Overview"
+        tools:layout="@layout/overview_fragment"/>
+
+    <fragment
         android:id="@+id/nav_settings"
         android:name="com.berni.timetrackerapp.ui.fragments.settings.SettingsFragment"
         android:label="Settings"

@@ -31,7 +31,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="56dp"
         android:layout_gravity="center"
-        android:background="@drawable/filter_background_rounded_top_cornes"
+        android:background="@drawable/filter_background_rounded_top_corners"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:padding="10dp"

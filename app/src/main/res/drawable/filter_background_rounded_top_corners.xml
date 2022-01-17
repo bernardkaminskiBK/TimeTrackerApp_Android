@@ -9,8 +9,6 @@
         android:type="linear" />
 
     <corners
-        android:topLeftRadius="25dp"
-        android:topRightRadius="25dp"
-        android:bottomRightRadius="25dp"
-        android:bottomLeftRadius="25dp"/>
+        android:topLeftRadius="@dimen/card_view_corner_radius"
+        android:topRightRadius="@dimen/card_view_corner_radius"/>
 </shape>

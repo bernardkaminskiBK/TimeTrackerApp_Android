@@ -18,7 +18,7 @@
         android:layout_marginBottom="2dp"
         android:background="@color/white"
         android:elevation="25dp"
-        app:cardCornerRadius="25dp">
+        app:cardCornerRadius="@dimen/card_view_corner_radius">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

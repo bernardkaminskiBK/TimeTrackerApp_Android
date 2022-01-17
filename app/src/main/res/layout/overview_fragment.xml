@@ -14,7 +14,7 @@
         android:layout_marginTop="56dp"
         android:elevation="15dp"
         app:cardBackgroundColor="@color/primaryDarkColor"
-        app:cardCornerRadius="25dp"
+        app:cardCornerRadius="@dimen/card_view_corner_radius"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

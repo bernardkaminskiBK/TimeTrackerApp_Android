@@ -1,19 +1,20 @@
 package com.berni.timetrackerapp.ui.fragments.overview
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.berni.timetrackerapp.R
-import com.berni.timetrackerapp.databinding.FragmentRecordsBinding
-import com.berni.timetrackerapp.databinding.FragmentSettingsBinding
 import com.berni.timetrackerapp.databinding.OverviewFragmentBinding
 import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.ui.adapters.OverviewAdapter
-import com.berni.timetrackerapp.ui.fragments.settings.SettingsViewModel
+import com.google.android.material.transition.MaterialElevationScale
 
 class OverviewFragment : Fragment(R.layout.overview_fragment) {
 
@@ -30,8 +31,33 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
 
         mBinding.rvOverview.layoutManager = GridLayoutManager(requireActivity(), 2)
         val overviewAdapter = OverviewAdapter(this)
+
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+
         mBinding.rvOverview.adapter = overviewAdapter
-        overviewAdapter.recordsList(listOfRecords())
+        overviewAdapter.submitList(listOfRecords())
+
+        overviewAdapter.setOnClickListener(object : OverviewAdapter.OnClickListener {
+            override fun onRecordClick(cardView: View, record: Record) {
+
+                val recordCardDetailTransitionName =
+                    getString(R.string.record_card_detail_transition_name)
+                val extras = FragmentNavigatorExtras(cardView to recordCardDetailTransitionName)
+                val directions =
+                    OverviewFragmentDirections.actionOverviewFragmentToOverviewDetailFragment()
+                findNavController().navigate(directions, extras)
+
+                exitTransition = MaterialElevationScale(false).apply {
+                    duration = 300L
+                }
+                reenterTransition = MaterialElevationScale(true).apply {
+                    duration = 300L
+                }
+
+            }
+
+        })
     }
 
     override fun onDestroy() {
@@ -39,7 +65,7 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
         _mBinding = null
     }
 
-    fun listOfRecords() : List<Record> {
+    fun listOfRecords(): List<Record> {
         val list = mutableListOf<Record>()
         list.add(Record(id = 1, 5000000L, "Duolingo", 0))
         list.add(Record(id = 2, 3265000L, "Duolingo", 0))
@@ -50,5 +76,6 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
         list.add(Record(id = 7, 3265000L, "Cooking", 0))
         return list
     }
+
 
 }

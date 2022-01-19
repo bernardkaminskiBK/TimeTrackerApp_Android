@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/gradient_background_top"
+    android:background="@color/primaryDarkColor"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
@@ -12,7 +12,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
+        android:layout_margin="1dp"
         app:cardBackgroundColor="@color/primaryColor"
         app:cardCornerRadius="15dp">
 
@@ -23,7 +23,8 @@
             android:background="@drawable/full_rounded_background"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:layout_margin="1dp"
+            android:padding="14dp">
 
             <TextView
                 android:id="@+id/tvDate"
@@ -33,7 +34,7 @@
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 tools:text="20:57 02.12.2021" />
 
             <EditText
@@ -45,7 +46,7 @@
                 android:padding="8dp"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 tools:text="Duolingo" />
 
             <TextView
@@ -56,7 +57,7 @@
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 tools:text="02:03:00" />
 
         </LinearLayout>

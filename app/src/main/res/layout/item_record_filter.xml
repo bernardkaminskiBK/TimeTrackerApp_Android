@@ -21,7 +21,8 @@
             android:layout_gravity="center"
             android:background="@drawable/full_rounded_background"
             android:orientation="horizontal"
-            android:padding="6dp">
+            android:layout_margin="1dp"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/tvName"
@@ -31,7 +32,7 @@
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 tools:text="duolingo" />
 
         </LinearLayout>

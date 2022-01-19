@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tvPieChart"
+            android:id="@+id/tv_pie_chart_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
@@ -26,7 +26,7 @@
             android:padding="5dp"
             android:textAlignment="center"
             android:textColor="@color/gray"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             tools:text="Activities in %\nJanuary 2022 - January 2022" />
 
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@id/cvPieChart">
 
         <TextView
-            android:id="@+id/tvBarChart"
+            android:id="@+id/tv_bar_chart_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
@@ -62,7 +62,7 @@
             android:padding="5dp"
             android:textAlignment="center"
             android:textColor="@color/gray"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             tools:text="The total sum of hours for each activity in January 2021" />
 
@@ -91,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cvBarChart">
 
         <TextView
-            android:id="@+id/tvLineChart"
+            android:id="@+id/tv_line_chart_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
@@ -99,7 +99,7 @@
             android:padding="5dp"
             android:textAlignment="center"
             android:textColor="@color/gray"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             tools:text="Daily spent time with cooking in January 2021" />
 
@@ -110,7 +110,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="10dp"
-            android:background="@color/primaryDarkColor" />
+            android:background="@color/primaryDarkColor"
+            android:forceHasOverlappingRendering="true"/>
 
     </androidx.cardview.widget.CardView>
 

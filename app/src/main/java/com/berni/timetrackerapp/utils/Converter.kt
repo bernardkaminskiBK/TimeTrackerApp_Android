@@ -32,4 +32,11 @@ object Converter {
         return 0.0f
     }
 
+    fun Float?.roundTwoDecimalPlaces() : Float {
+        if (this != null) {
+            return (this * 100).roundToInt() / 100.0f
+        }
+        return 0.0f
+    }
+
 }

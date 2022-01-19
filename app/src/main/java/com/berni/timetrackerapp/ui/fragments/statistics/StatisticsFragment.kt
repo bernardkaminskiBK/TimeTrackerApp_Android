@@ -19,7 +19,9 @@ import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.RecordDateTime
 import com.berni.timetrackerapp.model.entities.RecordTotalTime
+import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToHours
+import com.berni.timetrackerapp.utils.Converter.roundTwoDecimalPlaces
 import com.berni.timetrackerapp.utils.Formatter.dateToStringFormat
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
@@ -30,7 +32,7 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 
 class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
@@ -70,13 +72,57 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         pieChartData = ArrayList()
 
         setPieChartData()
+        observePieChartTitle()
+        observeDropDownNameFilterData()
+        observeBartChartData()
 
+        setHasOptionsMenu(true)
+    }
+
+    private fun observeBartChartData() {
+        statisticsViewModel.recordDate.observe(viewLifecycleOwner) { date ->
+            dropDownDateFilter.setText(date!!, false)
+            setBarChartData(date)
+
+            mBinding.chartStatistics.tvBarChartTitle.text = getString(
+                R.string.barChartLabelText,
+                date.dateToStringFormat()
+            )
+
+            observeLineChartData(date)
+        }
+    }
+
+    private fun observeLineChartData(date: String) {
+        statisticsViewModel.recordName.observe(viewLifecycleOwner) { name ->
+            dropDownNameFilter.setText(name!!, false)
+            setLineChartData(name, date)
+
+            mBinding.chartStatistics.tvLineChartTitle.text = getString(
+                R.string.lineChartLabelText,
+                name,
+                date.dateToStringFormat()
+            )
+        }
+    }
+
+    private fun observeDropDownNameFilterData() {
+        database.allRecordNames.observe(viewLifecycleOwner) {
+            val arrayNameAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
+            dropDownNameFilter.setAdapter(arrayNameAdapter)
+            dropDownNameFilter.setOnItemClickListener { parent, view, position, id ->
+                statisticsViewModel.saveNameOfRecord(arrayNameAdapter.getItem(position)!!)
+            }
+        }
+    }
+
+    private fun observePieChartTitle() {
         database.getAllDate.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 val firstDateRecord = it[0]
                 val lastDateRecord = it[it.size - 1]
 
-                mBinding.chartStatistics.tvPieChart.text = getString(
+                mBinding.chartStatistics.tvPieChartTitle.text = getString(
                     R.string.pieChartLabelText,
                     firstDateRecord.dateToStringFormat(),
                     lastDateRecord.dateToStringFormat()
@@ -86,44 +132,16 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
                 statisticsViewModel.saveNameOfRecord("Name")
             }
 
-            val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
-            dropDownDateFilter.setAdapter(arrayAdapter)
-            dropDownDateFilter.setOnItemClickListener { parent, view, position, id ->
-                statisticsViewModel.saveDateOfRecord(arrayAdapter.getItem(position)!!)
-            }
+            observeDropDownDateFilterData(it)
         }
+    }
 
-        database.allRecordNames.observe(viewLifecycleOwner) {
-            val arrayNameAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
-            dropDownNameFilter.setAdapter(arrayNameAdapter)
-            dropDownNameFilter.setOnItemClickListener { parent, view, position, id ->
-                statisticsViewModel.saveNameOfRecord(arrayNameAdapter.getItem(position)!!)
-            }
+    private fun observeDropDownDateFilterData(it: List<String>) {
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, it)
+        dropDownDateFilter.setAdapter(arrayAdapter)
+        dropDownDateFilter.setOnItemClickListener { parent, view, position, id ->
+            statisticsViewModel.saveDateOfRecord(arrayAdapter.getItem(position)!!)
         }
-
-        statisticsViewModel.recordDate.observe(viewLifecycleOwner) { date ->
-            dropDownDateFilter.setText(date!!, false)
-            setBarChartData(date)
-
-            statisticsViewModel.recordName.observe(viewLifecycleOwner) { name ->
-                dropDownNameFilter.setText(name!!, false)
-                setLineChartData(name, date)
-
-                mBinding.chartStatistics.tvBarChart.text = getString(
-                    R.string.barChartLabelText,
-                    date.dateToStringFormat()
-                )
-
-                mBinding.chartStatistics.tvLineChart.text = getString(
-                    R.string.lineChartLabelText,
-                    name,
-                    date.dateToStringFormat()
-                )
-
-            }
-        }
-
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -143,6 +161,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
     private fun setPieChartData() {
         database.getTotalTimeRecords.observe(viewLifecycleOwner) { recordTotalHoursTimeList ->
+            pieChartData.clear()
             for (recordTotalHours in recordTotalHoursTimeList) {
                 pieChartData.add(
                     PieEntry(
@@ -201,11 +220,18 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         val data = PieData(dataSet)
 
         // In Percentage
-        data.setValueFormatter(PercentFormatter())
+//        data.setValueFormatter(PercentFormatter())
+        data.setValueFormatter(object : ValueFormatter() {
+            override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
+                return "${value.roundTwoDecimalPlaces()}%"
+            }
+        })
+
         dataSet.sliceSpace = 3f
         dataSet.colors = colors
         pieChart.data = data
-        data.setValueTextSize(16f)
+
+        data.setValueTextSize(12f)
         data.setValueTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
         pieChart.animateY(1400, Easing.EaseInOutQuad)
@@ -237,6 +263,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         pieChart.setUsePercentValues(true)
         pieChart.isRotationEnabled = false
         pieChart.setDrawEntryLabels(true)
+
         pieChart.legend.orientation = Legend.LegendOrientation.HORIZONTAL
         pieChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.white)
         pieChart.legend.isWordWrapEnabled = true
@@ -256,13 +283,20 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         val barDataSet = BarDataSet(entries, getString(R.string.bar_chart_legend_title))
         barDataSet.color = ContextCompat.getColor(requireContext(), R.color.primaryColor)
         barDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.white)
-        barDataSet.valueTextSize = 16f
+        barDataSet.valueTextSize = 9f
+        barDataSet.valueFormatter = xAxisBarChartLabelFormatter
 
         val data = BarData(barDataSet)
-        barChart.data = data // set the data and list of lables into chart
+        barChart.data = data // set the data and list of labels into chart
 
         barChart.postInvalidate()
+    }
 
+    private val xAxisBarChartLabelFormatter = object : ValueFormatter() {
+        override fun getBarLabel(barEntry: BarEntry?): String {
+            val label = ((barEntry?.y!!.toFloat()) * 3600).toLong()
+            return label.convertSecondsToDateTime()
+        }
     }
 
     private fun initBarChart() {
@@ -272,8 +306,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
         //left axis
         barChart.axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.white)
-        barChart.axisLeft.axisLineColor =
-            ContextCompat.getColor(requireContext(), R.color.primaryColor)
+        barChart.axisLeft.axisLineColor = ContextCompat.getColor(requireContext(), R.color.primaryColor)
         barChart.axisLeft.gridColor = ContextCompat.getColor(requireContext(), R.color.primaryColor)
         barChart.axisLeft.textSize = 14f
         barChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.white)
@@ -283,7 +316,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
         //remove legend
         barChart.legend.isEnabled = true
-        barChart.legend.textSize = 12f
+        barChart.legend.textSize = 10f
 
         //remove description label
         barChart.description.isEnabled = false
@@ -298,8 +331,8 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         xAxis.granularity = 1f
         xAxis.labelRotationAngle = 0f
         xAxis.textColor = ContextCompat.getColor(requireContext(), R.color.white)
-        barChart.xAxis.setDrawGridLines(false)
-        barChart.xAxis.setDrawAxisLine(false)
+        xAxis.setDrawGridLines(false)
+        xAxis.setDrawAxisLine(false)
         xAxis.textSize = 11f
     }
 
@@ -316,22 +349,26 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             entries.add(Entry(i.toFloat(), totalHour.time.convertSecondsToHours()))
         }
 
-        val lineDataSet = LineDataSet(
-            entries,
-            "Activity in hours 1 hour is 1.0, 30 minute is 0.5, 15 minute is 0.25..."
-        )
-        lineDataSet.valueTextSize = 14f
+        val lineDataSet = LineDataSet(entries, getString(R.string.line_chart_legend_title))
+        lineDataSet.valueTextSize = 8f
         lineDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.white)
+        lineDataSet.valueFormatter = xAxisLineChartLabelFormatter
 
         val data = LineData(lineDataSet)
         lineChart.data = data
 
         lineChart.invalidate()
+    }
 
+    private val xAxisLineChartLabelFormatter = object : ValueFormatter() {
+        override fun getFormattedValue(value: Float): String {
+            val label = (value * 3600).toLong()
+            return label.convertSecondsToDateTime()
+        }
     }
 
     private fun initLineChart() {
-        //        hide grid lines
+        //hide grid lines
         lineChart.axisLeft.setDrawGridLines(false)
         val xAxis: XAxis = lineChart.xAxis
         xAxis.setDrawGridLines(false)
@@ -343,12 +380,12 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         // axis left
         lineChart.axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.white)
         lineChart.axisLeft.textSize = 14f
-        lineChart.axisLeft.axisLineColor =
-            ContextCompat.getColor(requireContext(), R.color.primaryColor)
+        lineChart.axisLeft.axisLineColor = ContextCompat.getColor(requireContext(), R.color.primaryColor)
 
         //remove legend Legend.LegendOrientation.HORIZONTAL
         lineChart.legend.isEnabled = true
         lineChart.legend.direction = Legend.LegendDirection.LEFT_TO_RIGHT
+        lineChart.legend.textSize = 10f
         lineChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.white)
 
         //remove description label
@@ -358,7 +395,6 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         lineChart.animateX(1000, Easing.EaseInSine)
 
         // to draw label on xAxis
-
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.valueFormatter = LineChartAxisFormatter()
         xAxis.setDrawLabels(true)

@@ -39,9 +39,7 @@ class OverviewAdapter(val fragment: Fragment) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val record = getItem(position)
 
-        holder.cardView.transitionName =
-            fragment.getString(R.string.record_card_transition_name, record.id)
-
+        holder.cardView.transitionName = fragment.getString(R.string.record_card_transition_name, record.id)
         holder.title.text = record.name
         holder.itemView.setOnClickListener {
             onClickListener!!.onRecordClick(holder.cardView, record)

@@ -22,11 +22,7 @@ class SettingsFragment : Fragment() {
     ): View? {
 
         settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
-
-        settingsViewModel.text.observe(viewLifecycleOwner, Observer {
-            mBinding.tvSettings.text = it
-        })
+            ViewModelProvider(this)[SettingsViewModel::class.java]
 
         _mBinding = FragmentSettingsBinding.inflate(inflater, container, false)
         return mBinding.root

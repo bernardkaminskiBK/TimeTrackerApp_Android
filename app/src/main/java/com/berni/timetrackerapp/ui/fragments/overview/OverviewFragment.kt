@@ -1,17 +1,19 @@
 package com.berni.timetrackerapp.ui.fragments.overview
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.berni.timetrackerapp.R
+import com.berni.timetrackerapp.application.TimeTrackerApplication
 import com.berni.timetrackerapp.databinding.OverviewFragmentBinding
+import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
+import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.ui.adapters.OverviewAdapter
 import com.google.android.material.transition.MaterialElevationScale
@@ -19,25 +21,37 @@ import com.google.android.material.transition.MaterialElevationScale
 class OverviewFragment : Fragment(R.layout.overview_fragment) {
 
     private lateinit var overviewViewModel: OverviewViewModel
+    private val overviewAdapter = OverviewAdapter(this)
 
     private var _mBinding: OverviewFragmentBinding? = null
     private val mBinding get() = _mBinding!!
 
+    private val database: DatabaseViewModel by viewModels {
+        TimeTrackerViewModelFactory(
+            requireActivity().application,
+            (requireActivity().application as TimeTrackerApplication).repository
+        )
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
 
         _mBinding = OverviewFragmentBinding.bind(view)
         overviewViewModel = ViewModelProvider(this)[OverviewViewModel::class.java]
 
         mBinding.rvOverview.layoutManager = GridLayoutManager(requireActivity(), 2)
-        val overviewAdapter = OverviewAdapter(this)
-
-        postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
-
         mBinding.rvOverview.adapter = overviewAdapter
+
+
         overviewAdapter.submitList(listOfRecords())
 
+        navigateToChosenDirection()
+    }
+
+    private fun navigateToChosenDirection() {
         overviewAdapter.setOnClickListener(object : OverviewAdapter.OnClickListener {
             override fun onRecordClick(cardView: View, record: Record) {
 
@@ -54,9 +68,7 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
                 reenterTransition = MaterialElevationScale(true).apply {
                     duration = 300L
                 }
-
             }
-
         })
     }
 

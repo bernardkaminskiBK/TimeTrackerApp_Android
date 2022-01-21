@@ -39,7 +39,8 @@
                     android:layout_height="match_parent"
                     android:contentDescription="overview record image"
                     android:scaleType="fitXY"
-                    android:src="@drawable/duolingo" />
+                    android:src="@drawable/placeholder"
+                    android:background="@color/primaryDarkColor" />
             </androidx.cardview.widget.CardView>
 
             <TextView

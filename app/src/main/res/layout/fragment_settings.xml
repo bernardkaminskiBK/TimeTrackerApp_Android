@@ -6,11 +6,10 @@
     tools:context=".ui.fragments.timer.TimerFragment"
     android:background="@color/gray">
 
-    <TextView
-        android:id="@+id/tvSettings"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Settings fragment"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:src="@drawable/under_construction"/>
 
 </RelativeLayout>

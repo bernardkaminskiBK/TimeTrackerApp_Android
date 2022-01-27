@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/primaryColor">
 
     <TextView
@@ -13,13 +14,73 @@
         android:paddingStart="45dp"
         android:paddingEnd="15dp"
         android:paddingBottom="10dp"
-        android:text="Duolingo"
+        tools:text="Duolingo"
         android:textColor="@color/gray"
         android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llChartFilters"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="56dp"
+        android:background="@color/primaryColor"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvOverviewTitle"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/CustomFilledBoxExposedDropdownMenuStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:endIconTint="@color/white"
+            app:startIconDrawable="@drawable/ic_baseline_date_range_24"
+            app:startIconTint="@color/white">
+
+            <AutoCompleteTextView
+                android:id="@+id/actvMonths"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/primaryColor"
+                android:inputType="none"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/CustomFilledBoxExposedDropdownMenuStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:endIconTint="@color/white"
+            app:startIconDrawable="@drawable/ic_year"
+            app:startIconTint="@color/white">
+
+            <AutoCompleteTextView
+                android:id="@+id/actvYears"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/primaryColor"
+                android:inputType="none"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -28,42 +89,45 @@
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvOverviewTitle">
+        app:layout_constraintTop_toBottomOf="@id/llChartFilters">
 
         <TableRow android:background="@color/gray">
 
             <TextView
                 style="@style/table_row_text_style"
-                android:text="Total time" />
+                android:text="@string/total_time" />
 
             <TextView
+                android:id="@+id/tvTotalTime"
                 style="@style/table_row_text_style"
                 android:layout_marginEnd="1dp"
-                android:text="02:52:32" />
+                tools:text="02:52:32" />
         </TableRow>
 
         <TableRow android:background="@color/gray">
 
             <TextView
                 style="@style/table_row_text_style"
-                android:text="Average" />
+                android:text="@string/average" />
 
             <TextView
+                android:id="@+id/tvAverage"
                 style="@style/table_row_text_style"
                 android:layout_marginEnd="1dp"
-                android:text="00:32:00" />
+                tools:text="00:32:00" />
         </TableRow>
 
         <TableRow android:background="@color/gray">
 
             <TextView
                 style="@style/table_row_text_style"
-                android:text="Total days" />
+                android:text="@string/total_days" />
 
             <TextView
+                android:id="@+id/tvTotalDays"
                 style="@style/table_row_text_style"
                 android:layout_marginEnd="1dp"
-                android:text="27" />
+                tools:text="27" />
         </TableRow>
 
         <TableRow android:background="@color/gray">
@@ -71,13 +135,14 @@
             <TextView
                 style="@style/table_row_text_style"
                 android:layout_marginBottom="1dp"
-                android:text="Last record date" />
+                android:text="Most recent" />
 
             <TextView
+                android:id="@+id/tvMostRecent"
                 style="@style/table_row_text_style"
                 android:layout_marginEnd="1dp"
                 android:layout_marginBottom="1dp"
-                android:text="18.01.2022 16:04:40" />
+                tools:text="18.01.2022" />
         </TableRow>
 
     </TableLayout>
@@ -91,7 +156,7 @@
         android:paddingTop="25dp"
         android:paddingEnd="20dp"
         android:paddingBottom="10dp"
-        android:text="Spent times this week"
+        android:text="Time spent last seven days"
         android:textColor="@color/gray"
         android:textSize="18sp"
         android:textStyle="bold"

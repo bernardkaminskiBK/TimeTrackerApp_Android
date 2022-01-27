@@ -38,8 +38,11 @@ class DatabaseViewModel(application: Application, private val repository: TimeTr
     val getTotalTimeRecords =  repository.getTotalTimeRecords().asLiveData()
     val getAllDate = repository.getAllDate().asLiveData()
 
+    fun getEachRecord() = repository.getEachRecord().asLiveData()
+    fun allYearsByName(name: String) = repository.getAllYearByName(name).asLiveData()
+    fun getLastSevenRecordsByNameByYear(name: String, year: String) = repository.getLastSevenRecordsByNameByYear(name, year).asLiveData()
     fun getAllRecordsByMonth(month: String) = repository.getAllRecordsByMonth(month).asLiveData()
-    fun getAllRecordsDateByName(name: String) = repository.getAllRecordsDateByName(name).asLiveData()
+    fun getMonthsByNameByYear(name: String, year: String) = repository.getMonthsByNameByYear(name, year).asLiveData()
     fun getRecordsByNameByDateSumTimeWhereIsSameDate(name: String, date: String) = repository.getRecordsByNameByDateSumTimeWhereIsSameDate(name, date).asLiveData()
 
     fun insert(record: Record) = viewModelScope.launch {
@@ -57,6 +60,12 @@ class DatabaseViewModel(application: Application, private val repository: TimeTr
     fun deleteAllRecords() = viewModelScope.launch {
         repository.deleteAllRecords()
     }
+
+    fun getRecordTotalTimeByNameByDate(name: String, date: String) = repository.getRecordTotalTimeByNameByDate(name, date).asLiveData()
+    fun getRecordAvgTimeByNameByDate(name: String, date: String) = repository.getRecordAvgTimeByNameByDate(name, date).asLiveData()
+    fun getRecordTotalDaysByNameByDate(name: String, date: String) = repository.getRecordTotalDaysByNameByDate(name, date).asLiveData()
+    fun getMostRecentRecordByName(name: String) = repository.getMostRecentRecordByName(name).asLiveData()
+    fun getLastAddedRecordMonthYearByName(name: String) = repository.getLastAddedRecordMonthYearByName(name).asLiveData()
 
 }
 

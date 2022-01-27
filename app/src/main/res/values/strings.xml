@@ -47,4 +47,8 @@
     <string name="record_card_detail_transition_name">record_card_detail</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="total_days">Total days</string>
+    <string name="average">Average</string>
+    <string name="total_time">Total time</string>
+    <string name="overview_record_image">overview record image</string>
 </resources>

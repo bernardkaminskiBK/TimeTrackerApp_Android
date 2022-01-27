@@ -21,8 +21,6 @@
             app:destination="@id/nav_statistic"
             app:enterAnim="@anim/anim_slide_up"
             app:exitAnim="@anim/anim_slide_down"
-            app:popEnterAnim="@anim/anim_slide_up"
-            app:popExitAnim="@anim/anim_slide_down"
             app:popUpTo="@+id/nav_statistic"
             app:popUpToInclusive="true" />
     </fragment>
@@ -37,8 +35,6 @@
             app:destination="@id/nav_records"
             app:enterAnim="@anim/anim_slide_up"
             app:exitAnim="@anim/anim_slide_down"
-            app:popEnterAnim="@anim/anim_slide_up"
-            app:popExitAnim="@anim/anim_slide_down"
             app:popUpTo="@+id/nav_records"
             app:popUpToInclusive="true" />
     </fragment>
@@ -57,6 +53,10 @@
         android:id="@+id/nav_overview_detail"
         android:name="com.berni.timetrackerapp.ui.fragments.overview.OverviewDetailFragment"
         android:label="Overview Detail">
+        <argument
+            android:name="recordDetails"
+            app:argType="com.berni.timetrackerapp.model.entities.Record"
+            />
     </fragment>
 
     <fragment

@@ -45,8 +45,9 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
         mBinding.rvOverview.layoutManager = GridLayoutManager(requireActivity(), 2)
         mBinding.rvOverview.adapter = overviewAdapter
 
-
-        overviewAdapter.submitList(listOfRecords())
+        database.getEachRecord().observe(viewLifecycleOwner) {
+            overviewAdapter.submitList(it)
+        }
 
         navigateToChosenDirection()
     }
@@ -59,7 +60,7 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
                     getString(R.string.record_card_detail_transition_name)
                 val extras = FragmentNavigatorExtras(cardView to recordCardDetailTransitionName)
                 val directions =
-                    OverviewFragmentDirections.actionOverviewFragmentToOverviewDetailFragment()
+                    OverviewFragmentDirections.actionOverviewFragmentToOverviewDetailFragment(record)
                 findNavController().navigate(directions, extras)
 
                 exitTransition = MaterialElevationScale(false).apply {
@@ -76,18 +77,5 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
         super.onDestroy()
         _mBinding = null
     }
-
-    fun listOfRecords(): List<Record> {
-        val list = mutableListOf<Record>()
-        list.add(Record(id = 1, 5000000L, "Duolingo", 0))
-        list.add(Record(id = 2, 3265000L, "Duolingo", 0))
-        list.add(Record(id = 3, 3265000L, "Work", 0))
-        list.add(Record(id = 4, 250000L, "Work", 0))
-        list.add(Record(id = 5, 5000000L, "Cooking", 0))
-        list.add(Record(id = 6, 250000L, "Cooking", 0))
-        list.add(Record(id = 7, 3265000L, "Cooking", 0))
-        return list
-    }
-
 
 }

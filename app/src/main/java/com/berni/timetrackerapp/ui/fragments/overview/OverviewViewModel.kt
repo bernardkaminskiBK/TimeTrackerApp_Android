@@ -1,15 +1,22 @@
 package com.berni.timetrackerapp.ui.fragments.overview
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
 
-class OverviewViewModel : ViewModel() {
+class OverviewViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is Settings fragment"
+    private val repository = OverviewDetailRepository(application)
+
+    val filterMonth = repository.filterMonth.asLiveData()
+    val filterYear = repository.filterYear.asLiveData()
+
+    fun saveFilterMonthToDataStore(month: String) = viewModelScope.launch {
+        repository.saveMonthToDataStore(month)
     }
 
-    val text: LiveData<String> = _text
+    fun saveFilterYearToDataStore(year: String) = viewModelScope.launch {
+        repository.saveYearToDataStore(year)
+    }
 
 }

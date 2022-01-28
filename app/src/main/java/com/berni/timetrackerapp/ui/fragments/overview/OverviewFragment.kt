@@ -1,6 +1,9 @@
 package com.berni.timetrackerapp.ui.fragments.overview
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
@@ -16,6 +19,8 @@ import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.ui.adapters.OverviewAdapter
+import com.berni.timetrackerapp.ui.fragments.records.RecordsFragmentDirections
+import com.berni.timetrackerapp.ui.fragments.statistics.StatisticsFragmentDirections
 import com.google.android.material.transition.MaterialElevationScale
 
 class OverviewFragment : Fragment(R.layout.overview_fragment) {
@@ -50,6 +55,22 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
         }
 
         navigateToChosenDirection()
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.overview_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_jump_to_statistics -> {
+                findNavController().navigate(OverviewFragmentDirections.actionNavOverviewToNavStatistic())
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun navigateToChosenDirection() {

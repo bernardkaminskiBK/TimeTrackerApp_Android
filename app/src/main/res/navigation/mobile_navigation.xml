@@ -37,6 +37,13 @@
             app:exitAnim="@anim/anim_slide_down"
             app:popUpTo="@+id/nav_records"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_nav_statistic_to_nav_overview"
+            app:destination="@id/nav_overview"
+            app:enterAnim="@anim/anim_slide_up"
+            app:exitAnim="@anim/anim_slide_down"
+            app:popUpTo="@+id/nav_records"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -46,7 +53,18 @@
         tools:layout="@layout/overview_fragment">
         <action
             android:id="@+id/action_overviewFragment_to_overviewDetailFragment"
-            app:destination="@+id/nav_overview_detail" />
+            app:destination="@+id/nav_overview_detail"
+            app:enterAnim="@anim/anim_slide_up"
+            app:exitAnim="@anim/anim_slide_down"
+            app:popUpTo="@+id/nav_statistic"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_nav_overview_to_nav_statistic"
+            app:destination="@id/nav_statistic"
+            app:enterAnim="@anim/anim_slide_up"
+            app:exitAnim="@anim/anim_slide_down"
+            app:popUpTo="@+id/nav_statistic"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment

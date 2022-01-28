@@ -10,4 +10,12 @@
         android:iconTint="@color/white"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/action_jump_to_overview_details"
+        android:icon="@drawable/ico_overview_white_24"
+        android:title="@string/records"
+        android:orderInCategory="102"
+        android:iconTint="@color/white"
+        app:showAsAction="always"/>
+
 </menu>

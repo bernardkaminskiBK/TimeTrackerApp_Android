@@ -14,11 +14,11 @@
             android:title="@string/records" />
         <item
             android:id="@+id/nav_statistic"
-            android:icon="@drawable/ic_statistics_24"
+            android:icon="@drawable/ic_statistics_30"
             android:title="@string/statistics" />
         <item
             android:id="@+id/nav_overview"
-            android:icon="@drawable/ico_overview_white_24"
+            android:icon="@drawable/ico_overview_white_25"
             android:title="@string/overview" />
         <item
             android:id="@+id/nav_settings"

@@ -12,7 +12,7 @@
 
     <item
         android:id="@+id/action_jump_to_statistics"
-        android:icon="@drawable/ic_statistics_24"
+        android:icon="@drawable/ic_statistics_30"
         android:orderInCategory="101"
         android:title="@string/statistics"
         android:iconTint="@color/white"

@@ -84,8 +84,6 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.statistics_menu, menu)
-//        menu.getItem(0).actionView.setPadding(0,0,25,0)
-        menu.findItem(R.id.action_jump_to_overview_details).setVisible(true)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

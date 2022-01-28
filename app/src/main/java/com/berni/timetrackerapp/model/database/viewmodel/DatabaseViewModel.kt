@@ -35,9 +35,8 @@ class DatabaseViewModel(application: Application, private val repository: TimeTr
     @ExperimentalCoroutinesApi
     val records = recordsFlow.asLiveData()
     val allRecordNames = repository.getAllRecordsName.asLiveData()
-    val getTotalTimeRecords =  repository.getTotalTimeRecords().asLiveData()
-    val getAllDate = repository.getAllDate().asLiveData()
 
+    fun getTotalTimeRecordsByYear(year: String) =  repository.getTotalTimeRecordsByYear(year).asLiveData()
     fun getEachRecord() = repository.getEachRecord().asLiveData()
     fun allYearsByName(name: String) = repository.getAllYearByName(name).asLiveData()
     fun getLastSevenRecordsByNameByYear(name: String, year: String) = repository.getLastSevenRecordsByNameByYear(name, year).asLiveData()

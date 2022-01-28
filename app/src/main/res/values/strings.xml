@@ -37,7 +37,7 @@
     <string name="total_hours">Total Hours:</string>
     <string name="warning_to_show_rules">To show this chart it is required at least two values.</string>
 
-    <string name="pieChartLabelText">Activities in percentage\n%1$s - %2$s</string>
+    <string name="pieChartLabelText">Activities in %1$s</string>
     <string name="barChartLabelText">The total sum of hours for each activity in %1$s</string>
     <string name="lineChartLabelText">Daily spent time with %1$s in %2$s</string>
     <string name="search">Search</string>

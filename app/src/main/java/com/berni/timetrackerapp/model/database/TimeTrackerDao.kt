@@ -37,23 +37,14 @@ interface TimeTrackerDao {
     @Query("SELECT * FROM TIME_TRACKER_TABLE WHERE name LIKE '%' || :filterQuery || '%' OR strftime('%d.%m.%Y',datetime(date/1000, 'unixepoch')) LIKE '%' || :filterQuery || '%' ORDER BY date")
     fun getFilteredRecordsListByNameByDate(filterQuery: String): Flow<List<Record>>
 
-    @Query("SELECT name AS name, SUM(time) AS totalTime FROM TIME_TRACKER_TABLE GROUP BY name")
-    fun getTotalTimeRecords(): Flow<List<RecordTotalTime>>
+    @Query("SELECT strftime('%Y',datetime(date/1000, 'unixepoch')) AS year, name AS name, SUM(time) AS totalTime FROM TIME_TRACKER_TABLE WHERE year = :year GROUP BY name")
+    fun getTotalTimeRecordsByYear(year: String): Flow<List<StatisticsPieChartData>>
 
-    @Query("SELECT DISTINCT strftime('%m/%Y',datetime(date/1000, 'unixepoch')) FROM time_tracker_table ORDER BY date")
-    fun getAllDate(): Flow<List<String>>
-
-    @Query("SELECT name AS name, SUM(time) AS totalTime FROM time_tracker_table WHERE strftime('%m/%Y',datetime(date/1000, 'unixepoch')) = :month GROUP BY name")
-    fun getAllRecordsByMonth(month: String): Flow<List<RecordTotalTime>>
-
-    @Query("SELECT DISTINCT strftime('%m/%Y',datetime(date/1000, 'unixepoch')) FROM time_tracker_table WHERE name = :name ORDER BY date")
-    fun getAllRecordsDateByName(name: String): Flow<List<String>>
+    @Query("SELECT strftime('%m/%Y',datetime(date/1000, 'unixepoch')) AS monthYear, name AS name, SUM(time) AS totalTime FROM time_tracker_table WHERE strftime('%m/%Y',datetime(date/1000, 'unixepoch')) = :monthYear GROUP BY name, monthYear")
+    fun getAllRecordsByMonth(monthYear: String): Flow<List<StatisticsBarChartData>>
 
     @Query("SELECT strftime('%d/%m',datetime(date/1000, 'unixepoch')) AS day, name AS name,  SUM(time) AS time FROM time_tracker_table WHERE name = :name AND  strftime('%m/%Y',datetime(date/1000, 'unixepoch')) = :date  GROUP BY day, name ORDER BY date")
-    fun getRecordsByNameByDateSumTimeWhereIsSameDate(
-        name: String,
-        date: String
-    ): Flow<List<RecordDateTime>>
+    fun getRecordsByNameByDateSumTimeWhereIsSameDate(name: String, date: String): Flow<List<RecordDateTime>>
 
     @Query("SELECT strftime('%d.%m',datetime(date/1000, 'unixepoch')) AS dayMonth, name AS name,  sum(time) AS time FROM time_tracker_table WHERE name = :name AND  strftime('%Y',datetime(date/1000, 'unixepoch')) = :year  GROUP BY dayMonth, name ORDER BY date DESC LIMIT 7")
     fun getLastSevenRecordByNameByYear(name: String, year: String): Flow<List<OverviewDetailLastWeek>>

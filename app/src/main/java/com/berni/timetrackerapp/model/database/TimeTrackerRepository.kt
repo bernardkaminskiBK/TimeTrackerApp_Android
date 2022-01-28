@@ -47,23 +47,17 @@ class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {
     fun getRecordsList(filterQuery: String, filterOrder: FilterOrder) =
         timeTrackerDao.getRecords(filterQuery, filterOrder)
 
-    fun getTotalTimeRecords(): Flow<List<RecordTotalTime>> =
-        timeTrackerDao.getTotalTimeRecords()
-
-    fun getAllDate(): Flow<List<String>> =
-        timeTrackerDao.getAllDate()
+    fun getTotalTimeRecordsByYear(year: String): Flow<List<StatisticsPieChartData>> =
+        timeTrackerDao.getTotalTimeRecordsByYear(year)
 
     fun getEachRecord(): Flow<List<Record>> =
         timeTrackerDao.getEachRecord()
 
-    fun getAllRecordsByMonth(month: String): Flow<List<RecordTotalTime>> =
+    fun getAllRecordsByMonth(month: String): Flow<List<StatisticsBarChartData>> =
         timeTrackerDao.getAllRecordsByMonth(month)
 
     fun getMonthsByNameByYear(name: String, year: String): Flow<List<String>> =
         timeTrackerDao.getMonthsByNameByYear(name, year)
-
-    fun getAllRecordsDateByName(name: String) : Flow<List<String>> =
-        timeTrackerDao.getAllRecordsDateByName(name)
 
     fun getLastSevenRecordsByNameByYear(name: String, year: String) : Flow<List<OverviewDetailLastWeek>> =
         timeTrackerDao.getLastSevenRecordByNameByYear(name, year)

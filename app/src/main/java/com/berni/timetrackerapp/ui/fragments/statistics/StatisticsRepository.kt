@@ -15,6 +15,31 @@ class StatisticsRepository(context: Context) {
 
     private val dataStore: DataStore<Preferences> = context.createDataStore(PREFERENCE_NAME)
 
+    val recordMonth = dataStore.data.catch { exception ->
+        if (exception is IOException) {
+            Log.e(TAG, "Error reading recordMonthFlow", exception)
+            emit(emptyPreferences())
+        } else {
+            throw exception
+        }
+    }.map { preferences ->
+        val recordMonth = preferences[StatisticsRepositoryKeys.RECORD_MONTH] ?: "month"
+        recordMonth
+    }
+
+
+    val recordYear = dataStore.data.catch { exception ->
+        if (exception is IOException) {
+            Log.e(TAG, "Error reading recordYearFlow", exception)
+            emit(emptyPreferences())
+        } else {
+            throw exception
+        }
+    }.map { preferences ->
+        val recordYear = preferences[StatisticsRepositoryKeys.RECORD_YEAR] ?: "year"
+        recordYear
+    }
+
     val recordName = dataStore.data.catch { exception ->
         if (exception is IOException) {
             Log.e(TAG, "Error reading recordNameFlow", exception)
@@ -23,37 +48,32 @@ class StatisticsRepository(context: Context) {
             throw exception
         }
     }.map { preferences ->
-        val recordName = preferences[StatisticsRepositoryKeys.NAME_OF_RECORD] ?: "name"
+        val recordName = preferences[StatisticsRepositoryKeys.RECORD_NAME] ?: "name"
         recordName
     }
 
-    val recordDate = dataStore.data.catch { exception ->
-        if (exception is IOException) {
-            Log.e(TAG, "Error reading recordDateFlow", exception)
-            emit(emptyPreferences())
-        } else {
-            throw exception
-        }
-    }.map { preferences ->
-        val recordDate = preferences[StatisticsRepositoryKeys.DATE_OF_RECORD] ?: "date"
-        recordDate
-    }
-
-    suspend fun saveNameOfRecord(name: String) {
+    suspend fun saveRecordMonth(month: String) {
         dataStore.edit { preference ->
-            preference[StatisticsRepositoryKeys.NAME_OF_RECORD] = name
+            preference[StatisticsRepositoryKeys.RECORD_MONTH] = month
         }
     }
 
-    suspend fun savaDateOfRecord(date: String) {
+    suspend fun saveRecordYear(date: String) {
         dataStore.edit { preference ->
-            preference[StatisticsRepositoryKeys.DATE_OF_RECORD] = date
+            preference[StatisticsRepositoryKeys.RECORD_YEAR] = date
+        }
+    }
+
+    suspend fun saveRecordName(name: String) {
+        dataStore.edit { preference ->
+            preference[StatisticsRepositoryKeys.RECORD_NAME] = name
         }
     }
 
     private object StatisticsRepositoryKeys {
-        val NAME_OF_RECORD = preferencesKey<String>("name_of_record")
-        val DATE_OF_RECORD = preferencesKey<String>("date_of_record")
+        val RECORD_MONTH = preferencesKey<String>("record_month")
+        val RECORD_YEAR = preferencesKey<String>("record_year")
+        val RECORD_NAME = preferencesKey<String>("record_name")
     }
 
 }

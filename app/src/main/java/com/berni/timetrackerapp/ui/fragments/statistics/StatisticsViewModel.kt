@@ -2,22 +2,26 @@ package com.berni.timetrackerapp.ui.fragments.statistics
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.berni.timetrackerapp.model.database.FilterOrder
 import kotlinx.coroutines.launch
 
 class StatisticsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = StatisticsRepository(application)
 
+    val recordMonth = repository.recordMonth.asLiveData()
+    val recordYear = repository.recordYear.asLiveData()
     val recordName = repository.recordName.asLiveData()
-    val recordDate = repository.recordDate.asLiveData()
 
-    fun saveNameOfRecord(name: String) = viewModelScope.launch {
-        repository.saveNameOfRecord(name)
+    fun saveRecordMonth(month: String) = viewModelScope.launch {
+        repository.saveRecordMonth(month)
     }
 
-    fun saveDateOfRecord(date: String) = viewModelScope.launch {
-        repository.savaDateOfRecord(date)
+    fun saveRecordYear(year: String) = viewModelScope.launch {
+        repository.saveRecordYear(year)
+    }
+
+    fun saveRecordName(name: String) = viewModelScope.launch {
+        repository.saveRecordName(name)
     }
 
 }

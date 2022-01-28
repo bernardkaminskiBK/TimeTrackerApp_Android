@@ -135,7 +135,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     }
 
     private fun setYearFilter(name: String) {
-        database.allYearsByName(name).observe(viewLifecycleOwner) { allYears ->
+        database.getAllYears.observe(viewLifecycleOwner) { allYears ->
             val arrayYearsAdapter =
                 ArrayAdapter(requireContext(), R.layout.dropdown_item, allYears)
             dropDownYearFilter.setAdapter(arrayYearsAdapter)

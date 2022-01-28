@@ -22,8 +22,13 @@ interface TimeTrackerDao {
     @Delete
     suspend fun deleteRecord(record: Record)
 
+
+
     @Query("SELECT DISTINCT name FROM TIME_TRACKER_TABLE ORDER BY name ASC")
     fun getAllRecordNames(): Flow<List<String>>
+
+    @Query("SELECT DISTINCT strftime('%Y',datetime(date/1000, 'unixepoch')) FROM time_tracker_table ORDER BY date ASC")
+    fun getAllYears() : Flow<List<String>>
 
     @Query("SELECT DISTINCT strftime('%Y',datetime(date/1000, 'unixepoch')) FROM time_tracker_table WHERE name = :name ORDER BY date ASC")
     fun getAllYearsByName(name: String): Flow<List<String>>

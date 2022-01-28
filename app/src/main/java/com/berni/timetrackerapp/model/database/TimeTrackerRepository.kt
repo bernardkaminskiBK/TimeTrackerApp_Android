@@ -29,6 +29,9 @@ class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {
     fun getAllYearByName(name: String) : Flow<List<String>> =
         timeTrackerDao.getAllYearsByName(name)
 
+    fun getAllYears() : Flow<List<String>> =
+        timeTrackerDao.getAllYears()
+
     fun getRecordTotalTimeByNameByDate(name: String, date: String) : Flow<OverviewDetailTotalTime> =
         timeTrackerDao.getRecordTotalTimeByNameByDate(name, date)
 

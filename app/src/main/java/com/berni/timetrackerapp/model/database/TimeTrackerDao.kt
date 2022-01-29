@@ -22,7 +22,8 @@ interface TimeTrackerDao {
     @Delete
     suspend fun deleteRecord(record: Record)
 
-
+    @Query("DELETE FROM TIME_TRACKER_TABLE")
+    suspend fun deleteAllRecords()
 
     @Query("SELECT DISTINCT name FROM TIME_TRACKER_TABLE ORDER BY name ASC")
     fun getAllRecordNames(): Flow<List<String>>
@@ -60,9 +61,6 @@ interface TimeTrackerDao {
     @Query("SELECT strftime('%m/%Y',datetime(date/1000, 'unixepoch')) AS year, name, SUM(time) AS totalTime FROM TIME_TRACKER_TABLE WHERE name = :name AND strftime('%m/%Y',datetime(date/1000, 'unixepoch')) = :date  GROUP BY year, name")
     fun getRecordTotalTimeByNameByDate(name: String, date: String): Flow<OverviewDetailTotalTime>
 
-    @Query("SELECT AVG(time) AS averageTime FROM time_tracker_table WHERE name = :name AND strftime('%m/%Y',datetime(date/1000, 'unixepoch')) = :date")
-    fun getRecordAvgTimeByNameByDate(name: String, date: String): Flow<OverviewDetailAverageTime>
-
     @Query("SELECT count(DISTINCT strftime('%d/%m/%Y',datetime(date/1000, 'unixepoch'))) AS totalDays FROM time_tracker_table WHERE name = :name AND strftime('%m/%Y',datetime(date/1000, 'unixepoch')) = :date")
     fun getRecordTotalDaysByNameByDate(name: String, date: String): Flow<OverviewDetailTotalDays>
 
@@ -71,8 +69,5 @@ interface TimeTrackerDao {
 
     @Query("SELECT strftime('%m',datetime(date/1000, 'unixepoch')) AS month, strftime('%Y',datetime(date/1000, 'unixepoch')) AS year FROM time_tracker_table WHERE name = :name ORDER BY date DESC LIMIT 1")
     fun getLastAddedRecordMonthYearByName(name: String): Flow<OverviewDetailLastRecord>
-
-    @Query("DELETE FROM TIME_TRACKER_TABLE")
-    suspend fun deleteAllRecords()
 
 }

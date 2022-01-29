@@ -62,7 +62,6 @@ class DatabaseViewModel(application: Application, private val repository: TimeTr
     }
 
     fun getRecordTotalTimeByNameByDate(name: String, date: String) = repository.getRecordTotalTimeByNameByDate(name, date).asLiveData()
-    fun getRecordAvgTimeByNameByDate(name: String, date: String) = repository.getRecordAvgTimeByNameByDate(name, date).asLiveData()
     fun getRecordTotalDaysByNameByDate(name: String, date: String) = repository.getRecordTotalDaysByNameByDate(name, date).asLiveData()
     fun getMostRecentRecordByName(name: String) = repository.getMostRecentRecordByName(name).asLiveData()
     fun getLastAddedRecordMonthYearByName(name: String) = repository.getLastAddedRecordMonthYearByName(name).asLiveData()

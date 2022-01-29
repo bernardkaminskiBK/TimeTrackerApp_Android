@@ -118,24 +118,18 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
         database.getRecordTotalTimeByNameByDate(
             recordArgs.recordDetails.name,
             "${chosenMonth}/${chosenYear}"
-        ).observe(viewLifecycleOwner) {
+        ).observe(viewLifecycleOwner) { totalTime ->
             mBinding.scrollViewContent.tvTotalTime.text =
-                it.totalTime.convertSecondsToDateTime()
-        }
+                totalTime.totalTime.convertSecondsToDateTime()
 
-        database.getRecordAvgTimeByNameByDate(
-            recordArgs.recordDetails.name,
-            "${chosenMonth}/${chosenYear}"
-        ).observe(viewLifecycleOwner) {
-            mBinding.scrollViewContent.tvAverage.text =
-                it.averageTime.convertSecondsToDateTime()
-        }
-
-        database.getRecordTotalDaysByNameByDate(
-            recordArgs.recordDetails.name,
-            "${chosenMonth}/${chosenYear}"
-        ).observe(viewLifecycleOwner) {
-            mBinding.scrollViewContent.tvTotalDays.text = it.totalDays.toString()
+            database.getRecordTotalDaysByNameByDate(
+                recordArgs.recordDetails.name,
+                "${chosenMonth}/${chosenYear}"
+            ).observe(viewLifecycleOwner) { totalDays ->
+                mBinding.scrollViewContent.tvTotalDays.text = totalDays.totalDays.toString()
+                mBinding.scrollViewContent.tvAverage.text =
+                    totalTime.totalTime.div(totalDays.totalDays).convertSecondsToDateTime()
+            }
         }
 
         database.getMostRecentRecordByName(recordArgs.recordDetails.name)

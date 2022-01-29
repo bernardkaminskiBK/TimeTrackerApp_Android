@@ -35,9 +35,6 @@ class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {
     fun getRecordTotalTimeByNameByDate(name: String, date: String) : Flow<OverviewDetailTotalTime> =
         timeTrackerDao.getRecordTotalTimeByNameByDate(name, date)
 
-    fun getRecordAvgTimeByNameByDate(name: String, date: String) : Flow<OverviewDetailAverageTime> =
-        timeTrackerDao.getRecordAvgTimeByNameByDate(name, date)
-
     fun getRecordTotalDaysByNameByDate(name: String, date: String) : Flow<OverviewDetailTotalDays> =
         timeTrackerDao.getRecordTotalDaysByNameByDate(name, date)
 

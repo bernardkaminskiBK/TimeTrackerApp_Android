@@ -8,7 +8,6 @@ import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,13 +18,10 @@ import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.ui.adapters.OverviewAdapter
-import com.berni.timetrackerapp.ui.fragments.records.RecordsFragmentDirections
-import com.berni.timetrackerapp.ui.fragments.statistics.StatisticsFragmentDirections
 import com.google.android.material.transition.MaterialElevationScale
 
 class OverviewFragment : Fragment(R.layout.overview_fragment) {
 
-    private lateinit var overviewViewModel: OverviewViewModel
     private val overviewAdapter = OverviewAdapter(this)
 
     private var _mBinding: OverviewFragmentBinding? = null
@@ -45,7 +41,6 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
         view.doOnPreDraw { startPostponedEnterTransition() }
 
         _mBinding = OverviewFragmentBinding.bind(view)
-        overviewViewModel = ViewModelProvider(this)[OverviewViewModel::class.java]
 
         mBinding.rvOverview.layoutManager = GridLayoutManager(requireActivity(), 2)
         mBinding.rvOverview.adapter = overviewAdapter

@@ -42,7 +42,7 @@
             app:destination="@id/nav_overview"
             app:enterAnim="@anim/anim_slide_up"
             app:exitAnim="@anim/anim_slide_down"
-            app:popUpTo="@+id/nav_records"
+            app:popUpTo="@+id/nav_overview"
             app:popUpToInclusive="true"/>
     </fragment>
 
@@ -56,7 +56,7 @@
             app:destination="@+id/nav_overview_detail"
             app:enterAnim="@anim/anim_slide_up"
             app:exitAnim="@anim/anim_slide_down"
-            app:popUpTo="@+id/nav_statistic"
+            app:popUpTo="@+id/nav_overview_detail"
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_nav_overview_to_nav_statistic"

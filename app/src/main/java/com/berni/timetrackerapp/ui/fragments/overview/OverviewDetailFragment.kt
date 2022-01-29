@@ -32,8 +32,6 @@ import com.google.android.material.transition.MaterialContainerTransform
 
 class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
 
-    private lateinit var overviewViewModel: OverviewViewModel
-
     private val recordArgs: OverviewDetailFragmentArgs by navArgs()
 
     private lateinit var lineChartData: ArrayList<OverviewDetailLastWeek>
@@ -65,7 +63,6 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _mBinding = FragmentOverviewDetailBinding.bind(view)
-        overviewViewModel = ViewModelProvider(this)[OverviewViewModel::class.java]
 
         lineChartData = ArrayList()
 
@@ -74,18 +71,7 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
         dropDownYearFilter = mBinding.scrollViewContent.actvYears
         dropDownMonthFilter = mBinding.scrollViewContent.actvMonths
 
-        setYearFilter()
-
-//        overviewViewModel.filterMonth.observe(viewLifecycleOwner) {
-//            dropDownMonthFilter.setText(it, false)
-//        }
-//
-//        overviewViewModel.filterYear.observe(viewLifecycleOwner) {
-//            dropDownYearFilter.setText(it, false)
-//        }
-
         initDataToView()
-
     }
 
     private fun initDataToView() {
@@ -95,6 +81,7 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
                 dropDownMonthFilter.setText(it.month, false)
                 dropDownYearFilter.setText(it.year, false)
 
+                setYearFilter()
                 setMonthFilter(it.year)
                 setDataToTableView(it.month, it.year)
                 setLineChartData(recordArgs.recordDetails.name, it.year)
@@ -108,7 +95,6 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
             dropDownYearFilter.setOnItemClickListener { parent, view, position, id ->
                 val chosenYear = arrayYearsAdapter.getItem(position)!!
 
-                overviewViewModel.saveFilterYearToDataStore(chosenYear)
                 setMonthFilter(chosenYear)
             }
         }
@@ -122,8 +108,6 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
                 dropDownMonthFilter.setAdapter(arrayMonthsAdapter)
                 dropDownMonthFilter.setOnItemClickListener { parent, view, position, id ->
                     val chosenMonth = arrayMonthsAdapter.getItem(position)!!
-
-                    overviewViewModel.saveFilterMonthToDataStore(chosenMonth)
 
                     setDataToTableView(chosenMonth, chosenYear)
                 }

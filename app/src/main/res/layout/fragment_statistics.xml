@@ -56,7 +56,7 @@
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:textAlignment="center"
                 tools:text="Month" />
@@ -79,7 +79,7 @@
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 tools:text="Year"
                 android:textAlignment="center"/>

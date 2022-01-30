@@ -80,10 +80,10 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
                 findNavController().navigate(directions, extras)
 
                 exitTransition = MaterialElevationScale(false).apply {
-                    duration = 300L
+                    duration = 500L
                 }
                 reenterTransition = MaterialElevationScale(true).apply {
-                    duration = 300L
+                    duration = 500L
                 }
             }
         })

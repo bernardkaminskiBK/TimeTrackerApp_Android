@@ -209,7 +209,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         data.setValueTextSize(12f)
         data.setValueTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
-        pieChart.animateY(1400, Easing.EaseInOutQuad)
+        pieChart.animateY(700, Easing.EaseInOutQuad)
 
         //create hole in center
         pieChart.holeRadius = 48f
@@ -310,7 +310,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         barChart.description.isEnabled = false
 
         //add animation
-        barChart.animateY(2000)
+        barChart.animateY(1000)
 
         // to draw label on xAxis
         xAxis.position = XAxis.XAxisPosition.TOP

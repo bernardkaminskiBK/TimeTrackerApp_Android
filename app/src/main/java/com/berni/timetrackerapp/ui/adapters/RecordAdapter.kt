@@ -36,7 +36,7 @@ class RecordAdapter(private val fragment: Fragment) :
         holder.time.text = record.time.convertSecondsToDateTime()
 
         holder.itemView.animation =
-            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation_three)
+            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation_one)
 
         holder.itemView.setOnClickListener {
             if(fragment is RecordsFragment) {

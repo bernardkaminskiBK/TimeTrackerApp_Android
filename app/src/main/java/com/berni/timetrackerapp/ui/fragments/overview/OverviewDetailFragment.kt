@@ -55,7 +55,7 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
 
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.nav_host_fragment_content_main
-            duration = 300L
+            duration = 500L
             scrimColor = Color.TRANSPARENT
         }
     }

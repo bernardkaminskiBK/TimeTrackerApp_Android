@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.lifecycle.*
 import com.berni.timetrackerapp.utils.Formatter
-import com.berni.timetrackerapp.utils.TimerService
+import com.berni.timetrackerapp.service.TimerService
 
 class TimerViewModel(application: Application): AndroidViewModel(application) {
 

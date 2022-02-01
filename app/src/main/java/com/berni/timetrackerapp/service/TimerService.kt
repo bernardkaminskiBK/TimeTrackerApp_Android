@@ -1,4 +1,4 @@
-package com.berni.timetrackerapp.utils
+package com.berni.timetrackerapp.service
 
 import android.app.Service
 import android.content.Intent

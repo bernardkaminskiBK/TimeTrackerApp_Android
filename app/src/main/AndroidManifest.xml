@@ -23,6 +23,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".utils.TimerService" />
+        <service android:name=".service.TimerService" />
     </application>
 </manifest>

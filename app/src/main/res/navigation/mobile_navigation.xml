@@ -75,6 +75,26 @@
             android:name="recordDetails"
             app:argType="com.berni.timetrackerapp.model.entities.Record"
             />
+        <action
+            android:id="@+id/action_nav_overview_detail_to_nav_gallery"
+            app:destination="@id/nav_gallery"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/from_right"
+            app:popEnterAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="com.berni.timetrackerapp.ui.fragments.gallery.GalleryFragment"
+        android:label="Gallery">
+        <argument
+            android:name="recordDetails"
+            app:argType="com.berni.timetrackerapp.model.entities.Record"
+            />
+        <action
+            android:id="@+id/action_nav_gallery_to_nav_overview"
+            app:destination="@id/nav_overview" />
     </fragment>
 
     <fragment

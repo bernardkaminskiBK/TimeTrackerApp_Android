@@ -34,7 +34,7 @@ class FilterAdapter(
         holder.tvText.text = item
 
         holder.itemView.animation =
-            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation_one)
+            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.record_adapter_item_anim)
 
         holder.itemView.setOnClickListener {
             if (fragment is RecordsFragment) {

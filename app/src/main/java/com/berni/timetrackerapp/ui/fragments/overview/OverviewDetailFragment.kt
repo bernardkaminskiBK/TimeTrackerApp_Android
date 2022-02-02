@@ -2,6 +2,7 @@ package com.berni.timetrackerapp.ui.fragments.overview
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -9,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.application.TimeTrackerApplication
@@ -16,8 +18,11 @@ import com.berni.timetrackerapp.databinding.FragmentOverviewDetailBinding
 import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.OverviewDetailLastWeek
+import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToHours
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
@@ -71,10 +76,24 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
         dropDownYearFilter = mBinding.scrollViewContent.actvYears
         dropDownMonthFilter = mBinding.scrollViewContent.actvMonths
 
+        mBinding.ivUnsplashGallery.setOnClickListener {
+            val action = OverviewDetailFragmentDirections
+                .actionNavOverviewDetailToNavGallery(recordArgs.recordDetails.copy())
+            findNavController().navigate(action)
+        }
+
         initDataToView()
     }
 
     private fun initDataToView() {
+
+        Glide.with(mBinding.ivOverviewDetail)
+            .load(recordArgs.recordDetails.imgUrl)
+            .centerCrop()
+            .placeholder(R.drawable.placeholder)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(mBinding.ivOverviewDetail)
+
         database.getLastAddedRecordMonthYearByName(recordArgs.recordDetails.name)
             .observe(viewLifecycleOwner) {
 

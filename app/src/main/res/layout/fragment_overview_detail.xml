@@ -34,13 +34,29 @@
                 app:cardCornerRadius="@dimen/card_view_corner_radius"
                 app:cardElevation="5dp">
 
-                <ImageView
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/primaryDarkColor"
-                    android:contentDescription="@string/overview_record_image"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/placeholder" />
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/ivOverviewDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/primaryDarkColor"
+                        android:contentDescription="@string/overview_record_image"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/placeholder" />
+
+                    <ImageView
+                        android:id="@+id/ivUnsplashGallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_insert_photo_28"
+                        android:alpha="0.5"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="15dp"/>
+                </FrameLayout>
+
             </androidx.cardview.widget.CardView>
 
 

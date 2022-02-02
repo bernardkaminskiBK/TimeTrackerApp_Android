@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.databinding.ItemOverviewLayoutBinding
 import com.berni.timetrackerapp.model.entities.Record
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 class OverviewAdapter(val fragment: Fragment) :
     ListAdapter<Record, OverviewAdapter.ViewHolder>(RecordCallback()) {
@@ -25,6 +27,7 @@ class OverviewAdapter(val fragment: Fragment) :
     }
 
     class ViewHolder(view: ItemOverviewLayoutBinding) : RecyclerView.ViewHolder(view.root) {
+        var image = view.ivOverviewImage
         var title = view.tvOverviewTitle
         var cardView = view.cvOverview
     }
@@ -38,7 +41,15 @@ class OverviewAdapter(val fragment: Fragment) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val record = getItem(position)
 
-        holder.cardView.transitionName = fragment.getString(R.string.record_card_transition_name, record.id)
+        Glide.with(holder.image)
+            .load(record.imgUrl)
+            .centerCrop()
+            .placeholder(R.drawable.placeholder)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(holder.image)
+
+        holder.cardView.transitionName =
+            fragment.getString(R.string.record_card_transition_name, record.id)
         holder.title.text = record.name
         holder.itemView.setOnClickListener {
             onClickListener!!.onRecordClick(holder.cardView, record)

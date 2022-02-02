@@ -2,7 +2,6 @@ package com.berni.timetrackerapp.ui.fragments.records
 
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,7 +9,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -30,10 +28,8 @@ import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.ui.activities.MainActivity
 import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
-import com.berni.timetrackerapp.ui.fragments.statistics.StatisticsViewModel
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
 import com.berni.timetrackerapp.utils.Converter.convertTimeToSeconds
-import com.berni.timetrackerapp.utils.TestData
 import com.berni.timetrackerapp.utils.onQueryTextChanged
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -230,7 +226,8 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
                     0,
                     System.currentTimeMillis(),
                     name,
-                    time.convertTimeToSeconds()
+                    time.convertTimeToSeconds(),
+                    ""
                 )
             )
             addRecordDialog.dismiss()
@@ -275,7 +272,8 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
                         record.id,
                         record.date,
                         etEditName.text.toString(),
-                        tvTime.text.toString().convertTimeToSeconds()
+                        tvTime.text.toString().convertTimeToSeconds(),
+                        record.imgUrl
                     )
                 )
                 editRecordDialog.dismiss()

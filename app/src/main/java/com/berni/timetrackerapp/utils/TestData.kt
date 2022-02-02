@@ -1,14 +1,8 @@
 package com.berni.timetrackerapp.utils
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.berni.timetrackerapp.model.entities.Record
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.ZoneId
-import java.util.*
-import kotlin.collections.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.O)
 object TestData {
@@ -26,7 +20,8 @@ object TestData {
                             0,
                             randomDateGenerator(),
                             "Duolingo",
-                            getRandomRecordTimeInSeconds()
+                            getRandomRecordTimeInSeconds(),
+                            " "
                         )
                     )
                 }
@@ -36,7 +31,8 @@ object TestData {
                             0,
                             randomDateGenerator(),
                             "Programing",
-                            getRandomRecordTimeInSeconds()
+                            getRandomRecordTimeInSeconds(),
+                            " "
                         )
                     )
                 }
@@ -46,7 +42,8 @@ object TestData {
                             0,
                             randomDateGenerator(),
                             "Work",
-                            getRandomRecordTimeInSeconds()
+                            getRandomRecordTimeInSeconds(),
+                            " "
                         )
                     )
                 }
@@ -56,7 +53,8 @@ object TestData {
                             0,
                             randomDateGenerator(),
                             "Cooking",
-                            getRandomRecordTimeInSeconds()
+                            getRandomRecordTimeInSeconds(),
+                            " "
                         )
                     )
                 }
@@ -66,7 +64,8 @@ object TestData {
                             0,
                             randomDateGenerator(),
                             "Yoga",
-                            getRandomRecordTimeInSeconds()
+                            getRandomRecordTimeInSeconds(),
+                            " "
                         )
                     )
                 }
@@ -76,7 +75,8 @@ object TestData {
                             0,
                             randomDateGenerator(),
                             "Training",
-                            getRandomRecordTimeInSeconds()
+                            getRandomRecordTimeInSeconds(),
+                            " "
                         )
                     )
                 }
@@ -98,7 +98,7 @@ object TestData {
         val min = 1577897548000
         val max = 1609433548000
 
-       // dates between 01.01.2021 - 31.12.2021
+        // dates between 01.01.2021 - 31.12.2021
 //        val min = 1609514485000
 //        val max = 1640964085000
 

@@ -88,7 +88,8 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
                     0,
                     System.currentTimeMillis(),
                     name,
-                    time.convertTimeToSeconds()
+                    time.convertTimeToSeconds(),
+                    ""
                 )
             )
             saveRecordDialog.dismiss()

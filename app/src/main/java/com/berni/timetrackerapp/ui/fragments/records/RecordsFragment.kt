@@ -3,6 +3,7 @@ package com.berni.timetrackerapp.ui.fragments.records
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -19,12 +20,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
+import com.berni.timetrackerapp.api.ScreenState
 import com.berni.timetrackerapp.application.TimeTrackerApplication
 import com.berni.timetrackerapp.databinding.*
 import com.berni.timetrackerapp.model.database.FilterOrder
 import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Record
+import com.berni.timetrackerapp.model.entities.UnsplashPhoto
 import com.berni.timetrackerapp.ui.activities.MainActivity
 import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
@@ -34,6 +37,7 @@ import com.berni.timetrackerapp.utils.onQueryTextChanged
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,6 +45,7 @@ import kotlin.collections.ArrayList
 
 private const val SHOW_ALL_RECORDS = "All Records"
 
+@AndroidEntryPoint
 class RecordsFragment : Fragment(R.layout.fragment_records) {
 
     private lateinit var recordsViewModel: RecordsViewModel
@@ -219,17 +224,11 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
 
     private fun validateInput(input: String) {
         if (input.isNotEmpty()) {
-            val name = binding.tiNameOfProgress.text.toString()
-            val time = binding.tvStopwatch.text.toString()
-            database.insert(
-                Record(
-                    0,
-                    System.currentTimeMillis(),
-                    name,
-                    time.convertTimeToSeconds(),
-                    ""
-                )
-            )
+            recordsViewModel.fetchPhotoBySearchQuery(input)
+            recordsViewModel.unsplashApiPhoto.observe(viewLifecycleOwner) {
+                processPhotoResponse(it)
+            }
+
             addRecordDialog.dismiss()
             Toast.makeText(requireContext(), getString(R.string.success_save), Toast.LENGTH_SHORT)
                 .show()
@@ -321,6 +320,47 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
             deleteAllRecordsDialog.dismiss()
         }
         deleteAllRecordsDialog.show()
+    }
+
+    private fun processPhotoResponse(state: ScreenState<List<UnsplashPhoto>?>) {
+//        val progressBar = mBinding.progressBar
+
+        val name = binding.tiNameOfProgress.text.toString()
+        val time = binding.tvStopwatch.text.toString()
+
+        when (state) {
+            is ScreenState.Loading -> {
+//                progressBar.visibility = View.VISIBLE
+            }
+            is ScreenState.Success -> {
+                if (state.data != null) {
+//                    progressBar.visibility = View.GONE
+                    database.insert(
+                        Record(
+                            0,
+                            System.currentTimeMillis(),
+                            name,
+                            time.convertTimeToSeconds(),
+                            state.data.get(0).urls.regular
+                        )
+                    )
+                }
+
+            }
+            is ScreenState.Error -> {
+//                progressBar.visibility = View.GONE
+                database.insert(
+                    Record(
+                        0,
+                        System.currentTimeMillis(),
+                        name,
+                        time.convertTimeToSeconds(),
+                        ""
+                    )
+                )
+                Log.e("RecordsFragment", state.message!!)
+            }
+        }
     }
 
     override fun onDestroy() {

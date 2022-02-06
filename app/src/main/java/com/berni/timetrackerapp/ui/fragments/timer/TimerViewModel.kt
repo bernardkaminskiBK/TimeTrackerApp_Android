@@ -5,11 +5,21 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import androidx.lifecycle.*
-import com.berni.timetrackerapp.utils.Formatter
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.berni.timetrackerapp.api.ScreenState
+import com.berni.timetrackerapp.api.data.UnsplashRepository
+import com.berni.timetrackerapp.model.entities.UnsplashPhoto
 import com.berni.timetrackerapp.service.TimerService
+import com.berni.timetrackerapp.utils.Formatter
+import kotlinx.coroutines.launch
 
-class TimerViewModel(application: Application): AndroidViewModel(application) {
+class TimerViewModel @ViewModelInject constructor(
+    private val repository: UnsplashRepository, application: Application
+) : AndroidViewModel(application) {
 
     private val context = getApplication<Application>().applicationContext
 
@@ -22,6 +32,22 @@ class TimerViewModel(application: Application): AndroidViewModel(application) {
     var timerStarted: LiveData<Boolean> = _timerStarted
 
     private var time = 0.0
+
+    private val _unsplashApiPhoto = MutableLiveData<ScreenState<List<UnsplashPhoto>?>>()
+    val unsplashApiPhoto : LiveData<ScreenState<List<UnsplashPhoto>?>>
+        get() = _unsplashApiPhoto
+
+    fun fetchPhotoBySearchQuery(query: String) {
+        _unsplashApiPhoto.postValue(ScreenState.Loading(null))
+        viewModelScope.launch {
+            try {
+                val photo = repository.getSearchResult(query)
+                _unsplashApiPhoto.postValue(ScreenState.Success(photo.results))
+            } catch (e: Exception) {
+                _unsplashApiPhoto.postValue(ScreenState.Error(e.message.toString(), null))
+            }
+        }
+    }
 
     fun startTimer() {
         context.registerReceiver(updateTime, IntentFilter(TimerService.TIMER_UPDATED))

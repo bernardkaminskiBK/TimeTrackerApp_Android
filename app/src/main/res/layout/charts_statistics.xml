@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cvPieChart"
         android:layout_width="match_parent"
-        android:layout_height="520dp"
+        android:layout_height="320dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/primaryDarkColor"
         android:elevation="5dp"
@@ -17,25 +17,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_pie_chart_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|center"
-            android:layout_marginTop="25dp"
-            android:padding="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/gray"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            tools:text="@string/pieChartLabelText" />
-
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieChart"
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="300dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="62dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:background="@color/primaryDarkColor" />
 
@@ -44,7 +31,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cvBarChart"
         android:layout_width="match_parent"
-        android:layout_height="550dp"
+        android:layout_height="350dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/primaryDarkColor"
         android:elevation="25dp"
@@ -58,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:padding="5dp"
             android:textAlignment="center"
             android:textColor="@color/gray"
@@ -66,11 +53,10 @@
             android:textStyle="bold"
             tools:text="The total sum of hours for each activity in January 2021" />
 
-
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/barChart"
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="250dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="80dp"
             android:layout_marginEnd="10dp"
@@ -81,7 +67,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cvLineChart"
         android:layout_width="match_parent"
-        android:layout_height="550dp"
+        android:layout_height="350dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/primaryDarkColor"
         android:elevation="25dp"
@@ -95,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:padding="5dp"
             android:textAlignment="center"
             android:textColor="@color/gray"
@@ -106,9 +92,9 @@
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart"
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="250dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="70dp"
             android:layout_marginEnd="10dp"
             android:background="@color/primaryDarkColor" />
 

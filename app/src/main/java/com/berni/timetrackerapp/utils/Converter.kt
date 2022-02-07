@@ -27,7 +27,7 @@ object Converter {
         val seconds = this
         if (seconds != null) {
             val hours = seconds / 3600f
-            return (hours * 100).roundToInt() / 100.0f
+            return hours
         }
         return 0.0f
     }

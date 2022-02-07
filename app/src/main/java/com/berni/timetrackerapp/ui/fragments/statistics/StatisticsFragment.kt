@@ -118,7 +118,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
             setNameFilter()
             setMonthFilter(filterData.name, filterData.year)
-            setYearFilter(filterData.name)
+            setYearFilter()
 
             setPieChartData(filterData.year)
             setBarChartData("${filterData.month}/${filterData.year}")
@@ -138,7 +138,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             }
     }
 
-    private fun setYearFilter(name: String) {
+    private fun setYearFilter() {
         database.getAllYears.observe(viewLifecycleOwner) { allYears ->
             val arrayYearsAdapter =
                 ArrayAdapter(requireContext(), R.layout.dropdown_item, allYears)
@@ -165,18 +165,15 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         database.getTotalTimeRecordsByYear(year)
             .observe(viewLifecycleOwner) { pieChartDataList ->
 
-                mBinding.chartStatistics.tvPieChartTitle.text =
-                    getString(R.string.pieChartLabelText, year)
-
                 pieChartData.clear()
                 pieChartDataList
                     .forEach {
                         pieChartData.add(PieEntry(it.totalTime.convertSecondsToHours(), it.name)) }
-                setPieChart()
+                setPieChart(year)
             }
     }
 
-    private fun setPieChart() {
+    private fun setPieChart(year: String) {
         pieChart = mBinding.chartStatistics.pieChart
         initPieChart()
 
@@ -206,7 +203,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         dataSet.colors = colors
         pieChart.data = data
 
-        data.setValueTextSize(12f)
+        data.setValueTextSize(10f)
         data.setValueTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
         pieChart.animateY(700, Easing.EaseInOutQuad)
@@ -215,16 +212,13 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         pieChart.holeRadius = 48f
         pieChart.transparentCircleRadius = 51f
         pieChart.isDrawHoleEnabled = true
-        pieChart.setHoleColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.primaryDarkColor
-            )
-        )
+        pieChart.setHoleColor(ContextCompat.getColor(requireContext(), R.color.primaryDarkColor))
 
         //add text in center
-        pieChart.setDrawCenterText(false);
-//        pieChart.centerText = "Mobile OS Market share"
+        pieChart.setDrawCenterText(true)
+        pieChart.centerText = getString(R.string.pieChartLabelText, year)
+        pieChart.setCenterTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        pieChart.setCenterTextSize(10f)
 
         pieChart.invalidate()
     }
@@ -310,7 +304,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         barChart.description.isEnabled = false
 
         //add animation
-        barChart.animateY(1000)
+        barChart.animateY(700)
 
         // to draw label on xAxis
         xAxis.position = XAxis.XAxisPosition.TOP

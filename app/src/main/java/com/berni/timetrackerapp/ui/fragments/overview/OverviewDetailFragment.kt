@@ -76,7 +76,7 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
         dropDownYearFilter = mBinding.scrollViewContent.actvYears
         dropDownMonthFilter = mBinding.scrollViewContent.actvMonths
 
-        mBinding.ivUnsplashGallery.setOnClickListener {
+        mBinding.scrollViewContent.ivUnsplashGallery.setOnClickListener {
             val action = OverviewDetailFragmentDirections
                 .actionNavOverviewDetailToNavGallery(recordArgs.recordDetails.copy())
             findNavController().navigate(action)
@@ -87,12 +87,12 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
 
     private fun initDataToView() {
 
-        Glide.with(mBinding.ivOverviewDetail)
+        Glide.with(mBinding.scrollViewContent.ivOverviewDetail)
             .load(recordArgs.recordDetails.imgUrl)
             .centerCrop()
             .placeholder(R.drawable.placeholder)
             .transition(DrawableTransitionOptions.withCrossFade())
-            .into(mBinding.ivOverviewDetail)
+            .into(mBinding.scrollViewContent.ivOverviewDetail)
 
         database.getLastAddedRecordMonthYearByName(recordArgs.recordDetails.name)
             .observe(viewLifecycleOwner) {

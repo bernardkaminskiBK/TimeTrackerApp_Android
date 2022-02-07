@@ -163,7 +163,7 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
                             System.currentTimeMillis(),
                             name,
                             time.convertTimeToSeconds(),
-                            state.data.get(0).urls.regular
+                            state.data[0].urls.regular
                         )
                     )
                 }

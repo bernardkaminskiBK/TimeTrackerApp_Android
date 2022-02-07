@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cvPieChart"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="360dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/primaryDarkColor"
         android:elevation="5dp"
@@ -20,7 +20,7 @@
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieChart"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="340dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"

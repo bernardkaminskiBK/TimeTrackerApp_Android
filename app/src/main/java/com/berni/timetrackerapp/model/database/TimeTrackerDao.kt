@@ -34,7 +34,7 @@ interface TimeTrackerDao {
     @Query("SELECT DISTINCT strftime('%Y',datetime(date/1000, 'unixepoch')) FROM time_tracker_table WHERE name = :name ORDER BY date ASC")
     fun getAllYearsByName(name: String): Flow<List<String>>
 
-    @Query("SELECT * FROM time_tracker_table GROUP BY name")
+    @Query("SELECT * FROM time_tracker_table WHERE imgUrl != '' GROUP BY name")
     fun getEachRecord(): Flow<List<Record>>
 
     @Query("SELECT * FROM TIME_TRACKER_TABLE ORDER BY date")

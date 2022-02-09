@@ -76,7 +76,8 @@
             android:background="@color/primaryColor"
             android:baselineAligned="false"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/CustomFilledBoxExposedDropdownMenuStyle"
@@ -130,7 +131,8 @@
             android:id="@+id/tableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="15dp"
+            android:padding="10dp">
 
             <TableRow android:background="@color/gray">
 
@@ -193,11 +195,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/primaryColor"
-            android:paddingStart="15dp"
-            android:paddingTop="25dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="10dp"
-            android:text="Time spent last seven days"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/last_seven_records"
+            android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -206,6 +207,7 @@
             android:id="@+id/lineChart"
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:layout_marginBottom="10dp"
             android:background="@color/primaryColor" />
     </LinearLayout>
 

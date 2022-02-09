@@ -2,14 +2,12 @@ package com.berni.timetrackerapp.ui.fragments.overview
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.berni.timetrackerapp.R
@@ -18,7 +16,6 @@ import com.berni.timetrackerapp.databinding.FragmentOverviewDetailBinding
 import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.OverviewDetailLastWeek
-import com.berni.timetrackerapp.model.entities.Record
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToHours
 import com.bumptech.glide.Glide
@@ -26,7 +23,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -34,6 +30,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.transition.MaterialContainerTransform
+import kotlin.collections.ArrayList
 
 class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
 
@@ -205,7 +202,7 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
 
     private fun initLineChart() {
         //hide grid lines
-        lineChart.axisLeft.setDrawGridLines(false)
+        lineChart.axisLeft.setDrawGridLines(true)
         val xAxis: XAxis = lineChart.xAxis
         xAxis.setDrawGridLines(false)
         xAxis.setDrawAxisLine(false)
@@ -216,14 +213,14 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
         // axis left
         lineChart.axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.white)
         lineChart.axisLeft.textSize = 14f
-        lineChart.axisLeft.axisLineColor =
-            ContextCompat.getColor(requireContext(), R.color.primaryColor)
+        lineChart.axisLeft.axisLineColor = ContextCompat.getColor(requireContext(), R.color.white)
+        lineChart.axisLeft.gridColor = ContextCompat.getColor(requireContext(), R.color.white)
 
         //remove legend Legend.LegendOrientation.HORIZONTAL
-        lineChart.legend.isEnabled = true
-        lineChart.legend.direction = Legend.LegendDirection.LEFT_TO_RIGHT
-        lineChart.legend.textSize = 11f
-        lineChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.white)
+        lineChart.legend.isEnabled = false
+//        lineChart.legend.direction = Legend.LegendDirection.LEFT_TO_RIGHT
+//        lineChart.legend.textSize = 11f
+//        lineChart.legend.textColor = ContextCompat.getColor(requireContext(), R.color.white)
 
         //remove description label
         lineChart.description.isEnabled = false

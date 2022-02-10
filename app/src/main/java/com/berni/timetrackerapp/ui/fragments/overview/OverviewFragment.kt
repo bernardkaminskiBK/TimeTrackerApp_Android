@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
 import com.berni.timetrackerapp.application.TimeTrackerApplication
 import com.berni.timetrackerapp.databinding.OverviewFragmentBinding
@@ -44,6 +45,7 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
 
         mBinding.rvOverview.layoutManager = GridLayoutManager(requireActivity(), 2)
         mBinding.rvOverview.adapter = overviewAdapter
+        overviewAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
         database.getEachRecord().observe(viewLifecycleOwner) {
             overviewAdapter.submitList(it)

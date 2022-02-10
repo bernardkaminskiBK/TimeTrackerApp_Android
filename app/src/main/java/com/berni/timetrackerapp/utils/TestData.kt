@@ -13,7 +13,7 @@ object TestData {
         val testDataset = ArrayList<Record>()
 
         for (i in 1..numberOfItems) {
-            when ((1..6).shuffled().last()) {
+            when ((1..11).shuffled().last()) {
                 1 -> {
                     testDataset.add(
                         Record(
@@ -80,6 +80,61 @@ object TestData {
                         )
                     )
                 }
+               7 -> {
+                    testDataset.add(
+                        Record(
+                            0,
+                            randomDateGenerator(),
+                            "Painting",
+                            getRandomRecordTimeInSeconds(),
+                            " "
+                        )
+                    )
+                }
+                8 -> {
+                    testDataset.add(
+                        Record(
+                            0,
+                            randomDateGenerator(),
+                            "Reading",
+                            getRandomRecordTimeInSeconds(),
+                            " "
+                        )
+                    )
+                }
+                9 -> {
+                    testDataset.add(
+                        Record(
+                            0,
+                            randomDateGenerator(),
+                            "Soccer",
+                            getRandomRecordTimeInSeconds(),
+                            " "
+                        )
+                    )
+                }
+                10 -> {
+                    testDataset.add(
+                        Record(
+                            0,
+                            randomDateGenerator(),
+                            "Sleeping",
+                            getRandomRecordTimeInSeconds(),
+                            " "
+                        )
+                    )
+                }
+                11 -> {
+                    testDataset.add(
+                        Record(
+                            0,
+                            randomDateGenerator(),
+                            "Boxing",
+                            getRandomRecordTimeInSeconds(),
+                            " "
+                        )
+                    )
+                }
             }
         }
 
@@ -95,12 +150,17 @@ object TestData {
 
     private fun randomDateGenerator(): Long {
         // dates between 01.01.2020 - 31.12.2020
-        val min = 1577897548000
-        val max = 1609433548000
+//        val min = 1577897548000
+//        val max = 1609433548000
 
         // dates between 01.01.2021 - 31.12.2021
 //        val min = 1609514485000
 //        val max = 1640964085000
+
+
+        // dates between 01.01.2022 - 10.02.2022
+        val min = 1641043794000
+        val max = 1644499794000
 
         val random = (min..max).random()
         return random

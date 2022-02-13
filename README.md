@@ -1,4 +1,4 @@
-# TimeTrackerApp_Android
+# Time Tracker App (Android)
 It is a simple android app developed in kotlin programing language.
 The main purposes of this app are to store data of spent times' everyday activities and show statistics through various bar charts and tables. With features such as a stopwatch, fetching pictures from API, setting fetched pictures as an activity profile picture and so on. The app is still under development.
 <br/>

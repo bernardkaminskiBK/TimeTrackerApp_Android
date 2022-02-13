@@ -5,3 +5,5 @@ The main purposes of this app are to store data of spent times' everyday activit
 
 ![ttapp_git_review_pic](https://user-images.githubusercontent.com/69598879/153757577-f2a9a835-8923-4dab-85eb-7727100b2b64.png)
 
+[For the review video of the app cklick here.](https://youtu.be/nUp18eeZDR0)
+

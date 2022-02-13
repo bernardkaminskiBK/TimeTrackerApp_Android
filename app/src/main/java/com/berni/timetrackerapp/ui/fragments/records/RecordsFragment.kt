@@ -2,14 +2,19 @@ package com.berni.timetrackerapp.ui.fragments.records
 
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -33,6 +38,7 @@ import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
 import com.berni.timetrackerapp.utils.Converter.convertTimeToSeconds
+import com.berni.timetrackerapp.utils.TestData
 import com.berni.timetrackerapp.utils.onQueryTextChanged
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -80,7 +86,7 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         }
 
 //        @RequiresApi(Build.VERSION_CODES.O)
-//        for (i in TestData.randomTestDataToDB(4440)) {
+//        for (i in TestData.randomTestDataToDB(444)) {
 //            database.insert(i)
 //        }
 

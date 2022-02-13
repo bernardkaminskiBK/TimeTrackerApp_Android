@@ -13,7 +13,7 @@ object TestData {
         val testDataset = ArrayList<Record>()
 
         for (i in 1..numberOfItems) {
-            when ((1..11).shuffled().last()) {
+            when ((1..6).shuffled().last()) {
                 1 -> {
                     testDataset.add(
                         Record(
@@ -80,61 +80,61 @@ object TestData {
                         )
                     )
                 }
-               7 -> {
-                    testDataset.add(
-                        Record(
-                            0,
-                            randomDateGenerator(),
-                            "Painting",
-                            getRandomRecordTimeInSeconds(),
-                            " "
-                        )
-                    )
-                }
-                8 -> {
-                    testDataset.add(
-                        Record(
-                            0,
-                            randomDateGenerator(),
-                            "Reading",
-                            getRandomRecordTimeInSeconds(),
-                            " "
-                        )
-                    )
-                }
-                9 -> {
-                    testDataset.add(
-                        Record(
-                            0,
-                            randomDateGenerator(),
-                            "Soccer",
-                            getRandomRecordTimeInSeconds(),
-                            " "
-                        )
-                    )
-                }
-                10 -> {
-                    testDataset.add(
-                        Record(
-                            0,
-                            randomDateGenerator(),
-                            "Sleeping",
-                            getRandomRecordTimeInSeconds(),
-                            " "
-                        )
-                    )
-                }
-                11 -> {
-                    testDataset.add(
-                        Record(
-                            0,
-                            randomDateGenerator(),
-                            "Boxing",
-                            getRandomRecordTimeInSeconds(),
-                            " "
-                        )
-                    )
-                }
+//               7 -> {
+//                    testDataset.add(
+//                        Record(
+//                            0,
+//                            randomDateGenerator(),
+//                            "Painting",
+//                            getRandomRecordTimeInSeconds(),
+//                            " "
+//                        )
+//                    )
+//                }
+//                8 -> {
+//                    testDataset.add(
+//                        Record(
+//                            0,
+//                            randomDateGenerator(),
+//                            "Reading",
+//                            getRandomRecordTimeInSeconds(),
+//                            " "
+//                        )
+//                    )
+//                }
+//                9 -> {
+//                    testDataset.add(
+//                        Record(
+//                            0,
+//                            randomDateGenerator(),
+//                            "Soccer",
+//                            getRandomRecordTimeInSeconds(),
+//                            " "
+//                        )
+//                    )
+//                }
+//                10 -> {
+//                    testDataset.add(
+//                        Record(
+//                            0,
+//                            randomDateGenerator(),
+//                            "Sleeping",
+//                            getRandomRecordTimeInSeconds(),
+//                            " "
+//                        )
+//                    )
+//                }
+//                11 -> {
+//                    testDataset.add(
+//                        Record(
+//                            0,
+//                            randomDateGenerator(),
+//                            "Boxing",
+//                            getRandomRecordTimeInSeconds(),
+//                            " "
+//                        )
+//                    )
+//                }
             }
         }
 

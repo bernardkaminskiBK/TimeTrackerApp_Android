@@ -50,9 +50,23 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
             mBinding.tvStopwatch.text = it
         })
 
+        observePlayPauseButton()
+
         mBinding.llStartStop.setOnClickListener { startStopTimer() }
         mBinding.llReset.setOnClickListener { resetTimer() }
         setHasOptionsMenu(true)
+    }
+
+    private fun observePlayPauseButton() {
+        timerViewModel.timerStarted.observe(viewLifecycleOwner, { isTimerStarted ->
+            if (isTimerStarted) {
+                mBinding.ivStartStop
+                    .setImageResource(R.drawable.ic_baseline_pause_white_70)
+            } else {
+                mBinding.ivStartStop
+                    .setImageResource(R.drawable.ic_baseline_play_arrow_white_70)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -140,10 +154,10 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
         _mBinding = null
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        timerViewModel.stopTimer()
-    }
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        timerViewModel.stopTimer()
+//    }
 
     private fun processPhotoResponse(state: ScreenState<List<UnsplashPhoto>?>) {
 //        val progressBar = mBinding.progressBar

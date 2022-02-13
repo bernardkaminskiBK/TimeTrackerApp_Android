@@ -5,11 +5,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.berni.timetrackerapp.api.ScreenState
 import com.berni.timetrackerapp.api.data.UnsplashRepository
 import com.berni.timetrackerapp.model.entities.UnsplashPhoto

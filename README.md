@@ -8,7 +8,7 @@ The main purposes of this app are to store data of spent times' everyday activit
 <br/>
 <br/>
 ## Watch the review video of the app
-[![For the review video of the app click here.](https://i9.ytimg.com/vi/nUp18eeZDR0/mq2.jpg?sqp=CPjdpZAG&rs=AOn4CLBjSsnz8OAERta7w9kGPx1n8gkLkg)](https://youtu.be/nUp18eeZDR0)
+[![For the review video of the app click here.](https://i9.ytimg.com/vi/nUp18eeZDR0/mq2.jpg?sqp=CIS1qZAG&rs=AOn4CLCDsdiVfyzvDlOc2xgSRkYP1eKFEg)](https://youtu.be/nUp18eeZDR0)
 
 [For the review video of the app click here.](https://youtu.be/nUp18eeZDR0)
 

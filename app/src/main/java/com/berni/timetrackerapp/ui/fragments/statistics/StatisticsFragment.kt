@@ -78,7 +78,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
         filterData = StatisticsFilterData()
         initDataToView()
-
+        checkIfDbIsNotEmpty()
         setHasOptionsMenu(true)
     }
 
@@ -161,6 +161,20 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
         }
     }
 
+    private fun checkIfDbIsNotEmpty() {
+        database.getCountOfRecords().observe(viewLifecycleOwner) {
+            if (it == 0) {
+                resetFilters()
+            }
+        }
+    }
+
+    private fun resetFilters() {
+        statisticsViewModel.saveRecordMonth("")
+        statisticsViewModel.saveRecordYear("")
+        statisticsViewModel.saveRecordName("")
+    }
+
     private fun setPieChartData(year: String) {
         database.getTotalTimeRecordsByYear(year)
             .observe(viewLifecycleOwner) { pieChartDataList ->
@@ -168,7 +182,8 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
                 pieChartData.clear()
                 pieChartDataList
                     .forEach {
-                        pieChartData.add(PieEntry(it.totalTime.convertSecondsToHours(), it.name)) }
+                        pieChartData.add(PieEntry(it.totalTime.convertSecondsToHours(), it.name))
+                    }
                 setPieChart(year)
             }
     }
@@ -246,13 +261,14 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     private fun setBarChartData(monthYear: String) {
         database.getAllRecordsByMonth(monthYear)
             .observe(viewLifecycleOwner) { recordsByMonth ->
+                if (recordsByMonth.isNotEmpty()) {
+                    mBinding.chartStatistics.tvBarChartTitle.text =
+                        getString(R.string.barChartLabelText, monthYear.dateToStringFormat())
 
-                mBinding.chartStatistics.tvBarChartTitle.text =
-                    getString(R.string.barChartLabelText, monthYear.dateToStringFormat())
-
-                barChartData.clear()
-                recordsByMonth.forEach { barChartData.add(it) }
-                setBarChart()
+                    barChartData.clear()
+                    recordsByMonth.forEach { barChartData.add(it) }
+                    setBarChart()
+                }
             }
     }
 
@@ -328,16 +344,12 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     private fun setLineChartData(name: String, date: String) {
         database.getRecordsByNameByDateSumTimeWhereIsSameDate(name, date)
             .observe(viewLifecycleOwner) { recordDateTimeList ->
+                if (recordDateTimeList.size > 2) {
+                    mBinding.chartStatistics.tvLineChartTitle.text =
+                        getString(R.string.lineChartLabelText, name, date.dateToStringFormat())
 
-                mBinding.chartStatistics.tvLineChartTitle.text =
-                    getString(R.string.lineChartLabelText, name, date.dateToStringFormat())
-
-                lineChartData.clear()
-                if (recordDateTimeList.size > 1) {
-                    recordDateTimeList.forEach { lineChartData.add(it) }
-                    setLineChart()
-                } else {
                     lineChartData.clear()
+                    recordDateTimeList.forEach { lineChartData.add(it) }
                     setLineChart()
                 }
             }

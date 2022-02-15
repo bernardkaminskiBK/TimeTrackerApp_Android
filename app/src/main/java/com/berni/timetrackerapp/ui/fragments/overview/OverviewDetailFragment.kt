@@ -30,7 +30,6 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.transition.MaterialContainerTransform
-import kotlin.collections.ArrayList
 
 class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
 
@@ -157,13 +156,10 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
     private fun setLineChartData(name: String, year: String) {
         database.getLastSevenRecordsByNameByYear(name, year)
             .observe(viewLifecycleOwner) { lastWeekRecordList ->
-                lineChartData.clear()
-                if (lastWeekRecordList.size > 1) {
+                if (lastWeekRecordList.size > 2) {
+                    lineChartData.clear()
                     lastWeekRecordList.forEach { lineChartData.add(it) }
                     lineChartData.sortBy { it.dayMonth }
-                    setLineChart()
-                } else {
-                    lineChartData.clear()
                     setLineChart()
                 }
             }

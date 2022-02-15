@@ -19,6 +19,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/tvNoDataAvailable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/overview_s_list_is_empty"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            android:visibility="gone"
+            android:layout_gravity="center" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvOverview"
             android:layout_width="match_parent"

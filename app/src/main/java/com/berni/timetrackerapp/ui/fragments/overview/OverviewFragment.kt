@@ -48,7 +48,12 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
         overviewAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
         database.getEachRecord().observe(viewLifecycleOwner) {
-            overviewAdapter.submitList(it)
+            if (it.isNotEmpty()) {
+                mBinding.tvNoDataAvailable.visibility = View.GONE
+                overviewAdapter.submitList(it)
+            } else {
+                mBinding.tvNoDataAvailable.visibility = View.VISIBLE
+            }
         }
 
         navigateToChosenDirection()

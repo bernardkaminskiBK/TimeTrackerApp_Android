@@ -2,7 +2,6 @@ package com.berni.timetrackerapp.ui.fragments.records
 
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,8 +9,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -86,7 +83,7 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         }
 
 //        @RequiresApi(Build.VERSION_CODES.O)
-//        for (i in TestData.randomTestDataToDB(444)) {
+//        for (i in TestData.randomTestDataToDB(30)) {
 //            database.insert(i)
 //        }
 
@@ -102,8 +99,11 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
         }
 
         database.records.observe(viewLifecycleOwner) {
-            it.let {
+            if (it.isNotEmpty()) {
+                mBinding.tvNoDataAvailable.visibility = View.GONE
                 mRecordsAdapter.submitList(it)
+            } else {
+                mBinding.tvNoDataAvailable.visibility = View.VISIBLE
             }
         }
 

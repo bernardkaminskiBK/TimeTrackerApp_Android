@@ -26,6 +26,9 @@ class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {
         timeTrackerDao.deleteAllRecords()
     }
 
+    fun getCountOfRecords() : Flow<Int> =
+        timeTrackerDao.getCountOfRecords()
+
     fun getAllYearByName(name: String) : Flow<List<String>> =
         timeTrackerDao.getAllYearsByName(name)
 

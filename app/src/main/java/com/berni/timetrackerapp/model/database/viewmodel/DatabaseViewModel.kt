@@ -61,6 +61,7 @@ class DatabaseViewModel(application: Application, private val repository: TimeTr
         repository.deleteAllRecords()
     }
 
+    fun getCountOfRecords() = repository.getCountOfRecords().asLiveData()
     fun getRecordTotalTimeByNameByDate(name: String, date: String) = repository.getRecordTotalTimeByNameByDate(name, date).asLiveData()
     fun getRecordTotalDaysByNameByDate(name: String, date: String) = repository.getRecordTotalDaysByNameByDate(name, date).asLiveData()
     fun getMostRecentRecordByName(name: String) = repository.getMostRecentRecordByName(name).asLiveData()

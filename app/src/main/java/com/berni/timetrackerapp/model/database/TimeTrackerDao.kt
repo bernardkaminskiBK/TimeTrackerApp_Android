@@ -70,4 +70,7 @@ interface TimeTrackerDao {
     @Query("SELECT strftime('%m',datetime(date/1000, 'unixepoch')) AS month, strftime('%Y',datetime(date/1000, 'unixepoch')) AS year FROM time_tracker_table WHERE name = :name ORDER BY date DESC LIMIT 1")
     fun getLastAddedRecordMonthYearByName(name: String): Flow<OverviewDetailLastRecord>
 
+    @Query("SELECT COUNT(id) FROM time_tracker_table")
+    fun getCountOfRecords() : Flow<Int>
+
 }

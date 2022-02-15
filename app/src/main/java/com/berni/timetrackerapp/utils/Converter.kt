@@ -33,7 +33,7 @@ object Converter {
     }
 
     fun Float?.roundTwoDecimalPlaces() : Float {
-        if (this != null) {
+        if (this != null && !this.isNaN()) {
             return (this * 100).roundToInt() / 100.0f
         }
         return 0.0f

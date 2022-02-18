@@ -20,3 +20,4 @@ The main purpose of the application is to improve the overview of the spend time
 * Statistics
 * Overview of the saved records
 * Fetching profile pictures from Unsplash API
+* Adding data manually 

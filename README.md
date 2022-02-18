@@ -8,7 +8,7 @@ The main purposes of this app are to store data of spent times' everyday activit
 ![resized_ttapp_review_photo](https://user-images.githubusercontent.com/69598879/153773378-cb78361a-f53c-45b4-bacd-8e26ecfabb56.png)
 
 ## Video
-[![For the review video of the app click here.](https://user-images.githubusercontent.com/69598879/154024082-36661783-b268-454c-bd17-1abd2e014f36.jpg)](https://youtu.be/nUp18eeZDR0)
+[![For the review video of the app click here.](https://img.youtube.com/vi/nUp18eeZDR0/hqdefault.jpg)](https://youtu.be/nUp18eeZDR0)
 
 ## Features
 

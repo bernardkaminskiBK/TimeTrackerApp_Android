@@ -16,9 +16,9 @@ The main purpose of the application is to improve the overview of the spend time
 
 ## Features
 
-* Stopwatch
-* Statistics
-* Overview of the saved records
-* After saving a new record automatically fetching  
-  a profile picture accordingly by name from Unsplash API
-* Adding data manually 
+* stopwatch
+* statistics
+* overview of the saved records
+* automatically fetching profile picture by   
+  record name from Unsplash API
+* adding data manually 

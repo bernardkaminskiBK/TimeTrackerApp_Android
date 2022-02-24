@@ -40,7 +40,6 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery),
         )
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -90,6 +89,7 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery),
         findNavController().navigate(action)
         val record = recordArgs.recordDetails
         database.update(Record(record.id, record.date, record.name, record.time, photo.urls.regular))
+        database.updateEveryRecordsImgUrlByName(photo.urls.regular, record.name)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

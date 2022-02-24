@@ -24,8 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="320dp"
                 android:backgroundTint="@color/primaryColor"
-                app:cardCornerRadius="@dimen/card_view_corner_radius"
-                app:cardElevation="5dp">
+                app:cardCornerRadius="@dimen/card_view_corner_radius">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -35,10 +34,9 @@
                         android:id="@+id/ivOverviewDetail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/primaryDarkColor"
                         android:contentDescription="@string/overview_record_image"
                         android:scaleType="fitXY"
-                        android:src="@drawable/placeholder" />
+                        tools:src="@drawable/placeholder"/>
 
                     <ImageView
                         android:id="@+id/ivUnsplashGallery"

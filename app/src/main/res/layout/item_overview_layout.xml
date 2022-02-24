@@ -37,7 +37,7 @@
                     android:id="@+id/ivOverviewImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:contentDescription="overview record image"
+                    android:contentDescription="@string/overview_record_image"
                     android:scaleType="fitXY"
                     android:src="@drawable/placeholder"
                     android:background="@color/primaryDarkColor" />
@@ -50,7 +50,7 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_vertical"
-                android:text="Duolingo"
+                tools:text="Duolingo"
                 android:textColor="@color/gray"
                 android:textSize="14sp"
                 android:textStyle="bold" />

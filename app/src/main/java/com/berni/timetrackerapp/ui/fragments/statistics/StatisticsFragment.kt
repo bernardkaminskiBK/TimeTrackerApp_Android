@@ -1,6 +1,7 @@
 package com.berni.timetrackerapp.ui.fragments.statistics
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -261,13 +262,18 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     private fun setBarChartData(monthYear: String) {
         database.getAllRecordsByMonth(monthYear)
             .observe(viewLifecycleOwner) { recordsByMonth ->
-                if (recordsByMonth.isNotEmpty()) {
-                    mBinding.chartStatistics.tvBarChartTitle.text =
-                        getString(R.string.barChartLabelText, monthYear.dateToStringFormat())
+                mBinding.chartStatistics.tvBarChartTitle.text =
+                    getString(R.string.barChartLabelText, monthYear.dateToStringFormat())
 
+                if (recordsByMonth.isNotEmpty()) {
                     barChartData.clear()
                     recordsByMonth.forEach { barChartData.add(it) }
                     setBarChart()
+                } else {
+                    barChartData.clear()
+                    setBarChart()
+                    barChart.setNoDataTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                    barChart.clear()
                 }
             }
     }
@@ -344,13 +350,19 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     private fun setLineChartData(name: String, date: String) {
         database.getRecordsByNameByDateSumTimeWhereIsSameDate(name, date)
             .observe(viewLifecycleOwner) { recordDateTimeList ->
-                if (recordDateTimeList.size > 2) {
-                    mBinding.chartStatistics.tvLineChartTitle.text =
-                        getString(R.string.lineChartLabelText, name, date.dateToStringFormat())
+                mBinding.chartStatistics.tvLineChartTitle.text =
+                    getString(R.string.lineChartLabelText, name, date.dateToStringFormat())
 
+                if (recordDateTimeList.size > 1) {
                     lineChartData.clear()
                     recordDateTimeList.forEach { lineChartData.add(it) }
                     setLineChart()
+                } else {
+                    lineChartData.clear()
+                    setLineChart()
+                    lineChart.clear()
+                    lineChart.setNoDataText(getString(R.string.no_data_text))
+                    lineChart.setNoDataTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 }
             }
     }

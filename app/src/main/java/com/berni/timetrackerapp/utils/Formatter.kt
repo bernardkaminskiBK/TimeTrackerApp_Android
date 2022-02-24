@@ -32,15 +32,7 @@ object Formatter {
             "11" -> return "November $year"
             "12" -> return "December $year"
         }
-        return "year"
+        return "month & year"
     }
-
-//    fun dateTimeToSeconds(time: String): Long {
-//        val dateFormat = SimpleDateFormat("HH:mm:ss", Locale.ENGLISH)
-//        val reference = dateFormat.parse("00:00:00")
-//        val date = dateFormat.parse(time)
-//        val seconds = (date!!.time - reference!!.time) / 1000L
-//        return seconds / 3600
-//    }
 
 }

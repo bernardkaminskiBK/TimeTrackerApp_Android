@@ -53,4 +53,5 @@
     <string name="overview_record_image">overview record image</string>
     <string name="most_recents">Most Recents</string>
     <string name="overview_s_list_is_empty">Overview\'s list is empty.</string>
+    <string name="no_data_text">At least two records are needed to show chart</string>
 </resources>

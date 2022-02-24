@@ -156,11 +156,17 @@ class OverviewDetailFragment : Fragment(R.layout.fragment_overview_detail) {
     private fun setLineChartData(name: String, year: String) {
         database.getLastSevenRecordsByNameByYear(name, year)
             .observe(viewLifecycleOwner) { lastWeekRecordList ->
-                if (lastWeekRecordList.size > 2) {
+                if (lastWeekRecordList.size > 1) {
                     lineChartData.clear()
                     lastWeekRecordList.forEach { lineChartData.add(it) }
                     lineChartData.sortBy { it.dayMonth }
                     setLineChart()
+                } else {
+                    lineChartData.clear()
+                    setLineChart()
+                    lineChart.clear()
+                    lineChart.setNoDataText(getString(R.string.no_data_text))
+                    lineChart.setNoDataTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 }
             }
     }

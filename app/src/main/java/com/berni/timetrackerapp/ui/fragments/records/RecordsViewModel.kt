@@ -2,14 +2,16 @@ package com.berni.timetrackerapp.ui.fragments.records
 
 import android.app.Application
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
-import com.berni.timetrackerapp.api.ScreenState
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.berni.timetrackerapp.api.data.UnsplashRepository
-import com.berni.timetrackerapp.model.entities.UnsplashPhoto
+import com.berni.timetrackerapp.utils.Constants
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class RecordsViewModel @ViewModelInject constructor(
-    private val repository: UnsplashRepository, application: Application)
+class RecordsViewModel @ViewModelInject constructor(private val repository: UnsplashRepository, application: Application)
     : AndroidViewModel(application) {
 
     private val recordsRepo = RecordsRepository(application)
@@ -19,19 +21,17 @@ class RecordsViewModel @ViewModelInject constructor(
         recordsRepo.saveTitleRecord(title)
     }
 
-    private val _unsplashApiPhoto = MutableLiveData<ScreenState<List<UnsplashPhoto>?>>()
-    val unsplashApiPhoto : LiveData<ScreenState<List<UnsplashPhoto>?>>
-        get() = _unsplashApiPhoto
-
-    fun fetchPhotoBySearchQuery(query: String) {
-        _unsplashApiPhoto.postValue(ScreenState.Loading(null))
-        viewModelScope.launch {
+    suspend fun fetchImageUrlBySearchQuery(query: String) =
+        withContext(Dispatchers.IO) {
             try {
                 val photo = repository.getSearchResult(query)
-                _unsplashApiPhoto.postValue(ScreenState.Success(photo.results))
+                if (photo.results.isNotEmpty()) {
+                    photo.results[0].urls.regular
+                } else {
+                    Constants.FAILED_FETCHING
+                }
             } catch (e: Exception) {
-                _unsplashApiPhoto.postValue(ScreenState.Error(e.message.toString(), null))
+                Constants.FAILED_FETCHING
             }
         }
-    }
 }

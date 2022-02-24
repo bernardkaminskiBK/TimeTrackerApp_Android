@@ -26,19 +26,19 @@ class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {
         timeTrackerDao.deleteAllRecords()
     }
 
-    fun getCountOfRecords() : Flow<Int> =
+    fun getCountOfRecords(): Flow<Int> =
         timeTrackerDao.getCountOfRecords()
 
-    fun getAllYearByName(name: String) : Flow<List<String>> =
+    fun getAllYearByName(name: String): Flow<List<String>> =
         timeTrackerDao.getAllYearsByName(name)
 
-    fun getAllYears() : Flow<List<String>> =
+    fun getAllYears(): Flow<List<String>> =
         timeTrackerDao.getAllYears()
 
-    fun getRecordTotalTimeByNameByDate(name: String, date: String) : Flow<OverviewDetailTotalTime> =
+    fun getRecordTotalTimeByNameByDate(name: String, date: String): Flow<OverviewDetailTotalTime> =
         timeTrackerDao.getRecordTotalTimeByNameByDate(name, date)
 
-    fun getRecordTotalDaysByNameByDate(name: String, date: String) : Flow<OverviewDetailTotalDays> =
+    fun getRecordTotalDaysByNameByDate(name: String, date: String): Flow<OverviewDetailTotalDays> =
         timeTrackerDao.getRecordTotalDaysByNameByDate(name, date)
 
     fun getMostRecentRecordByName(name: String): Flow<OverviewDetailMostRecent> =
@@ -56,16 +56,22 @@ class TimeTrackerRepository(private val timeTrackerDao: TimeTrackerDao) {
     fun getEachRecord(): Flow<List<Record>> =
         timeTrackerDao.getEachRecord()
 
+    suspend fun getRecordImageUrlByName(name: String) =
+        timeTrackerDao.getRecordByName(name)
+
+    suspend fun updateEveryRecordsImgUrlByName(updateImgUrl: String, name: String) =
+        timeTrackerDao.updateEveryRecordsImgUrlByName(updateImgUrl, name)
+
     fun getAllRecordsByMonth(month: String): Flow<List<StatisticsBarChartData>> =
         timeTrackerDao.getAllRecordsByMonth(month)
 
     fun getMonthsByNameByYear(name: String, year: String): Flow<List<String>> =
         timeTrackerDao.getMonthsByNameByYear(name, year)
 
-    fun getLastSevenRecordsByNameByYear(name: String, year: String) : Flow<List<OverviewDetailLastWeek>> =
+    fun getLastSevenRecordsByNameByYear(name: String, year: String): Flow<List<OverviewDetailLastWeek>> =
         timeTrackerDao.getLastSevenRecordByNameByYear(name, year)
 
-    fun getRecordsByNameByDateSumTimeWhereIsSameDate(name: String, date: String) : Flow<List<RecordDateTime>> =
+    fun getRecordsByNameByDateSumTimeWhereIsSameDate(name: String, date: String): Flow<List<RecordDateTime>> =
         timeTrackerDao.getRecordsByNameByDateSumTimeWhereIsSameDate(name, date)
 
     val getAllRecordsName = timeTrackerDao.getAllRecordNames()

@@ -2,7 +2,6 @@ package com.berni.timetrackerapp.ui.fragments.records
 
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -11,31 +10,28 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.berni.timetrackerapp.R
-import com.berni.timetrackerapp.api.ScreenState
 import com.berni.timetrackerapp.application.TimeTrackerApplication
 import com.berni.timetrackerapp.databinding.*
 import com.berni.timetrackerapp.model.database.FilterOrder
 import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
 import com.berni.timetrackerapp.model.entities.Record
-import com.berni.timetrackerapp.model.entities.UnsplashPhoto
 import com.berni.timetrackerapp.ui.activities.MainActivity
 import com.berni.timetrackerapp.ui.adapters.FilterAdapter
 import com.berni.timetrackerapp.ui.adapters.RecordAdapter
 import com.berni.timetrackerapp.utils.Converter.convertSecondsToDateTime
 import com.berni.timetrackerapp.utils.Converter.convertTimeToSeconds
-import com.berni.timetrackerapp.utils.TestData
 import com.berni.timetrackerapp.utils.onQueryTextChanged
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -203,7 +199,7 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
                 timePickerDialog(binding.tvStopwatch)
             }
             btnSave.setOnClickListener {
-                validateInput(tiNameOfProgress.text.toString())
+                validateInput(tiNameOfRecord.text.toString())
             }
             btnCancel.setOnClickListener {
                 addRecordDialog.dismiss()
@@ -230,9 +226,14 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
 
     private fun validateInput(input: String) {
         if (input.isNotEmpty()) {
-            recordsViewModel.fetchPhotoBySearchQuery(input)
-            recordsViewModel.unsplashApiPhoto.observe(viewLifecycleOwner) {
-                processPhotoResponse(it)
+            lifecycleScope.launchWhenResumed {
+
+                val name = binding.tiNameOfRecord.text.toString()
+                val time = binding.tvStopwatch.text.toString()
+                val imgUrl = recordsViewModel.fetchImageUrlBySearchQuery(input)
+
+                database.saveDataIntoDatabase(imgUrl, name, time)
+
             }
 
             addRecordDialog.dismiss()
@@ -326,47 +327,6 @@ class RecordsFragment : Fragment(R.layout.fragment_records) {
             deleteAllRecordsDialog.dismiss()
         }
         deleteAllRecordsDialog.show()
-    }
-
-    private fun processPhotoResponse(state: ScreenState<List<UnsplashPhoto>?>) {
-//        val progressBar = mBinding.progressBar
-
-        val name = binding.tiNameOfProgress.text.toString()
-        val time = binding.tvStopwatch.text.toString()
-
-        when (state) {
-            is ScreenState.Loading -> {
-//                progressBar.visibility = View.VISIBLE
-            }
-            is ScreenState.Success -> {
-                if (state.data != null) {
-//                    progressBar.visibility = View.GONE
-                    database.insert(
-                        Record(
-                            0,
-                            System.currentTimeMillis(),
-                            name,
-                            time.convertTimeToSeconds(),
-                            state.data[0].urls.regular
-                        )
-                    )
-                }
-
-            }
-            is ScreenState.Error -> {
-//                progressBar.visibility = View.GONE
-                database.insert(
-                    Record(
-                        0,
-                        System.currentTimeMillis(),
-                        name,
-                        time.convertTimeToSeconds(),
-                        ""
-                    )
-                )
-                Log.e("RecordsFragment", state.message!!)
-            }
-        }
     }
 
     override fun onDestroy() {

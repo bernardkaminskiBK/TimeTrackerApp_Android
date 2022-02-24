@@ -29,13 +29,19 @@ interface TimeTrackerDao {
     fun getAllRecordNames(): Flow<List<String>>
 
     @Query("SELECT DISTINCT strftime('%Y',datetime(date/1000, 'unixepoch')) FROM time_tracker_table ORDER BY date ASC")
-    fun getAllYears() : Flow<List<String>>
+    fun getAllYears(): Flow<List<String>>
 
     @Query("SELECT DISTINCT strftime('%Y',datetime(date/1000, 'unixepoch')) FROM time_tracker_table WHERE name = :name ORDER BY date ASC")
     fun getAllYearsByName(name: String): Flow<List<String>>
 
-    @Query("SELECT * FROM time_tracker_table WHERE imgUrl != '' GROUP BY name")
+    @Query("SELECT * FROM time_tracker_table GROUP BY name")
     fun getEachRecord(): Flow<List<Record>>
+
+    @Query("SELECT imgUrl FROM time_tracker_table WHERE name = :name AND imgUrl LIKE 'h%'")
+    suspend fun getRecordByName(name: String): String
+
+    @Query("UPDATE time_tracker_table SET imgUrl = :updateImgUrl  WHERE name = :name")
+    suspend fun updateEveryRecordsImgUrlByName(updateImgUrl: String, name: String)
 
     @Query("SELECT * FROM TIME_TRACKER_TABLE ORDER BY date")
     fun getRecordsList(): Flow<List<Record>>
@@ -71,6 +77,6 @@ interface TimeTrackerDao {
     fun getLastAddedRecordMonthYearByName(name: String): Flow<OverviewDetailLastRecord>
 
     @Query("SELECT COUNT(id) FROM time_tracker_table")
-    fun getCountOfRecords() : Flow<Int>
+    fun getCountOfRecords(): Flow<Int>
 
 }

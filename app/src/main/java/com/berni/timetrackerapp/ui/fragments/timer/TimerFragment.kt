@@ -1,7 +1,6 @@
 package com.berni.timetrackerapp.ui.fragments.timer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -10,16 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.berni.timetrackerapp.R
-import com.berni.timetrackerapp.api.ScreenState
 import com.berni.timetrackerapp.application.TimeTrackerApplication
 import com.berni.timetrackerapp.databinding.BottomSheetSaveDialogBinding
 import com.berni.timetrackerapp.databinding.FragmentTimerBinding
 import com.berni.timetrackerapp.model.database.viewmodel.DatabaseViewModel
 import com.berni.timetrackerapp.model.database.viewmodel.TimeTrackerViewModelFactory
-import com.berni.timetrackerapp.model.entities.Record
-import com.berni.timetrackerapp.model.entities.UnsplashPhoto
-import com.berni.timetrackerapp.utils.Converter.convertTimeToSeconds
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -91,7 +87,7 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
         binding.apply {
             tvTimerResult.text = mBinding.tvStopwatch.text
             btnSave.setOnClickListener {
-                validateInput(tiNameOfProgress.text.toString())
+                validateInput(tiNameOfRecord.text.toString())
             }
             btnCancel.setOnClickListener {
                 saveRecordDialog.dismiss()
@@ -103,9 +99,14 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
 
     private fun validateInput(input: String) {
         if (input.isNotEmpty()) {
-            timerViewModel.fetchPhotoBySearchQuery(input)
-            timerViewModel.unsplashApiPhoto.observe(viewLifecycleOwner) {
-                processPhotoResponse(it)
+            lifecycleScope.launchWhenResumed {
+
+                val name = binding.tiNameOfRecord.text.toString()
+                val time = binding.tvTimerResult.text.toString()
+                val imgUrl = timerViewModel.fetchImageUrlBySearchQuery(input)
+
+                database.saveDataIntoDatabase(imgUrl, name, time)
+
             }
             saveRecordDialog.dismiss()
             Toast.makeText(requireContext(), getString(R.string.success_save), Toast.LENGTH_SHORT)
@@ -158,45 +159,4 @@ class TimerFragment : Fragment(R.layout.fragment_timer) {
 //        super.onDestroyView()
 //        timerViewModel.stopTimer()
 //    }
-
-    private fun processPhotoResponse(state: ScreenState<List<UnsplashPhoto>?>) {
-//        val progressBar = mBinding.progressBar
-        val name = binding.tiNameOfProgress.text.toString()
-        val time = binding.tvTimerResult.text.toString()
-
-        when (state) {
-            is ScreenState.Loading -> {
-//                progressBar.visibility = View.VISIBLE
-            }
-            is ScreenState.Success -> {
-                if (state.data != null) {
-//                    progressBar.visibility = View.GONE
-                    database.insert(
-                        Record(
-                            0,
-                            System.currentTimeMillis(),
-                            name,
-                            time.convertTimeToSeconds(),
-                            state.data[0].urls.regular
-                        )
-                    )
-                }
-
-            }
-            is ScreenState.Error -> {
-//                progressBar.visibility = View.GONE
-                database.insert(
-                    Record(
-                        0,
-                        System.currentTimeMillis(),
-                        name,
-                        time.convertTimeToSeconds(),
-                        ""
-                    )
-                )
-                Log.e("TimerFragment", state.message!!)
-            }
-        }
-    }
-
 }

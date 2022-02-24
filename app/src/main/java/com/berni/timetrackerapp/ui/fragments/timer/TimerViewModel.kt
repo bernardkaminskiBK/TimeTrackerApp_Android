@@ -5,15 +5,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.berni.timetrackerapp.api.ScreenState
 import com.berni.timetrackerapp.api.data.UnsplashRepository
-import com.berni.timetrackerapp.model.entities.UnsplashPhoto
 import com.berni.timetrackerapp.service.TimerService
+import com.berni.timetrackerapp.utils.Constants
 import com.berni.timetrackerapp.utils.Formatter
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class TimerViewModel @ViewModelInject constructor(
     private val repository: UnsplashRepository, application: Application
@@ -31,21 +30,19 @@ class TimerViewModel @ViewModelInject constructor(
 
     private var time = 0.0
 
-    private val _unsplashApiPhoto = MutableLiveData<ScreenState<List<UnsplashPhoto>?>>()
-    val unsplashApiPhoto : LiveData<ScreenState<List<UnsplashPhoto>?>>
-        get() = _unsplashApiPhoto
-
-    fun fetchPhotoBySearchQuery(query: String) {
-        _unsplashApiPhoto.postValue(ScreenState.Loading(null))
-        viewModelScope.launch {
+    suspend fun fetchImageUrlBySearchQuery(query: String) =
+        withContext(Dispatchers.IO) {
             try {
                 val photo = repository.getSearchResult(query)
-                _unsplashApiPhoto.postValue(ScreenState.Success(photo.results))
+                if (photo.results.isNotEmpty()) {
+                    photo.results[0].urls.regular
+                } else {
+                    Constants.FAILED_FETCHING
+                }
             } catch (e: Exception) {
-                _unsplashApiPhoto.postValue(ScreenState.Error(e.message.toString(), null))
+                Constants.FAILED_FETCHING
             }
         }
-    }
 
     fun startTimer() {
         context.registerReceiver(updateTime, IntentFilter(TimerService.TIMER_UPDATED))

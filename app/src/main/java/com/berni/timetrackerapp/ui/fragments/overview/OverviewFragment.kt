@@ -35,6 +35,9 @@ class OverviewFragment : Fragment(R.layout.overview_fragment) {
         )
     }
 
+    /*
+    added comment
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

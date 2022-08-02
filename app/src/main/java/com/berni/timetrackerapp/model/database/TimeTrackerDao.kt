@@ -43,7 +43,7 @@ interface TimeTrackerDao {
     @Query("UPDATE time_tracker_table SET imgUrl = :updateImgUrl  WHERE name = :name")
     suspend fun updateEveryRecordsImgUrlByName(updateImgUrl: String, name: String)
 
-    @Query("SELECT * FROM TIME_TRACKER_TABLE ORDER BY date")
+    @Query("SELECT * FROM TIME_TRACKER_TABLE ORDER BY date DESC")
     fun getRecordsList(): Flow<List<Record>>
 
     @Query("SELECT * FROM TIME_TRACKER_TABLE WHERE name LIKE '%' || :filterQuery || '%' OR strftime('%d.%m.%Y',datetime(date/1000, 'unixepoch')) LIKE '%' || :filterQuery || '%' ORDER BY date")
